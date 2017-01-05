@@ -1,0 +1,402 @@
+﻿<Page
+    x:Class="HwandazaWebService.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <Style TargetType="Rectangle" x:Key="LedSwitchSpacerleStyle">
+            <Setter Property="Width" Value="0"></Setter>
+            <Setter Property="Height" Value="5"></Setter>
+        </Style>
+        <Style TargetType="Rectangle" x:Key="LedSpacerleStyle">
+            <Setter Property="Width" Value="20"></Setter>
+            <Setter Property="Height" Value="50"></Setter>
+            <Setter Property="StrokeThickness" Value="0"></Setter>
+        </Style>
+        <Style TargetType="Rectangle" x:Key="RectangleStyle">
+            <Setter Property="Width" Value="10"></Setter>
+            <Setter Property="Height" Value="30"></Setter>
+            <Setter Property="StrokeThickness" Value="0"></Setter>
+        </Style>
+        <Style TargetType="TextBlock"  x:Key="TextBlockStyleA">
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="FontSize" Value="25"></Setter>
+            <Setter Property="Foreground" Value="#E1B040"></Setter>
+        </Style>
+        <Style TargetType="TextBlock"  x:Key="TextBlockStyle">
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="FontSize" Value="20"></Setter>
+            <Setter Property="Foreground" Value="White"></Setter>
+        </Style>
+        <Style TargetType="Ellipse" x:Key="LEDStyle">
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Height" Value="40"></Setter>
+            <Setter Property="Width" Value="40"></Setter>
+        </Style>
+        <Style TargetType="Button" x:Key="ButtonStyle"  >
+            <Setter Property="Foreground" Value="White"></Setter>
+            <Setter Property="FontSize" Value="30"></Setter>
+            <Setter Property="Margin" Value="0"></Setter>
+            <Setter Property="Padding" Value="1,1,1,1"></Setter>
+            <Setter Property="Background" Value="red"></Setter>
+            <Setter Property="Height" Value="50"></Setter>
+            <Setter Property="Width" Value="130"></Setter>
+        </Style>
+        <Style x:Key="RoundButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse Width="70" Height="70" Stroke="#FF000000" StrokeThickness="1">
+                                <Ellipse.Fill>
+                                    <SolidColorBrush Color="red" />
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Page.Background>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="Black" Offset="0"/>
+            <GradientStop Color="White" Offset="0.446"/>
+        </LinearGradientBrush>
+    </Page.Background>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="Assets/chiedza.jpg"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition Height="150"></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition Height="70"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="Hwandaza Automation">
+            <TextBlock.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FFE4E48E" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBlock.Foreground>
+        </TextBlock>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15">
+            <Button x:Name="WaterPumpButton"  Style="{StaticResource ButtonStyle}" Click="WaterPunp_OnClick" Foreground="#FFF90505" >
+                <Button.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FFF20A0A" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FFCBCAF1" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Button.Content>Pump</Button.Content>
+            </Button>
+            <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
+            <Ellipse x:Name="PumpLED" Style="{StaticResource LEDStyle}">
+                <Ellipse.Stroke>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FFD79E6E" Offset="1"/>
+                    </LinearGradientBrush>
+                </Ellipse.Stroke>
+                <Ellipse.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FF7787D1" Offset="1"/>
+                    </LinearGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+            <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
+            <TextBlock x:Name="WaterPumpADC" Style="{StaticResource TextBlockStyleA}"  Text="ADC: 0.00V" Foreground="#FFF5AC05"></TextBlock>
+            <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
+            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Mon - Sun 10AM, 12PM, 2PM, 4PM for 4 minutes."></TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15">
+            <Button x:Name="PondPumpButton"  Style="{StaticResource ButtonStyle}" Click="FishPondPump_OnClick">
+                <Button.Foreground>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FFF6D506" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Foreground>
+                <Button.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FFE7A506" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FF58E7FE" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background> Pond
+            </Button>
+            <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
+            <Ellipse x:Name="PondLED"  Style="{StaticResource LEDStyle}">
+                <Ellipse.Stroke>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FFD79E6E" Offset="1"/>
+                    </LinearGradientBrush>
+                </Ellipse.Stroke>
+                <Ellipse.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FF7787D1" Offset="1"/>
+                    </LinearGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+            <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
+            <TextBlock x:Name="PondPumpADC" Style="{StaticResource TextBlockStyleA}"  Text="ADC: 0.00V" Foreground="#FFFEB205"></TextBlock>
+            <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
+            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Mon-Sun 10:00 AM and 02:00 PM for 1 hour."></TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15">
+            <Button x:Name="LawnIrrigatorButton" Style="{StaticResource ButtonStyle}" Content="Lawn" Click="LawnIrrigator_OnClick" Foreground="#FF84F606">
+                <Button.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#1625DF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FFFFE9DA" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
+            <Ellipse x:Name="LawnLED"  Style="{StaticResource LEDStyle}">
+                <Ellipse.Stroke>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FFD79E6E" Offset="1"/>
+                    </LinearGradientBrush>
+                </Ellipse.Stroke>
+                <Ellipse.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FF7787D1" Offset="1"/>
+                    </LinearGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+            <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
+            <TextBlock x:Name="LawnIrrigatorADC" Style="{StaticResource TextBlockStyleA}"  Text="ADC: 0.00V" Foreground="#FFFCB208"></TextBlock>
+            <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
+            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Mon-Sun 7:00 AM and 5:00 PM for 30 mins."></TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="15">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <Ellipse x:Name="M1LED"  Style="{StaticResource LEDStyle}">
+                    <Ellipse.Stroke>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FFD79E6E" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Stroke>
+                    <Ellipse.Fill>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FF7787D1" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <Rectangle Style="{StaticResource LedSwitchSpacerleStyle}"></Rectangle>
+                <Button Click="ButtonBase_OnClick_M1" >
+                    <Button.Content>
+                        <Border CornerRadius="5" Height="60" Width="70" Margin="0" BorderBrush="Coral" BorderThickness="4,4,4,4" >
+                            <TextBlock FontSize="30" Foreground="White" Text="M1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+            <Rectangle Style="{StaticResource LedSpacerleStyle}"></Rectangle>
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <Ellipse x:Name="M2LED"  Style="{StaticResource LEDStyle}">
+                    <Ellipse.Stroke>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FFD79E6E" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Stroke>
+                    <Ellipse.Fill>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FF7787D1" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <Rectangle Style="{StaticResource LedSwitchSpacerleStyle}"></Rectangle>
+                <Button Click="ButtonBase_OnClick_M2" >
+                    <Button.Content>
+                        <Border CornerRadius="5" Height="60" Width="70" Margin="0" BorderBrush="Blue" BorderThickness="4,4,4,4" >
+                            <TextBlock FontSize="30" Foreground="White" Text="M2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+            <Rectangle Style="{StaticResource LedSpacerleStyle}"></Rectangle>
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <Ellipse x:Name="L3LED"  Style="{StaticResource LEDStyle}">
+                    <Ellipse.Stroke>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FFD79E6E" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Stroke>
+                    <Ellipse.Fill>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FF7787D1" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <Rectangle Style="{StaticResource LedSwitchSpacerleStyle}"></Rectangle>
+                <Button Click="ButtonBase_OnClick_L3" >
+                    <Button.Content>
+                        <Border CornerRadius="5" Height="60" Width="70" Margin="0" BorderBrush="DeepPink" BorderThickness="4,4,4,4" >
+                            <TextBlock FontSize="30" Foreground="White" Text="L3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+            <Rectangle Style="{StaticResource LedSpacerleStyle}"></Rectangle>
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <Ellipse x:Name="L4LED"  Style="{StaticResource LEDStyle}">
+                    <Ellipse.Stroke>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FFD79E6E" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Stroke>
+                    <Ellipse.Fill>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FF7787D1" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <Rectangle Style="{StaticResource LedSwitchSpacerleStyle}"></Rectangle>
+                <Button Click="ButtonBase_OnClick_L4" >
+                    <Button.Content>
+                        <Border CornerRadius="5" Height="60" Width="70" Margin="0" BorderBrush="Lime" BorderThickness="4,4,4,4" >
+                            <TextBlock FontSize="30" Foreground="White" Text="L4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+            <Rectangle Style="{StaticResource LedSpacerleStyle}"></Rectangle>
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <Ellipse x:Name="L5LED"  Style="{StaticResource LEDStyle}">
+                    <Ellipse.Stroke>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FFD79E6E" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Stroke>
+                    <Ellipse.Fill>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FF7787D1" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <Rectangle Style="{StaticResource LedSwitchSpacerleStyle}"></Rectangle>
+                <Button Click="ButtonBase_OnClick_L5" >
+                    <Button.Content>
+                        <Border CornerRadius="5" Height="60" Width="70" Margin="0" BorderBrush="Red" BorderThickness="4,4,4,4" >
+                            <TextBlock FontSize="30" Foreground="White" Text="L5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+            <Rectangle Style="{StaticResource LedSpacerleStyle}"></Rectangle>
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                <Ellipse x:Name="L6LED"  Style="{StaticResource LEDStyle}">
+                    <Ellipse.Stroke>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FFD79E6E" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Stroke>
+                    <Ellipse.Fill>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FF7787D1" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <Rectangle Style="{StaticResource LedSwitchSpacerleStyle}"></Rectangle>
+                <Button Click="ButtonBase_OnClick_L6" >
+                    <Button.Content>
+                        <Border CornerRadius="5" Height="60" Width="70" Margin="0" BorderBrush="#EAE415" BorderThickness="4,4,4,4" >
+                            <TextBlock FontSize="30" Foreground="White" Text="L6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+            <Rectangle Style="{StaticResource LedSpacerleStyle}"></Rectangle>
+        </StackPanel>
+        <StackPanel Grid.Row="5"  Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Ellipse x:Name="HeartBeatLED" Width="30" Height="30"  HorizontalAlignment="Left">
+                <Ellipse.Stroke>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FFD79E6E" Offset="1"/>
+                    </LinearGradientBrush>
+                </Ellipse.Stroke>
+                <Ellipse.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FF7787D1" Offset="1"/>
+                    </LinearGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+            <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
+            <TextBlock FontSize="35" VerticalAlignment="Center" Text="Copyright Tichaona Hwandaza 2016">
+                <TextBlock.Foreground>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="#FFE4E48E" Offset="1"/>
+                    </LinearGradientBrush>
+                </TextBlock.Foreground>
+            </TextBlock>
+        </StackPanel>
+        <TextBlock FontSize="25" x:Name="HwandazaLocalDate" Text="Sun, Jun 26, 2016" 
+          HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" SelectionHighlightColor="#FF0C40EF">
+            <TextBlock.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#8C3939" Offset="0"/>
+                    <GradientStop Color="#FFF8F8F8" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBlock.Foreground>
+        </TextBlock>
+        <TextBlock FontSize="25" x:Name="HwandazaLocalTime" Text="8:01:07 AM" 
+          HorizontalAlignment="Left" Margin="650,0,0,0" VerticalAlignment="Top">
+            <TextBlock.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#8C3939" Offset="0"/>
+                    <GradientStop Color="#FFFBFBFB" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBlock.Foreground>
+        </TextBlock>
+    </Grid>
+</Page>
