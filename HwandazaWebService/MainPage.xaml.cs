@@ -312,7 +312,8 @@ namespace HwandazaWebService
 
         private void DatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
         {
-
+            //SetSystemDateTime(e.NewDate.UtcDateTime);
+            Windows.System.DateTimeSettings.SetSystemDateTime(e.NewDate.UtcDateTime);
         }
 
         private void TimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
