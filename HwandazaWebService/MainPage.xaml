@@ -71,6 +71,14 @@
         </LinearGradientBrush>
     </Page.Background>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="511*"/>
+            <ColumnDefinition Width="513*"/>
+        </Grid.ColumnDefinitions>
+        <FlyoutBase.AttachedFlyout>
+            <DatePickerFlyout Closed="DatePickerFlyout_Closed"/>
+        </FlyoutBase.AttachedFlyout>
         <Grid.Background>
             <ImageBrush ImageSource="Assets/chiedza.jpg"/>
         </Grid.Background>
@@ -83,7 +91,7 @@
             <RowDefinition Height="70"></RowDefinition>
             <RowDefinition Height="70"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="Hwandaza Automation">
+        <TextBlock Grid.Row="0" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Top" Text="Hwandaza Automation" Margin="146,3,255,0" Width="623" Grid.Column="1" Height="64" Grid.ColumnSpan="2">
             <TextBlock.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
@@ -91,7 +99,7 @@
                 </LinearGradientBrush>
             </TextBlock.Foreground>
         </TextBlock>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15">
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15,15,0,15" Grid.ColumnSpan="3" Width="762">
             <Button x:Name="WaterPumpButton"  Style="{StaticResource ButtonStyle}" Click="WaterPunp_OnClick" Foreground="#FFF90505" >
                 <Button.BorderBrush>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -127,7 +135,7 @@
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
             <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Mon - Sun 10AM, 12PM, 2PM, 4PM for 4 minutes."></TextBlock>
         </StackPanel>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15,15,0,15" Grid.ColumnSpan="3" Width="719">
             <Button x:Name="PondPumpButton"  Style="{StaticResource ButtonStyle}" Click="FishPondPump_OnClick">
                 <Button.Foreground>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -168,7 +176,7 @@
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
             <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Mon-Sun 10:00 AM and 02:00 PM for 1 hour."></TextBlock>
         </StackPanel>
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15">
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15,15,0,15" Grid.ColumnSpan="3" Width="709">
             <Button x:Name="LawnIrrigatorButton" Style="{StaticResource ButtonStyle}" Content="Lawn" Click="LawnIrrigator_OnClick" Foreground="#FF84F606">
                 <Button.BorderBrush>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -203,7 +211,7 @@
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
             <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Mon-Sun 7:00 AM and 5:00 PM for 30 mins."></TextBlock>
         </StackPanel>
-        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="15">
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="114,15,250,15" Grid.Column="1" Width="660" Grid.ColumnSpan="2">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <Ellipse x:Name="M1LED"  Style="{StaticResource LEDStyle}">
                     <Ellipse.Stroke>
@@ -355,7 +363,7 @@
             </StackPanel>
             <Rectangle Style="{StaticResource LedSpacerleStyle}"></Rectangle>
         </StackPanel>
-        <StackPanel Grid.Row="5"  Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <StackPanel Grid.Row="5"  Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="1" Margin="146,0,282,0" Height="47" Width="596" Grid.ColumnSpan="2">
             <Ellipse x:Name="HeartBeatLED" Width="30" Height="30"  HorizontalAlignment="Left">
                 <Ellipse.Stroke>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -380,23 +388,7 @@
                 </TextBlock.Foreground>
             </TextBlock>
         </StackPanel>
-        <TextBlock FontSize="25" x:Name="HwandazaLocalDate" Text="Sun, Jun 26, 2016" 
-          HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" SelectionHighlightColor="#FF0C40EF">
-            <TextBlock.Foreground>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#8C3939" Offset="0"/>
-                    <GradientStop Color="#FFF8F8F8" Offset="1"/>
-                </LinearGradientBrush>
-            </TextBlock.Foreground>
-        </TextBlock>
-        <TextBlock FontSize="25" x:Name="HwandazaLocalTime" Text="8:01:07 AM" 
-          HorizontalAlignment="Left" Margin="650,0,0,0" VerticalAlignment="Top">
-            <TextBlock.Foreground>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#8C3939" Offset="0"/>
-                    <GradientStop Color="#FFFBFBFB" Offset="1"/>
-                </LinearGradientBrush>
-            </TextBlock.Foreground>
-        </TextBlock>
+        <DatePicker HorizontalAlignment="Left" Margin="206,54,0,0" VerticalAlignment="Top" Width="296" DateChanged="DatePicker_DateChanged" YearVisible="False" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Height="32"/>
+        <TimePicker HorizontalAlignment="Left" Margin="15.667,53,0,0" VerticalAlignment="Top" TimeChanged="TimePicker_TimeChanged" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" Height="32" Width="242"/>
     </Grid>
 </Page>

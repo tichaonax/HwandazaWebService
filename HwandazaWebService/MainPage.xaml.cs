@@ -95,8 +95,8 @@ namespace HwandazaWebService
                 {
                     var dt = DateTime.Now;
                     HeartBeatLED.Fill = _currentSystemHeartBeatBrush;        /* Display the value on screen                      */
-                    HwandazaLocalDate.Text= string.Format("{0:ddd, MMM d, yyyy}", dt);
-                    HwandazaLocalTime.Text = string.Format("{0:T}", dt);
+                    //HwandazaLocalDate.Text= string.Format("{0:ddd, MMM d, yyyy}", dt);
+                   // HwandazaLocalTime.Text = string.Format("{0:T}", dt);
                 });
             }
             else
@@ -305,5 +305,19 @@ namespace HwandazaWebService
                     });
         }
 
+        private void DatePickerFlyout_Closed(object sender, object e)
+        {
+
+        }
+
+        private void DatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
+        {
+
+        }
+
+        private void TimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
+        {
+
+        }
     }
 }
