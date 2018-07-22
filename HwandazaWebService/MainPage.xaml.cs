@@ -23,6 +23,7 @@ using HwandazaWebService.Modules;
 using HwandazaWebService.Utils;
 using Newtonsoft.Json;
 using Path = System.IO.Path;
+using Windows.System;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -312,13 +313,21 @@ namespace HwandazaWebService
 
         private void DatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
         {
-            //SetSystemDateTime(e.NewDate.UtcDateTime);
-            Windows.System.DateTimeSettings.SetSystemDateTime(e.NewDate.UtcDateTime);
+           DateTimeSettings.SetSystemDateTime(e.NewDate.UtcDateTime);
         }
 
         private void TimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
+            var currentDate = DateTime.Now.ToUniversalTime();
 
+            var newDateTime = new DateTime(currentDate.Year,
+                                           currentDate.Month,
+                                           currentDate.Day,
+                                           e.NewTime.Hours,
+                                           e.NewTime.Minutes,
+                                           e.NewTime.Seconds);
+
+            DateTimeSettings.SetSystemDateTime(newDateTime);
         }
     }
 }
