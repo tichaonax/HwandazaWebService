@@ -106,7 +106,7 @@ namespace HwandazaWebService
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
-            IoTimerControl.SuspendOperations();
+            IoTimerControl.SuspendOperations(true);
             deferral.Complete();
         }
     }

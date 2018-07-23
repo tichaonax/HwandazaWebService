@@ -98,9 +98,10 @@ namespace HwandazaWebService.Modules
                 module.Stop();
             }
 
-            _isRunning = false;
-            _gpioPinValueSystemsHeartBeatLed = GpioPinValue.Low;
-            _gpioPinSystemsHeartBeatLed.Write(GpioPinValue.Low);
+            //you do not want to disable the systen heartbeat LED
+            //_isRunning = false;
+            //_gpioPinValueSystemsHeartBeatLed = GpioPinValue.Low;
+            //_gpioPinSystemsHeartBeatLed.Write(GpioPinValue.Low);
         }
 
         public bool IsRunning()

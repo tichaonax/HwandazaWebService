@@ -306,11 +306,6 @@ namespace HwandazaWebService
                     });
         }
 
-        private void DatePickerFlyout_Closed(object sender, object e)
-        {
-
-        }
-
         private void DatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
         {
            DateTimeSettings.SetSystemDateTime(e.NewDate.UtcDateTime);
@@ -328,6 +323,10 @@ namespace HwandazaWebService
                                            e.NewTime.Seconds);
 
             DateTimeSettings.SetSystemDateTime(newDateTime);
+
+            // reset the timers only when the time changes
+            IoTimerControl.SuspendOperations(true);
+            IoTimerControl.Initialize();
         }
     }
 }

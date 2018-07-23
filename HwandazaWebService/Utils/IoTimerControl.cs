@@ -109,14 +109,14 @@ namespace HwandazaWebService.Utils
             InitialiseSqlLite(mainWaterPump,fishPondPump,lawnIrrigator, randomLights);
         }
 
-        public static void SuspendOperations()
+        public static void SuspendOperations(bool intitialize = false)
         {
             foreach (var iotimer in IoTimerControls)
             {
                 iotimer.Stop();
             }
 
-            GpioInitialized = false;
+            GpioInitialized = intitialize;
         }
     }
 }
