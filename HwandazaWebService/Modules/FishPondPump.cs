@@ -140,8 +140,8 @@ namespace HwandazaWebService.Modules
 
         public void Schedule()
         {
-            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 10, 0, 0), this);
-            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 14, 0, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 10, 10, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 14, 10, 0), this);
         }
 
         public bool IsRunning()
