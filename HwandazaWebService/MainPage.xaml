@@ -85,8 +85,8 @@
             <RowDefinition Height="65"></RowDefinition>
             <RowDefinition Height="65"></RowDefinition>
             <RowDefinition Height="65"></RowDefinition>
-            <RowDefinition Height="140"></RowDefinition>
-            <RowDefinition Height="65"></RowDefinition>
+            <RowDefinition Height="120"></RowDefinition>
+            <RowDefinition Height="80"></RowDefinition>
             <RowDefinition Height="65"></RowDefinition>
         </Grid.RowDefinitions>
         <DatePicker DayFormat="{}{day.integer} {dayofweek.abbreviated}" Background="DarkCyan" Grid.Row="0" HorizontalAlignment="Left" Margin="14,21,0,0" VerticalAlignment="Top" DateChanged="DatePicker_DateChanged" Grid.Column="1" Height="32" Grid.RowSpan="2" RequestedTheme="Dark"/>
@@ -134,7 +134,7 @@
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
             <TextBlock x:Name="WaterPumpADC" Style="{StaticResource TextBlockStyleA}"  Text="ADC: 0.00V" Foreground="#FFF5AC05"></TextBlock>
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
-            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Mon - Sun 9AM, 10AM, 11PM, 12PM, 1PM, 2PM for 4 minutes."></TextBlock>
+            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Daily 9AM,10AM,11PM,12PM,1PM,2PM for 4 minutes."></TextBlock>
         </StackPanel>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15,15,0,15" Grid.ColumnSpan="3" Width="719">
             <Button x:Name="PondPumpButton"  Style="{StaticResource ButtonStyle}" Click="FishPondPump_OnClick">
@@ -175,7 +175,7 @@
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
             <TextBlock x:Name="PondPumpADC" Style="{StaticResource TextBlockStyleA}"  Text="ADC: 0.00V" Foreground="#FFFEB205"></TextBlock>
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
-            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Mon-Sun 10:00 AM and 02:00 PM for 1 hour."></TextBlock>
+            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Daily 10:10 AM and 02:10 PM for 1 hour."></TextBlock>
         </StackPanel>
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15,15,0,15" Grid.ColumnSpan="3" Width="709">
             <Button x:Name="LawnIrrigatorButton" Style="{StaticResource ButtonStyle}" Content="Lawn" Click="LawnIrrigator_OnClick" Foreground="#FF84F606">
@@ -210,7 +210,7 @@
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
             <TextBlock x:Name="LawnIrrigatorADC" Style="{StaticResource TextBlockStyleA}"  Text="ADC: 0.00V" Foreground="#FFFCB208"></TextBlock>
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
-            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Mon-Sun 7:00 AM and 5:00 PM for 30 mins."></TextBlock>
+            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Daily 7:00 AM and 5:00 PM for 30 mins."></TextBlock>
         </StackPanel>
         <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" Grid.ColumnSpan="2">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
