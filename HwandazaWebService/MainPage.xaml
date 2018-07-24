@@ -134,7 +134,7 @@
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
             <TextBlock x:Name="WaterPumpADC" Style="{StaticResource TextBlockStyleA}"  Text="ADC: 0.00V" Foreground="#FFF5AC05"></TextBlock>
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
-            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Mon - Sun 10AM, 12PM, 2PM, 4PM for 4 minutes."></TextBlock>
+            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Mon - Sun 9AM, 10AM, 11PM, 12PM, 1PM, 2PM for 4 minutes."></TextBlock>
         </StackPanel>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15,15,0,15" Grid.ColumnSpan="3" Width="719">
             <Button x:Name="PondPumpButton"  Style="{StaticResource ButtonStyle}" Click="FishPondPump_OnClick">
