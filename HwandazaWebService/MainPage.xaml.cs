@@ -96,8 +96,6 @@ namespace HwandazaWebService
                 {
                     var dt = DateTime.Now;
                     HeartBeatLED.Fill = _currentSystemHeartBeatBrush;        /* Display the value on screen                      */
-                    //HwandazaLocalDate.Text= string.Format("{0:ddd, MMM d, yyyy}", dt);
-                   // HwandazaLocalTime.Text = string.Format("{0:T}", dt);
                 });
             }
             else
@@ -108,6 +106,12 @@ namespace HwandazaWebService
                     HeartBeatLED.Fill = _currentSystemHeartBeatBrush;        /* Display the value on screen                      */
                 });
             }
+
+            var updateDate = this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                HwandaDatePicker.Date = DateTimeOffset.Now;
+                HwandaTimePicker.Time = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second, DateTime.Now.Millisecond);
+            });
         }
 
         private async Task HandleDataChangedEvent(ApplicationData data, object args)
