@@ -27624,19 +27624,19 @@
     "UAP,Version=v10.0.10240": []
   },
   "packageFolders": {
-    "C:\\Users\\tichaonah\\.nuget\\packages\\": {}
+    "C:\\Users\\tichaona\\.nuget\\packages\\": {}
   },
   "project": {
     "restore": {
-      "projectUniqueName": "C:\\Projects\\HwandazaWebService\\HwandazaAppCommunication\\HwandazaAppCommunication.csproj",
+      "projectUniqueName": "D:\\Visual Studio 2015\\Projects\\HwandazaWebService\\HwandazaAppCommunication\\HwandazaAppCommunication.csproj",
       "projectName": "HwandazaAppCommunication",
-      "projectPath": "C:\\Projects\\HwandazaWebService\\HwandazaAppCommunication\\HwandazaAppCommunication.csproj",
-      "projectJsonPath": "C:\\Projects\\HwandazaWebService\\HwandazaAppCommunication\\project.json",
-      "packagesPath": "C:\\Users\\tichaonah\\.nuget\\packages\\",
-      "outputPath": "C:\\Projects\\HwandazaWebService\\HwandazaAppCommunication\\obj\\",
+      "projectPath": "D:\\Visual Studio 2015\\Projects\\HwandazaWebService\\HwandazaAppCommunication\\HwandazaAppCommunication.csproj",
+      "projectJsonPath": "D:\\Visual Studio 2015\\Projects\\HwandazaWebService\\HwandazaAppCommunication\\project.json",
+      "packagesPath": "C:\\Users\\tichaona\\.nuget\\packages\\",
+      "outputPath": "D:\\Visual Studio 2015\\Projects\\HwandazaWebService\\HwandazaAppCommunication\\obj\\",
       "projectStyle": "ProjectJson",
       "configFilePaths": [
-        "C:\\Users\\tichaonah\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\tichaona\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "sources": {
@@ -27645,9 +27645,9 @@
       }
     },
     "dependencies": {
-      "Microsoft.NETCore.UniversalWindowsPlatform": "6.1.5",
-      "Newtonsoft.Json": "11.0.2",
-      "SQLite.Net-PCL": "3.1.1"
+      "Microsoft.NETCore.UniversalWindowsPlatform": "[6.1.5, )",
+      "Newtonsoft.Json": "[11.0.2, )",
+      "SQLite.Net-PCL": "[3.1.1, )"
     },
     "frameworks": {
       "uap10.0.10240": {}

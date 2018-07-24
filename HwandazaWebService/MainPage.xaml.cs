@@ -109,8 +109,8 @@ namespace HwandazaWebService
 
             var updateDate = this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                HwandaDatePicker.Date = DateTimeOffset.Now;
-                HwandaTimePicker.Time = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second, DateTime.Now.Millisecond);
+               // HwandaDatePicker.Date = DateTimeOffset.Now;
+               // HwandaTimePicker.Time = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second, DateTime.Now.Millisecond);
             });
         }
 
