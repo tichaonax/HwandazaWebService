@@ -323,6 +323,7 @@ namespace HwandazaWebService
                                            e.NewTime.Seconds);
 
             DateTimeSettings.SetSystemDateTime(newDateTime);
+            
 
             // reset the timers only when the time changes
             IoTimerControl.SuspendOperations(true);
