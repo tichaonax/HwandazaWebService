@@ -61,9 +61,14 @@ namespace HwandazaWebService
 
         private readonly SQLite.Net.SQLiteConnection _sqLiteConnection;
 
+        private bool _bDateChangedByUser = false;
+        private bool _bTimeChangedByUser = false;
+        private bool _bTimeChangedHeartBeat = false;
+
         public MainPage()
         {
             this.InitializeComponent();
+            InitializeCalender();
             _currentSystemHeartBeatBrush = _ledOffBrush;
 
             _sqLiteConnection = IoTimerControl.SqLiteConnection();
@@ -109,8 +114,8 @@ namespace HwandazaWebService
 
             var updateDate = this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-               // HwandaDatePicker.Date = DateTimeOffset.Now;
-               // HwandaTimePicker.Time = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second, DateTime.Now.Millisecond);
+                _bTimeChangedHeartBeat = true;
+                HwandaTimePicker.Time = new TimeSpan(DateTime.Now.Ticks); 
             });
         }
 
@@ -310,28 +315,61 @@ namespace HwandazaWebService
                     });
         }
 
-        private void DatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
-        {
-           DateTimeSettings.SetSystemDateTime(e.NewDate.UtcDateTime);
-        }
-
         private void TimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
-            var currentDate = DateTime.Now.ToUniversalTime();
+            if (_bTimeChangedByUser && !_bTimeChangedHeartBeat) {
+                var currentDate = DateTime.Now.ToUniversalTime();
 
-            var newDateTime = new DateTime(currentDate.Year,
-                                           currentDate.Month,
-                                           currentDate.Day,
-                                           e.NewTime.Hours,
-                                           e.NewTime.Minutes,
-                                           e.NewTime.Seconds);
+                var newDateTime = new DateTime(currentDate.Year,
+                                               currentDate.Month,
+                                               currentDate.Day,
+                                               e.NewTime.Hours,
+                                               e.NewTime.Minutes,
+                                               e.NewTime.Seconds);
 
-            DateTimeSettings.SetSystemDateTime(newDateTime);
+                DateTimeSettings.SetSystemDateTime(newDateTime);
+
+
+                // reset the timers only when the time changes
+                IoTimerControl.SuspendOperations(true);
+                IoTimerControl.Initialize();
+                _bTimeChangedByUser = false;
+            }
             
+            _bTimeChangedHeartBeat = false;
+        }
 
-            // reset the timers only when the time changes
-            IoTimerControl.SuspendOperations(true);
-            IoTimerControl.Initialize();
+        private void CalendarDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
+        {
+            if (_bDateChangedByUser)
+            {
+                DateTimeOffset date = args.NewDate.Value;
+                var newDateTime = new DateTime(date.UtcDateTime.Year,
+                                               date.UtcDateTime.Month,
+                                               date.UtcDateTime.Day,
+                                               date.Hour,
+                                               date.Minute,
+                                               date.Second);
+
+                DateTimeSettings.SetSystemDateTime(newDateTime);
+                _bDateChangedByUser = false;
+            }
+        }
+
+        private void InitializeCalender()
+        {
+            _bDateChangedByUser = false;
+            CalendarDatePickerControl.Date = DateTime.Now;
+        }
+
+        private void CalendarDatePickerControl_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            _bDateChangedByUser = true;
+        }
+
+        private void HwandaTimePicker_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            _bTimeChangedByUser = true;
         }
     }
 }
