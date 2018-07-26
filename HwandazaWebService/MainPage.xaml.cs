@@ -343,13 +343,15 @@ namespace HwandazaWebService
         {
             if (_bDateChangedByUser)
             {
+
                 DateTimeOffset date = args.NewDate.Value;
+                var currentDate = DateTime.Now;
                 var newDateTime = new DateTime(date.UtcDateTime.Year,
                                                date.UtcDateTime.Month,
                                                date.UtcDateTime.Day,
-                                               date.Hour,
-                                               date.Minute,
-                                               date.Second);
+                                               currentDate.Hour,
+                                               currentDate.Minute,
+                                               currentDate.Second);
 
                 DateTimeSettings.SetSystemDateTime(newDateTime);
                 _bDateChangedByUser = false;
