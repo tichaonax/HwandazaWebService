@@ -90,8 +90,8 @@
             <RowDefinition Height="65"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <CalendarDatePicker Tapped="CalendarDatePickerControl_Tapped" Name="CalendarDatePickerControl" DateChanged="CalendarDatePicker_DateChanged" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="14,23,0,0" VerticalAlignment="Top" Grid.RowSpan="2"/>
-        <TimePicker Tapped="HwandaTimePicker_Tapped" Name="HwandaTimePicker" Background="DarkCyan" Grid.Row="0" HorizontalAlignment="Left" Margin="114,24,0,0" VerticalAlignment="Top" TimeChanged="TimePicker_TimeChanged" Grid.Column="2" Height="32" Width="200" Grid.RowSpan="2" RequestedTheme="Dark"/>
+        <CalendarDatePicker Tapped="CalendarDatePickerControl_Tapped" Name="CalendarDatePickerControl" DateChanged="CalendarDatePicker_DateChanged" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="14,23,0,0" VerticalAlignment="Top" Grid.RowSpan="2" FontSize="12"/>
+        <TimePicker Tapped="HwandaTimePicker_Tapped" Name="HwandaTimePicker" Background="DarkCyan" Grid.Row="0" HorizontalAlignment="Left" Margin="114,11,0,0" VerticalAlignment="Top" TimeChanged="TimePicker_TimeChanged" Grid.Column="2" Height="45" Width="200" Grid.RowSpan="2" RequestedTheme="Dark" FontSize="26"/>
 
         <TextBlock FontSize="45" HorizontalAlignment="Center" VerticalAlignment="Top" Text="Hwandaza Automation"  Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="0,4,0,0" Grid.Row="1">
             <TextBlock.Foreground>
