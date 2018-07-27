@@ -70,7 +70,7 @@
             <GradientStop Color="White" Offset="0.446"/>
         </LinearGradientBrush>
     </Page.Background>
-    <Grid>
+    <Grid Name="HwandaGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>
             <ColumnDefinition Width="511*"/>

@@ -24,6 +24,8 @@ using HwandazaWebService.Utils;
 using Newtonsoft.Json;
 using Path = System.IO.Path;
 using Windows.System;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.Storage.Streams;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -58,6 +60,7 @@ namespace HwandazaWebService
         private SolidColorBrush _currentL5StatusBrush;
         private ThreadPoolTimer _poolTimerUiUpdate;
         private ThreadPoolTimer _poolTimerHeartBeat;
+        private ThreadPoolTimer _imageTimerHeartBeat;
 
         private readonly SQLite.Net.SQLiteConnection _sqLiteConnection;
 
@@ -85,15 +88,16 @@ namespace HwandazaWebService
             //setup timer to update the UI
             _poolTimerUiUpdate = ThreadPoolTimer.CreatePeriodicTimer(HwandazaUiUpdate, TimeSpan.FromMilliseconds(Const.HalfSecondDelayMs));
 
-            _poolTimerHeartBeat = ThreadPoolTimer.CreatePeriodicTimer(SystemsHeartBeatControl, TimeSpan.FromMilliseconds(Const.OneSecondDelayMs));
-            
+            _poolTimerHeartBeat = ThreadPoolTimer.CreatePeriodicTimer(SystemHeartBeatControl, TimeSpan.FromMilliseconds(Const.OneSecondDelayMs));
+
+            _imageTimerHeartBeat = ThreadPoolTimer.CreatePeriodicTimer(ImageHeartBeatControlAsync, period: TimeSpan.FromMilliseconds(Const.FiveSecondsDelayMs));
+
             ApplicationData.Current.DataChanged += async (d, a) => await HandleDataChangedEvent(d, a);
         }
 
-        private void SystemsHeartBeatControl(ThreadPoolTimer timer)
+        private void SystemHeartBeatControl(ThreadPoolTimer timer)
         {
-            var running = _systemsHeartBeat.IsRunning();
-            if (running)
+            if (_systemsHeartBeat.IsRunning())
             {
                 _currentSystemHeartBeatBrush = _currentSystemHeartBeatBrush == _ledOffBrush ? _deepblueBrush : _ledOffBrush;
                 /* UI updates must be invoked on the UI thread */
@@ -117,6 +121,21 @@ namespace HwandazaWebService
                 _bTimeChangedHeartBeat = true;
                 HwandaTimePicker.Time = new TimeSpan(DateTime.Now.Ticks); 
             });
+        }
+
+        private void ImageHeartBeatControlAsync(ThreadPoolTimer timer)
+        {
+     
+            var task = Dispatcher.RunAsync(
+                   CoreDispatcherPriority.Normal, async () =>
+                   {
+                       StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/StoreLogo.png"));
+                       BitmapImage image = new BitmapImage();
+                       IRandomAccessStream ram = await file.OpenAsync(FileAccessMode.Read);
+                       await image.SetSourceAsync(ram);
+
+                       HwandaGrid.Background = new ImageBrush() { ImageSource = image };
+                   });
         }
 
         private async Task HandleDataChangedEvent(ApplicationData data, object args)
