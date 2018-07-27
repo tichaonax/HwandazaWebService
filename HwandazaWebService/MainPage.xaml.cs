@@ -129,7 +129,7 @@ namespace HwandazaWebService
             var task = Dispatcher.RunAsync(
                    CoreDispatcherPriority.Normal, async () =>
                    {
-                       StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/StoreLogo.png"));
+                       StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/Album/ideas.jpg"));
                        BitmapImage image = new BitmapImage();
                        IRandomAccessStream ram = await file.OpenAsync(FileAccessMode.Read);
                        await image.SetSourceAsync(ram);
