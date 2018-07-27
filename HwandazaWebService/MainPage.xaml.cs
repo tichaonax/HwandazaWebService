@@ -69,6 +69,7 @@ namespace HwandazaWebService
         private bool _bTimeChangedHeartBeat = false;
 
         private static readonly List<string> BackgroundImageList = new List<string>();
+        static Random _rnd = new Random();
 
         public MainPage()
         {
@@ -128,16 +129,19 @@ namespace HwandazaWebService
 
         private void ImageHeartBeatControlAsync(ThreadPoolTimer timer)
         {
-     
             var task = Dispatcher.RunAsync(
                    CoreDispatcherPriority.Normal, async () =>
                    {
-                       StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/Album/ideas.jpg"));
-                       BitmapImage image = new BitmapImage();
-                       IRandomAccessStream ram = await file.OpenAsync(FileAccessMode.Read);
-                       await image.SetSourceAsync(ram);
+                       string uri = string.Format("ms-appx:///{0}", GetNextBackGroundImage());
+                       if (uri != null)
+                       {
+                           StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
+                           BitmapImage image = new BitmapImage();
+                           IRandomAccessStream ram = await file.OpenAsync(FileAccessMode.Read);
+                           await image.SetSourceAsync(ram);
 
-                       HwandaGrid.Background = new ImageBrush() { ImageSource = image };
+                           HwandaGrid.Background = new ImageBrush() { ImageSource = image };
+                       }
                    });
         }
 
@@ -415,9 +419,15 @@ namespace HwandazaWebService
                 ProcessDirectory(subdirectory);
         }
 
-        public static void AddBackGroundImage(string path)
+        private static void AddBackGroundImage(string path)
         {
             BackgroundImageList.Add(path);
+        }
+
+        private static string GetNextBackGroundImage()
+        {
+            int r = _rnd.Next(BackgroundImageList.Count);
+            return BackgroundImageList[r];
         }
 
     }
