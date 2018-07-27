@@ -46,5 +46,7 @@
             public const string L5 = "l5";
             public const string L6 = "l6";
         }
+
+        public const string BackgroundImageFolder = @"Assets\Album";
     }
 }

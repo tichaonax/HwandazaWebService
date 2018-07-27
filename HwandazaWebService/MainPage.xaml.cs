@@ -68,9 +68,12 @@ namespace HwandazaWebService
         private bool _bTimeChangedByUser = false;
         private bool _bTimeChangedHeartBeat = false;
 
+        private static readonly List<string> BackgroundImageList = new List<string>();
+
         public MainPage()
         {
             this.InitializeComponent();
+            LoadBackGroundImages(Const.BackgroundImageFolder);
             InitializeCalender();
             _currentSystemHeartBeatBrush = _ledOffBrush;
 
@@ -392,5 +395,32 @@ namespace HwandazaWebService
         {
             _bTimeChangedByUser = true;
         }
+
+
+        private void LoadBackGroundImages(string path)
+        {
+            ProcessDirectory(path);
+        }
+
+        private static void ProcessDirectory(string targetDirectory)
+        {
+            // Process the list of files found in the directory.
+            string[] fileEntries = Directory.GetFiles(targetDirectory);
+            foreach (string fileName in fileEntries)
+                AddBackGroundImage(fileName);
+            
+            // Recurse into subdirectories of this directory.
+            string[] subdirectoryEntries = Directory.GetDirectories(targetDirectory);
+            foreach (string subdirectory in subdirectoryEntries)
+                ProcessDirectory(subdirectory);
+        }
+
+        public static void AddBackGroundImage(string path)
+        {
+            BackgroundImageList.Add(path);
+        }
+
     }
+
+
 }
