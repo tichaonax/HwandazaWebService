@@ -123,7 +123,9 @@ namespace HwandazaWebService
             var updateDate = this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 _bTimeChangedHeartBeat = true;
-                HwandaTimePicker.Time = new TimeSpan(DateTime.Now.Ticks); 
+                HwandaTimePicker.Time = new TimeSpan(DateTime.Now.Ticks);
+                _bDateChangedByUser = false;
+                CalendarDatePickerControl.Date = DateTime.Now;
             });
         }
 
@@ -434,6 +436,4 @@ namespace HwandazaWebService
         }
 
     }
-
-
 }
