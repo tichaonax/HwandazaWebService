@@ -116,6 +116,11 @@ namespace HwandazaWebService.Utils
                 iotimer.Stop();
             }
 
+            if (intitialize)
+            {
+                Windows.ApplicationModel.Core.CoreApplication.Exit();
+            }
+
             GpioInitialized = intitialize;
         }
     }

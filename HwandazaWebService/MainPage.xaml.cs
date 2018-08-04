@@ -123,7 +123,9 @@ namespace HwandazaWebService
             var updateDate = this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
                 _bTimeChangedHeartBeat = true;
-                HwandaTimePicker.Time = new TimeSpan(DateTime.Now.Ticks); 
+                HwandaTimePicker.Time = new TimeSpan(DateTime.Now.Ticks);
+                _bDateChangedByUser = false;
+                CalendarDatePickerControl.Date = DateTime.Now;
             });
         }
 
@@ -137,10 +139,11 @@ namespace HwandazaWebService
                        {
                            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
                            BitmapImage image = new BitmapImage();
+                          
                            IRandomAccessStream ram = await file.OpenAsync(FileAccessMode.Read);
                            await image.SetSourceAsync(ram);
 
-                           HwandaGrid.Background = new ImageBrush() { ImageSource = image };
+                           HwandaGrid.Background = new ImageBrush() { ImageSource = image, Stretch = Stretch.UniformToFill, Opacity = 0.75};
                        }
                    });
         }
@@ -360,6 +363,8 @@ namespace HwandazaWebService
                 IoTimerControl.SuspendOperations(true);
                 IoTimerControl.Initialize();
                 _bTimeChangedByUser = false;
+                //If the app is set to auto start the following restarts the app
+                //Windows.ApplicationModel.Core.CoreApplication.Exit();
             }
             
             _bTimeChangedHeartBeat = false;
@@ -431,6 +436,4 @@ namespace HwandazaWebService
         }
 
     }
-
-
 }

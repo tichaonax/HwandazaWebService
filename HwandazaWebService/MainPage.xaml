@@ -91,7 +91,7 @@
         </Grid.RowDefinitions>
 
         <CalendarDatePicker DateFormat="{}{day.integer} {month.full} {year.full}" Tapped="CalendarDatePickerControl_Tapped" Name="CalendarDatePickerControl" DateChanged="CalendarDatePicker_DateChanged" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="14,23,0,0" VerticalAlignment="Top" Grid.RowSpan="2" FontSize="12"/>
-        <TimePicker Tapped="HwandaTimePicker_Tapped" Name="HwandaTimePicker" Background="DarkCyan" Grid.Row="0" HorizontalAlignment="Left" Margin="114,11,0,0" VerticalAlignment="Top" TimeChanged="TimePicker_TimeChanged" Grid.Column="2" Height="45" Width="200" Grid.RowSpan="2" RequestedTheme="Dark" FontSize="26"/>
+        <TimePicker Tapped="HwandaTimePicker_Tapped" Name="HwandaTimePicker" Background="DarkCyan" Grid.Row="0" HorizontalAlignment="Left" Margin="114,11,0,0" VerticalAlignment="Top" TimeChanged="TimePicker_TimeChanged" Grid.Column="2" Height="45" Width="200" Grid.RowSpan="2" RequestedTheme="Dark" FontSize="24"/>
 
         <TextBlock FontSize="45" HorizontalAlignment="Center" VerticalAlignment="Top" Text="Hwandaza Automation"  Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="0,4,0,0" Grid.Row="1">
             <TextBlock.Foreground>
@@ -120,7 +120,7 @@
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
             <Ellipse x:Name="PumpLED" Style="{StaticResource LEDStyle}">
                 <Ellipse.Stroke>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <LinearGradientBrush EndPoint="0,0" StartPoint="0,0">
                         <GradientStop Color="Black" Offset="0"/>
                         <GradientStop Color="#FFD79E6E" Offset="1"/>
                     </LinearGradientBrush>
@@ -161,7 +161,7 @@
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
             <Ellipse x:Name="PondLED"  Style="{StaticResource LEDStyle}">
                 <Ellipse.Stroke>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <LinearGradientBrush EndPoint="0,0" StartPoint="0,0">
                         <GradientStop Color="Black" Offset="0"/>
                         <GradientStop Color="#FFD79E6E" Offset="1"/>
                     </LinearGradientBrush>
@@ -196,7 +196,7 @@
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
             <Ellipse x:Name="LawnLED"  Style="{StaticResource LEDStyle}">
                 <Ellipse.Stroke>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <LinearGradientBrush EndPoint="0,0" StartPoint="0,0">
                         <GradientStop Color="Black" Offset="0"/>
                         <GradientStop Color="#FFD79E6E" Offset="1"/>
                     </LinearGradientBrush>
@@ -217,7 +217,7 @@
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <Ellipse x:Name="M1LED"  Style="{StaticResource LEDStyle}">
                     <Ellipse.Stroke>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <LinearGradientBrush EndPoint="0,0" StartPoint="0,0">
                             <GradientStop Color="Black" Offset="0"/>
                             <GradientStop Color="#FFD79E6E" Offset="1"/>
                         </LinearGradientBrush>
@@ -242,7 +242,7 @@
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <Ellipse x:Name="M2LED"  Style="{StaticResource LEDStyle}">
                     <Ellipse.Stroke>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <LinearGradientBrush EndPoint="0,0" StartPoint="0,0">
                             <GradientStop Color="Black" Offset="0"/>
                             <GradientStop Color="#FFD79E6E" Offset="1"/>
                         </LinearGradientBrush>
@@ -267,7 +267,7 @@
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <Ellipse x:Name="L3LED"  Style="{StaticResource LEDStyle}">
                     <Ellipse.Stroke>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <LinearGradientBrush EndPoint="0,0" StartPoint="0,0">
                             <GradientStop Color="Black" Offset="0"/>
                             <GradientStop Color="#FFD79E6E" Offset="1"/>
                         </LinearGradientBrush>
@@ -292,7 +292,7 @@
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <Ellipse x:Name="L4LED"  Style="{StaticResource LEDStyle}">
                     <Ellipse.Stroke>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <LinearGradientBrush EndPoint="0,0" StartPoint="0,0">
                             <GradientStop Color="Black" Offset="0"/>
                             <GradientStop Color="#FFD79E6E" Offset="1"/>
                         </LinearGradientBrush>
@@ -317,7 +317,7 @@
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <Ellipse x:Name="L5LED"  Style="{StaticResource LEDStyle}">
                     <Ellipse.Stroke>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <LinearGradientBrush EndPoint="0,0" StartPoint="0,0">
                             <GradientStop Color="Black" Offset="0"/>
                             <GradientStop Color="#FFD79E6E" Offset="1"/>
                         </LinearGradientBrush>
@@ -342,7 +342,7 @@
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                 <Ellipse x:Name="L6LED"  Style="{StaticResource LEDStyle}">
                     <Ellipse.Stroke>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <LinearGradientBrush EndPoint="0,0" StartPoint="0,0">
                             <GradientStop Color="Black" Offset="0"/>
                             <GradientStop Color="#FFD79E6E" Offset="1"/>
                         </LinearGradientBrush>
@@ -368,7 +368,7 @@
         <StackPanel Grid.Row="6"  Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2">
             <Ellipse x:Name="HeartBeatLED" Width="30" Height="30"  HorizontalAlignment="Left">
                 <Ellipse.Stroke>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <LinearGradientBrush EndPoint="0,0" StartPoint="0,0">
                         <GradientStop Color="Black" Offset="0"/>
                         <GradientStop Color="#FFD79E6E" Offset="1"/>
                     </LinearGradientBrush>

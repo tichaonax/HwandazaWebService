@@ -129,9 +129,9 @@ namespace HwandazaWebService.Modules
             //turn off everything and then shutdown the raspberry pi OS
             if (_shutdownCount > 0) return;
             Stop();
-            //ShutdownManager.BeginShutdown(ShutdownKind.Shutdown, TimeSpan.FromSeconds(5.0));
-            Application.Current.Exit();
-           // Windows.ApplicationModel.Core.CoreApplication.Exit();
+            ShutdownManager.BeginShutdown(ShutdownKind.Shutdown, TimeSpan.FromSeconds(5.0));
+            //Application.Current.Exit();
+            //Windows.ApplicationModel.Core.CoreApplication.Exit();
         }
 
         private void CountDownToShutDown()
@@ -146,7 +146,7 @@ namespace HwandazaWebService.Modules
         {
             lock (SpinLock)
             {
-                _shutdownCount = 5;
+                _shutdownCount = 3;
             }
         }
 
