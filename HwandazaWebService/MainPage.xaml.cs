@@ -66,7 +66,6 @@ namespace HwandazaWebService
 
         private bool _bDateChangedByUser = false;
         private bool _bTimeChangedByUser = false;
-        private bool _bTimeChangedHeartBeat = false;
 
         private static readonly List<string> BackgroundImageList = new List<string>();
         static Random _rnd = new Random();
@@ -107,7 +106,7 @@ namespace HwandazaWebService
                 /* UI updates must be invoked on the UI thread */
                 var task = this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    var dt = DateTime.Now;
+                    //  var dt = DateTime.Now;
                     HeartBeatLED.Fill = _currentSystemHeartBeatBrush;        /* Display the value on screen                      */
                 });
             }
@@ -122,10 +121,11 @@ namespace HwandazaWebService
 
             var updateDate = this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                _bTimeChangedHeartBeat = true;
-                HwandaTimePicker.Time = new TimeSpan(DateTime.Now.Ticks);
-                _bDateChangedByUser = false;
-                CalendarDatePickerControl.Date = DateTime.Now;
+                if (!(_bDateChangedByUser || _bTimeChangedByUser))
+                {
+                    HwandaTimePicker.Time = new TimeSpan(DateTime.Now.Ticks);
+                    CalendarDatePickerControl.Date = DateTime.Now;
+                }
             });
         }
 
@@ -346,7 +346,7 @@ namespace HwandazaWebService
 
         private void TimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
-            if (_bTimeChangedByUser && !_bTimeChangedHeartBeat) {
+            if (_bTimeChangedByUser) {
                 var currentDate = DateTime.Now.ToUniversalTime();
 
                 var newDateTime = new DateTime(currentDate.Year,
@@ -366,8 +366,6 @@ namespace HwandazaWebService
                 //If the app is set to auto start the following restarts the app
                 //Windows.ApplicationModel.Core.CoreApplication.Exit();
             }
-            
-            _bTimeChangedHeartBeat = false;
         }
 
         private void CalendarDatePicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
@@ -377,9 +375,9 @@ namespace HwandazaWebService
 
                 DateTimeOffset date = args.NewDate.Value;
                 var currentDate = DateTime.Now;
-                var newDateTime = new DateTime(date.UtcDateTime.Year,
-                                               date.UtcDateTime.Month,
-                                               date.UtcDateTime.Day,
+                var newDateTime = new DateTime(date.DateTime.Year,
+                                               date.DateTime.Month,
+                                               date.DateTime.Day,
                                                currentDate.Hour,
                                                currentDate.Minute,
                                                currentDate.Second);
