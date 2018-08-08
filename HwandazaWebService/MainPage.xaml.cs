@@ -375,9 +375,9 @@ namespace HwandazaWebService
 
                 DateTimeOffset date = args.NewDate.Value;
                 var currentDate = DateTime.Now;
-                var newDateTime = new DateTime(date.DateTime.Year,
-                                               date.DateTime.Month,
-                                               date.DateTime.Day,
+                var newDateTime = new DateTime(date.UtcDateTime.Year,
+                                               date.UtcDateTime.Month,
+                                               date.UtcDateTime.Day,
                                                currentDate.Hour,
                                                currentDate.Minute,
                                                currentDate.Second);
