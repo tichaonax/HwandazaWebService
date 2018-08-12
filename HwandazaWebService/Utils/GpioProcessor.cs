@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Windows.Devices.Bluetooth.Advertisement;
-using Windows.Foundation.Collections;
 using HwandazaWebService.Modules;
 using SQLite.Net;
 
@@ -28,21 +26,19 @@ namespace HwandazaWebService.Utils
         public void ButtonWaterPump()
         {
             _mainWaterPump.ButtonPressed();
+            UpdateHwandazaStatus();
         }
 
         public void ButtonFishPondPump()
         {
             _fishPondPump.ButtonPressed();
+            UpdateHwandazaStatus();
         }
 
         public void ButtonLawnIrrigator()
         {
             _lawnIrrigator.ButtonPressed();
-        }
-
-        private void MethodGet(HwandazaCommand command)
-        {
-
+            UpdateHwandazaStatus();
         }
 
         private void CommandOff(HwandazaCommand command)
@@ -63,7 +59,6 @@ namespace HwandazaWebService.Utils
                     break;
             }
         }
-
 
         private void CommandOn(HwandazaCommand command)
         {
@@ -92,7 +87,7 @@ namespace HwandazaWebService.Utils
             throw new NotImplementedException();
         }
 
-        private void MethodPost(HwandazaCommand command)
+        private void ActOnCommand(HwandazaCommand command)
         {
             switch (command.Command.ToUpper())
             {
@@ -106,23 +101,16 @@ namespace HwandazaWebService.Utils
                 case Const.CommandOperations:
                     CommandOperations(command);
                     break;
-            }
-        }
-
-        public void  ProcessHwandazaCommand(HwandazaCommand command)
-        {
-            switch (command.Method.ToUpper())
-            {
-                case Const.MethodPost:
-                    MethodPost(command);
-                    break;
-
-                case Const.MethodGet:
-                    MethodGet(command);
+                case Const.CommandStatus:
                     break;
             }
 
             UpdateHwandazaStatus();
+        }
+
+        public void ProcessHwandazaCommand(HwandazaCommand command)
+        {
+            ActOnCommand(command);
             MarkOperationComplete(command.SqlRowGuidId);
         }
 
@@ -137,7 +125,8 @@ namespace HwandazaWebService.Utils
 
             Debug.WriteLine("GpioProcessor: Commnad Marked As Completed");
         }
-        private void UpdateHwandazaStatus()
+
+        public void UpdateHwandazaStatus()
         {
             var lights = _randomLights.ModuleStatus().LightsStatus;
             var status = _sqLiteConnection.Table<HwandazaStatus>()
@@ -166,7 +155,7 @@ namespace HwandazaWebService.Utils
             status.M1 = lights.IsOnM1 ? 1 : 0;
             status.M2 = lights.IsOnM2 ? 1 : 0;
             status.L3 = lights.IsOnL3 ? 1 : 0;
-            status.L3 = lights.IsOnL4 ? 1 : 0;
+            status.L4 = lights.IsOnL4 ? 1 : 0;
             status.L5 = lights.IsOnL5 ? 1 : 0;
             status.L6 = lights.IsOnL6 ? 1 : 0;
             
@@ -185,6 +174,7 @@ namespace HwandazaWebService.Utils
         public void ButtonLights(List<string> lights)
         {
             _randomLights.ToggleLights(lights);
+            UpdateHwandazaStatus();
         }
     }
 }

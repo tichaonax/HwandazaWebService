@@ -82,7 +82,7 @@ namespace HwandazaWebService.Utils
             
             //Inittialize the MCP ADC contoller before passing to modules that need it
             var mcpAdcController = new Mcp3008AdcCtrl(ReferenceVoltage);
-           var mainWaterPump = new MainWaterPump(mcpAdcController);
+            var mainWaterPump = new MainWaterPump(mcpAdcController);
             var fishPondPump = new FishPondPump(mcpAdcController);
             var lawnIrrigator = new LawnIrrigator(mcpAdcController);
             var randomLights = new RandomLights();

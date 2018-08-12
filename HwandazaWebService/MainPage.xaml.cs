@@ -86,6 +86,7 @@ namespace HwandazaWebService
             _fishPondPump = (FishPondPump) modules.Find(r => r.Module() is FishPondPump);
             _randomLights = (RandomLights) modules.Find(r => r.Module() is RandomLights);
             _gpioProcessor = new GpioProcessor(_mainWaterPump, _fishPondPump, _lawnIrrigator, _randomLights, _sqLiteConnection);
+            _gpioProcessor.UpdateHwandazaStatus();
             _systemsHeartBeat = (SystemsHeartBeat) modules.Find(r => r.Module() is SystemsHeartBeat);
             
             //setup timer to update the UI

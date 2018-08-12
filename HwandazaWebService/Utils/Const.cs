@@ -27,9 +27,7 @@
         public const string CommandOn = "ON";
         public const string CommandOff = "OFF";
         public const string CommandOperations = "OPERATIONS";
-                  
-        public const string MethodGet = "GET";
-        public const string MethodPost = "POST";
+        public const string CommandStatus = "STATUS";
 
         public const string MainWaterPump = "mainwaterpump";
         public const string FishPondPump = "fishpondpump";
