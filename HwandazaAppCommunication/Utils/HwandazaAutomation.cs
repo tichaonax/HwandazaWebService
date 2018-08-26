@@ -44,7 +44,6 @@
     public sealed class HwandazaAutomation
     {
         public int statusId { get; set; }
-        public string rowGuidId { get; set; }
         public string statusDate { get; set; }
         public Status status { get; set; }
     }

@@ -127,7 +127,6 @@ namespace HwandazaAppCommunication
 
             var status = new HwandazaAutomation()
             {
-                rowGuidId = obj.RowGuidId,
                 statusId = obj.Id,
                 statusDate = obj.SystemDate,
                 status = new Status()
