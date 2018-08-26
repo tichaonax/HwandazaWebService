@@ -64,7 +64,7 @@ namespace HwandazaAppCommunication
                 {
                     RowGuidId = command.SqlRowGuidId
                 });
-                
+
                 var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
                 localSettings.Values["HwandazaCommand"] = hwandazaCommand;
                 Windows.Storage.ApplicationData.Current.SignalDataChanged();
@@ -90,8 +90,9 @@ namespace HwandazaAppCommunication
                         count++;
                     }
                 }
-
+                
                 var status = JsonConvert.SerializeObject(GetSystemStatus());
+
                 var returnMessage = new ValueSet
                                     {
                                         {"Result", status},
@@ -118,11 +119,48 @@ namespace HwandazaAppCommunication
             }
         }
 
-        private HwandazaStatus GetSystemStatus()
+        private HwandazaAutomation GetSystemStatus()
         {
-            var status = _sqLiteConnection
+            var obj = _sqLiteConnection
                 .Table<HwandazaStatus>()
                 .FirstOrDefault(x => x.RowGuidId == StatusRowGuidId);
+
+            var status = new HwandazaAutomation()
+            {
+                rowGuidId = obj.RowGuidId,
+                statusId = obj.Id,
+                statusDate = obj.SystemDate,
+                status = new Status()
+                {
+                    modules = new Modules()
+                    {
+                        WaterPump = new WaterPump()
+                        {
+                            power = obj.MainWaterPump,
+                            adcFloatValue = obj.MainWaterPumpAdcFloatValue,
+                        },
+                        FishPond = new FishPond()
+                        {
+                            power = obj.FishPondPump,
+                            adcFloatValue = obj.FishPondPumpAdcFloatValue,
+                        },
+                        Irrigator = new Irrigator()
+                        {
+                            power = obj.LawnIrrigator,
+                            adcFloatValue = obj.LawnIrrigatorAdcFloatValue
+                        }
+                    },
+                    lights = new Lights()
+                    {
+                        L3 = obj.L3,
+                        L4 = obj.L4,
+                        L5 = obj.L5,
+                        L6 = obj.L6,
+                        M1 = obj.M1,
+                        M2 = obj.M2
+                    }
+                }
+            };
             return status;
         }
 
