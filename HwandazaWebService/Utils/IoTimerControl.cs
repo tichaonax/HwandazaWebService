@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using HwandazaAppCommunication.Utils;
 using HwandazaWebService.Modules;
 
 namespace HwandazaWebService.Utils
@@ -17,7 +19,7 @@ namespace HwandazaWebService.Utils
         static IoTimerControl()
         {
             // sql - lite database
-            _path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "db.sqlite");
+            _path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "db1.sqlite");
             _sqLiteConnection = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), _path);
             _sqLiteConnection.CreateTable<HwandazaStatus>();
             _sqLiteConnection.CreateTable<HwandazaCommandStatus>();
@@ -63,6 +65,7 @@ namespace HwandazaWebService.Utils
             status.L3 = lights.IsOnL4 ? 1 : 0;
             status.L5 = lights.IsOnL5 ? 1 : 0;
             status.L6 = lights.IsOnL6 ? 1 : 0;
+            status.SystemDate = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss");
 
             if (insert)
             {

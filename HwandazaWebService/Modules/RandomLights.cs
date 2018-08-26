@@ -358,7 +358,7 @@ namespace HwandazaWebService.Modules
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 23, 30, 0), this);
         }
 
-        public void TurnOnLights(List<string> lights)
+        public void TurnOnLights(IList<string> lights)
         {
             if (lights.Any())
             {
@@ -417,7 +417,7 @@ namespace HwandazaWebService.Modules
             return isOn;
         }
 
-        public void TurnOffLights(List<string> lights)
+        public void TurnOffLights(IList<string> lights)
         {
             if (lights.Any())
             {

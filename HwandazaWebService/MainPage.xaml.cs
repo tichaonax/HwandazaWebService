@@ -26,6 +26,7 @@ using Path = System.IO.Path;
 using Windows.System;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Storage.Streams;
+using HwandazaAppCommunication.Utils;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using HwandazaWebService.Modules;
 using SQLite.Net;
+using HwandazaAppCommunication.Utils;
 
 namespace HwandazaWebService.Utils
 {

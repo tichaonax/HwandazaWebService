@@ -24,5 +24,6 @@ namespace HwandazaAppCommunication.Utils
         public double MainWaterPumpAdcFloatValue { get; set; }
         public float LawnIrrigatorAdcFloatValue { get; set; }
         public float FishPondPumpAdcFloatValue { get; set; }
+        public string SystemDate { get; set; }
     }
 }

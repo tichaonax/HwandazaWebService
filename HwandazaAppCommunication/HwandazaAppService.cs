@@ -33,7 +33,7 @@ namespace HwandazaAppCommunication
             _backgroundTaskDeferral = taskInstance.GetDeferral();
 
             //sql-lite database
-            _path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "db.sqlite");
+            _path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "db1.sqlite");
             _sqLiteConnection = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), _path);
             _sqLiteConnection.CreateTable<HwandazaStatus>();
             _sqLiteConnection.CreateTable<HwandazaCommandStatus>();
