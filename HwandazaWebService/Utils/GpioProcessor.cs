@@ -158,7 +158,8 @@ namespace HwandazaWebService.Utils
             status.L4 = lights.IsOnL4 ? 1 : 0;
             status.L5 = lights.IsOnL5 ? 1 : 0;
             status.L6 = lights.IsOnL6 ? 1 : 0;
-            
+            status.SystemDate = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss");
+
             if (insert)
             {
                 _sqLiteConnection.Insert(status);
