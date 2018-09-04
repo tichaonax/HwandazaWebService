@@ -12,7 +12,7 @@ namespace HwandazaWebService.Utils
 {
     public static class AppService
     {
-        public static async Task<AppServiceConnection> getAppServiceConnectionAsync()
+        public static async Task<AppServiceConnection> GetAppServiceConnectionAsync()
         {
             AppServiceConnection appServiceConnection;
 
@@ -33,7 +33,7 @@ namespace HwandazaWebService.Utils
             return appServiceConnection;
         }
         
-        private static bool getBoolFromResponse(AppServiceResponse serviceResponse)
+        private static bool GetBoolFromResponse(AppServiceResponse serviceResponse)
         {
             if (serviceResponse != null)
             {
@@ -73,7 +73,7 @@ namespace HwandazaWebService.Utils
             };
 
             var response = RequestAppServiceAsync(appService, command).Result;
-            return getBoolFromResponse(response);
+            return GetBoolFromResponse(response);
         }
 
         public static bool FishPondPumpModuleIsRunning(AppServiceConnection appService)
@@ -84,7 +84,7 @@ namespace HwandazaWebService.Utils
             };
 
             var response = RequestAppServiceAsync(appService, command).Result;
-            return getBoolFromResponse(response);
+            return GetBoolFromResponse(response);
         }
 
         public static bool LawnIrrigatorModuleIsRunning(AppServiceConnection appService)
@@ -95,7 +95,7 @@ namespace HwandazaWebService.Utils
             };
 
             var response = RequestAppServiceAsync(appService, command).Result;
-            return getBoolFromResponse(response);
+            return GetBoolFromResponse(response);
         }
 
         public static bool MainWaterPumpModuleIsRunning(AppServiceConnection appService)
@@ -106,7 +106,7 @@ namespace HwandazaWebService.Utils
             };
 
             var response = RequestAppServiceAsync(appService, command).Result;
-            return getBoolFromResponse(response);
+            return GetBoolFromResponse(response);
         }
 
         private static float getFloatFromResponse(AppServiceResponse serviceResponse)
@@ -204,7 +204,7 @@ namespace HwandazaWebService.Utils
             };
 
             var response = RequestAppServiceAsync(appService, command).Result;
-            return getBoolFromResponse(response);
+            return GetBoolFromResponse(response);
         }
 
         public static bool RandomLightsModuleLightsStatusIsOnM2(AppServiceConnection appService)
@@ -215,7 +215,7 @@ namespace HwandazaWebService.Utils
             };
 
             var response = RequestAppServiceAsync(appService, command).Result;
-            return getBoolFromResponse(response);
+            return GetBoolFromResponse(response);
         }
 
         public static bool RandomLightsModuleLightsStatusIsOnL3(AppServiceConnection appService)
@@ -226,7 +226,7 @@ namespace HwandazaWebService.Utils
             };
 
             var response = RequestAppServiceAsync(appService, command).Result;
-            return getBoolFromResponse(response);
+            return GetBoolFromResponse(response);
         }
 
         public static bool RandomLightsModuleLightsStatusIsOnL4(AppServiceConnection appService)
@@ -237,7 +237,7 @@ namespace HwandazaWebService.Utils
             };
 
             var response = RequestAppServiceAsync(appService, command).Result;
-            return getBoolFromResponse(response);
+            return GetBoolFromResponse(response);
         }
 
         public static bool RandomLightsModuleLightsStatusIsOnL5(AppServiceConnection appService)
@@ -248,7 +248,7 @@ namespace HwandazaWebService.Utils
             };
 
             var response = RequestAppServiceAsync(appService, command).Result;
-            return getBoolFromResponse(response);
+            return GetBoolFromResponse(response);
         }
 
         public static bool RandomLightsModuleLightsStatusIsOnL6(AppServiceConnection appService)
@@ -259,7 +259,7 @@ namespace HwandazaWebService.Utils
             };
 
             var response = RequestAppServiceAsync(appService, command).Result;
-            return getBoolFromResponse(response);
+            return GetBoolFromResponse(response);
         }
     }
 }

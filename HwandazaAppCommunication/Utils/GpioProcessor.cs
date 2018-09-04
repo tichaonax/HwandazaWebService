@@ -34,10 +34,10 @@ namespace HwandazaAppCommunication.Utils
             public const string LawnIrrigator = "lawnirrigator";
             public const string Operations = "operations";
 
-            public const string CommandOn = "ON";
-            public const string CommandOff = "OFF";
-            public const string CommandOperations = "OPERATIONS";
-            public const string CommandStatus = "STATUS";
+            public const string CommandOn = "on";
+            public const string CommandOff = "off";
+            public const string CommandOperations = "operations";
+            public const string CommandStatus = "status";
         }
 
         private readonly MainWaterPump _mainWaterPump;
@@ -112,7 +112,7 @@ namespace HwandazaAppCommunication.Utils
 
         private dynamic ActOnCommand(HwandazaCommand command)
         {
-            switch (command.Command.ToUpper())
+            switch (command.Command.ToLower())
             {
                 case Const.CommandOn:
                     return CommandOn(command);
@@ -126,59 +126,59 @@ namespace HwandazaAppCommunication.Utils
                 case Const.CommandStatus:
                     return GetSystemStatus();
 
-                case "SystemsHeartBeatIsRunning":
+                case "systemsheartbeatisrunning":
                     return _systemsHeartBeat.IsRunning();
 
-                case "FishPondPumpModuleIsRunning":
+                case "fishpondpumpmoduleisrunning":
                     return _fishPondPump.IsRunning();
 
-                case "LawnIrrigatorModuleIsRunning":
+                case "lawnirrigatormoduleisrunning":
                     return _lawnIrrigator.IsRunning();
 
-                case "MainWaterPumpModuleIsRunning":
+                case "mainwaterpumpmoduleisrunning":
                     return _mainWaterPump.IsRunning();
 
-                case "RandomLightsModuleLightsStatusIsOnM1":
+                case "randomlightsmoduleLightsstatusisonm1":
                     return _randomLights.ModuleStatus().LightsStatus.IsOnM1;
 
-                case "RandomLightsModuleLightsStatusIsOnM2":
+                case "randomLightsmodulelightsstatusisonm2":
                     return _randomLights.ModuleStatus().LightsStatus.IsOnM2;
 
-                case "RandomLightsModuleLightsStatusIsOnL3":
+                case "randomlightsmodulelightsstatusisonl3":
                     return _randomLights.ModuleStatus().LightsStatus.IsOnL3;
 
-                case "RandomLightsModuleLightsStatusIsOnL4":
+                case "randomlightsmodulelightsstatusisonl4":
                     return _randomLights.ModuleStatus().LightsStatus.IsOnL4;
 
-                case "RandomLightsModuleLightsStatusIsOnL5":
+                case "randomlightsmodulelightsstatusisonl5":
                     return _randomLights.ModuleStatus().LightsStatus.IsOnL5;
 
-                case "RandomLightsModuleLightsStatusIsOnL6":
+                case "randomlightsmodulelightsstatusisonl6":
                     return _randomLights.ModuleStatus().LightsStatus.IsOnL6;
 
-                case "ToggleLights":
+                case "togglelights":
                     _randomLights.ToggleLights(command.Lights);
                     return GetSystemStatus();
 
-                case "ButtonWaterPump":
+                case "buttonwaterpump":
                     _mainWaterPump.ButtonPressed();
                     return GetSystemStatus();
 
-                case "ButtonFishPondPump":
+                case "buttonfishpondpump":
                     _fishPondPump.ButtonPressed();
                     return GetSystemStatus();
 
-                case "ButtonLawnIrrigator":
+                case "buttonlawnirrigator":
                     _lawnIrrigator.ButtonPressed();
                     return GetSystemStatus();
 
-                case "MainWaterPumpModuleAdcVoltage":
+                case "mainWaterpumpmoduleadcvoltage":
                    return _mainWaterPump.ModuleStatus().AdcVoltage;
 
-                case "IrrigatorModuleAdcVoltage":
+                case "irrigatormoduleadcvoltage":
                     return _lawnIrrigator.ModuleStatus().AdcVoltage;
 
-                case "FishPondPumpModuleAdcVoltage":
+                case "fishpondpumpmoduleadcvoltage":
                     return _fishPondPump.ModuleStatus().AdcVoltage;
 
             }

@@ -118,7 +118,7 @@ namespace HwandazaWebService
         {
             this.InitializeComponent();
 
-            _appServiceConnection = AppService.getAppServiceConnectionAsync().Result;
+            _appServiceConnection = AppService.GetAppServiceConnectionAsync().Result;
 
             LoadBackGroundImages(BackgroundImageFolder);
 
