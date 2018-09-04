@@ -1,8 +1,8 @@
 ﻿using Windows.Devices.Gpio;
 using Windows.System.Threading;
-using HwandazaWebService.Utils;
+using HwandazaAppCommunication.Utils;
 
-namespace HwandazaWebService.Modules
+namespace HwandazaAppCommunication.RaspiModules
 {
     public interface IModule
     {
@@ -14,7 +14,7 @@ namespace HwandazaWebService.Modules
         bool IsRunning();
         bool ShouldRunToday();
         IModule Module();
-        Status ModuleStatus();
+        ModuleStatus ModuleStatus();
         float ReadAdcLevel();
         void ManualOverideSwitch();
         void ButtonPressed();

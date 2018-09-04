@@ -1,10 +1,8 @@
-﻿using SQLite.Net.Attributes;
-
+﻿
 namespace HwandazaAppCommunication.Utils
 {
     public sealed class HwandazaStatus
     {
-        [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
         public string RowGuidId { get; set; }
         public int MainWaterPump { get; set; }

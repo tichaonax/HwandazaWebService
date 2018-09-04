@@ -14,8 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using HwandazaWebService.Modules;
-using HwandazaWebService.Utils;
+using HwandazaAppCommunication.Utils;
 
 namespace HwandazaWebService
 {
@@ -34,7 +33,7 @@ namespace HwandazaWebService
                 Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
                 Microsoft.ApplicationInsights.WindowsCollectors.Session);
             this.InitializeComponent();
-            IoTimerControl.Initialize();
+            //IoTimerControl.Initialize();
             this.Suspending += OnSuspending;
         }
 
@@ -67,7 +66,7 @@ namespace HwandazaWebService
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     //TODO: Load state from previously suspended application
-                   IoTimerControl.Initialize();
+    //               IoTimerControl.Initialize();
                 }
 
                 // Place the frame in the current Window
@@ -106,7 +105,7 @@ namespace HwandazaWebService
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
-            IoTimerControl.SuspendOperations(true);
+            //IoTimerControl.SuspendOperations(true);
             deferral.Complete();
         }
     }

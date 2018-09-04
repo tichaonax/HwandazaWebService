@@ -1,6 +1,6 @@
-﻿namespace HwandazaWebService.Utils
+﻿namespace HwandazaAppCommunication.Utils
 {
-    public class Status
+    public sealed class ModuleStatus
     {
         public string StatusText { get; set; }
         public float AdcVoltage { get; set; }
@@ -8,7 +8,7 @@
         public LightsStatus LightsStatus { get; set; }
     }
 
-    public class LightsStatus
+    public sealed class LightsStatus
     {
         public bool IsOnM1 { get; set; }
         public bool IsOnM2 { get; set; }

@@ -7,6 +7,5 @@ namespace HwandazaAppCommunication.Utils
         public string Command { get; set; }
         public string Module { get; set; }
         public IList<string> Lights { get; set; }
-        public string SqlRowGuidId { get; set; }
     }
 }

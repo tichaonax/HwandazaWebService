@@ -48,4 +48,10 @@
         public Status status { get; set; }
     }
 
+    public sealed class AutomationError
+    {
+        public string Error { get; set; }
+        public HwandazaCommand Command { get; set; }
+    }
+
 }

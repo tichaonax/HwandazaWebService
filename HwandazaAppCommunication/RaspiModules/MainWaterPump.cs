@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Windows.Devices.Gpio;
 using Windows.System.Threading;
-using HwandazaWebService.Utils;
+using HwandazaAppCommunication.Utils;
 
-namespace HwandazaWebService.Modules
+namespace HwandazaAppCommunication.RaspiModules
 {
     /*
     WaterPumpManualOverideSwitchPin is used to manually turn the pump on/off but still runs for 180 seconds
@@ -12,8 +12,43 @@ namespace HwandazaWebService.Modules
     WaterPumpLedPin = 18;
     WaterPumpManualOverideSwitchPin = 23;
     */
-    internal class MainWaterPump : IModule
+    public sealed class MainWaterPump : IModule
     {
+        static class Const
+        {
+            public const int SixtyMinutesDelayMs = 3600000;
+            public const int ThirtyMinutesDelayMs = 1800000;
+            public const int TwentyMinutesDelayMs = 1200000;
+            public const int FifteenMinutesDelayMs = 900000;
+            public const int TenMinutesDelayMs = 600000;
+            public const int FiveMinutesDelayMs = 300000;
+            public const int FourMinutes = 240000;
+            public const int ThreeMinutes = 180000;
+            public const int TwoMinutes = 120000;
+            public const int SeventySecondsDelayMs = 70000;
+            public const int OneMinuteDelayMs = 60000;
+            public const int TenSecondsDelayMs = 10000;
+            public const int FiveSecondsDelayMs = 5000;
+            public const int ThreeSecondsDelayMs = 3000;
+            public const int OneSecondDelayMs = 1000;
+            public const int HalfSecondDelayMs = 500;
+            public const int QuarterSecondDelayMs = 250;
+            public const int FiftyMsDelayMs = 50;
+            public const string Running = "Running";
+            public const string Stopped = "Stopped";
+
+            public const string MainWaterPump = "mainwaterpump";
+            public const string FishPondPump = "fishpondpump";
+            public const string RandomLights = "randomlights";
+            public const string LawnIrrigator = "lawnirrigator";
+            public const string Operations = "operations";
+
+            public const string CommandOn = "ON";
+            public const string CommandOff = "OFF";
+            public const string CommandOperations = "OPERATIONS";
+            public const string CommandStatus = "STATUS";
+        }
+
         private readonly Mcp3008AdcCtrl _mcpAdcController;
         private const int WaterPumpPowerPin = 21;
         private const int WaterPumpLedPin = 18;
@@ -284,9 +319,9 @@ namespace HwandazaWebService.Modules
             return this;
         }
 
-        public Status ModuleStatus()
+        public ModuleStatus ModuleStatus()
         {
-            return new Status()
+            return new ModuleStatus()
                    {
                        AdcVoltage = ReadAdcLevel(),
                        IsRunning = _isRunning,

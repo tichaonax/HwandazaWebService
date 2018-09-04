@@ -15,6 +15,7 @@ using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using HwandazaAppCommunication.Utils;
 using Newtonsoft.Json;
+using HwandazaAppCommunication.RaspiModules;
 
 namespace HwandazaAppCommunication
 {
@@ -22,21 +23,31 @@ namespace HwandazaAppCommunication
     {
         private BackgroundTaskDeferral _backgroundTaskDeferral;
         private AppServiceConnection _appServiceConnection;
-        private string _path;
-        private SQLite.Net.SQLiteConnection _sqLiteConnection;
-        private const string StatusRowGuidId = "D5A87081-1B16-4876-8B0A-02275EAB9007";
+
+        private MainWaterPump _mainWaterPump;
+        private FishPondPump _fishPondPump;
+        private LawnIrrigator _lawnIrrigator;
+        private RandomLights _randomLights;
+        private SystemsHeartBeat _systemsHeartBeat;
+        private GpioProcessor _gpioProcessor;
 
         public void Run(IBackgroundTaskInstance taskInstance)
         {
             // Associate a cancellation handler with the background task. 
             taskInstance.Canceled += OnCanceled;
             _backgroundTaskDeferral = taskInstance.GetDeferral();
+            
+            IoTimerControl.Initialize();
 
-            //sql-lite database
-            _path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "db1.sqlite");
-            _sqLiteConnection = new SQLite.Net.SQLiteConnection(new SQLite.Net.Platform.WinRT.SQLitePlatformWinRT(), _path);
-            _sqLiteConnection.CreateTable<HwandazaStatus>();
-            _sqLiteConnection.CreateTable<HwandazaCommandStatus>();
+            //get hanlde to the various GPIO modules
+            var modules = IoTimerControl.getIoTimerControls();
+            _mainWaterPump = (MainWaterPump)modules.First(r => r.Module() is MainWaterPump);
+            _lawnIrrigator = (LawnIrrigator)modules.First(r => r.Module() is LawnIrrigator);
+            _fishPondPump = (FishPondPump)modules.First(r => r.Module() is FishPondPump);
+            _randomLights = (RandomLights)modules.First(r => r.Module() is RandomLights);
+            _systemsHeartBeat = (SystemsHeartBeat)modules.First(r => r.Module() is SystemsHeartBeat);
+            _gpioProcessor = new GpioProcessor(_mainWaterPump, _fishPondPump, _lawnIrrigator, _randomLights, _systemsHeartBeat);
+           // _systemsHeartBeat = (SystemsHeartBeat)modules.First(r => r.Module() is SystemsHeartBeat);
 
             var appService = taskInstance.TriggerDetails as AppServiceTriggerDetails;
             if (appService != null &&
@@ -58,40 +69,11 @@ namespace HwandazaAppCommunication
                 var hwandazaCommand = message["HwandazaCommand"] as string;
 
                 command = JsonConvert.DeserializeObject<HwandazaCommand>(hwandazaCommand);
-                command.SqlRowGuidId = Guid.NewGuid().ToString();
 
-                _sqLiteConnection.Insert(new HwandazaCommandStatus()
-                {
-                    RowGuidId = command.SqlRowGuidId
-                });
+                //we have the comman now process it
+                var response = _gpioProcessor.ProcessHwandazaCommand(command);
 
-                var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-                localSettings.Values["HwandazaCommand"] = hwandazaCommand;
-                Windows.Storage.ApplicationData.Current.SignalDataChanged();
-                await Task.Delay(500);
-                //poll to see if the commans has been completed
-                //cancel command after 1000 times ????
-                bool bNotDone = false;
-                var count = 0;
-                while (bNotDone)
-                {
-                    var doneStatus = _sqLiteConnection
-                        .Table<HwandazaCommandStatus>()
-                        .FirstOrDefault(x => x.RowGuidId == command.SqlRowGuidId);
-
-                    if (doneStatus == null)
-                    {
-                        bNotDone = false;
-                    }
-                    else
-                    {
-                        //Debug.WriteLine("Waiting for command execution : SqlRowGuidId = " + doneStatus.RowGuidId);
-                        await Task.Delay(500);
-                        count++;
-                    }
-                }
-                
-                var status = JsonConvert.SerializeObject(GetSystemStatus());
+                var status = JsonConvert.SerializeObject(response);
 
                 var returnMessage = new ValueSet
                                     {
@@ -116,61 +98,6 @@ namespace HwandazaAppCommunication
             if (_backgroundTaskDeferral != null)
             {
                 _backgroundTaskDeferral.Complete();
-            }
-        }
-
-        private HwandazaAutomation GetSystemStatus()
-        {
-            var obj = _sqLiteConnection
-                .Table<HwandazaStatus>()
-                .FirstOrDefault(x => x.RowGuidId == StatusRowGuidId);
-
-            var status = new HwandazaAutomation()
-            {
-                statusId = obj.Id,
-                statusDate = obj.SystemDate,
-                status = new Status()
-                {
-                    modules = new Modules()
-                    {
-                        WaterPump = new WaterPump()
-                        {
-                            power = obj.MainWaterPump,
-                            adcFloatValue = obj.MainWaterPumpAdcFloatValue,
-                        },
-                        FishPond = new FishPond()
-                        {
-                            power = obj.FishPondPump,
-                            adcFloatValue = obj.FishPondPumpAdcFloatValue,
-                        },
-                        Irrigator = new Irrigator()
-                        {
-                            power = obj.LawnIrrigator,
-                            adcFloatValue = obj.LawnIrrigatorAdcFloatValue
-                        }
-                    },
-                    lights = new Lights()
-                    {
-                        L3 = obj.L3,
-                        L4 = obj.L4,
-                        L5 = obj.L5,
-                        L6 = obj.L6,
-                        M1 = obj.M1,
-                        M2 = obj.M2
-                    }
-                }
-            };
-            return status;
-        }
-
-        private void DeleteCompletedTask(string sqlRowId)
-        {
-            var delete =
-                _sqLiteConnection.Table<HwandazaCommandStatus>().FirstOrDefault(m => m.RowGuidId == sqlRowId);
-
-            if (delete != null)
-            {
-                _sqLiteConnection.Delete(delete);
             }
         }
     }
