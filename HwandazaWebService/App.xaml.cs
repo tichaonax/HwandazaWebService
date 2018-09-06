@@ -14,7 +14,11 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using HwandazaAppCommunication.Utils;
+using HwandazaWebService.Utils;
+using Windows.ApplicationModel.AppService;
+using Windows.ApplicationModel.Background;
+using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace HwandazaWebService
 {
@@ -23,6 +27,9 @@ namespace HwandazaWebService
     /// </summary>
     sealed partial class App : Application
     {
+        private AppServiceConnection _appServiceConnection;
+        private BackgroundTaskDeferral _appServiceDeferral;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -33,7 +40,7 @@ namespace HwandazaWebService
                 Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
                 Microsoft.ApplicationInsights.WindowsCollectors.Session);
             this.InitializeComponent();
-            //IoTimerControl.Initialize();
+            IoTimerControl.Initialize();
             this.Suspending += OnSuspending;
         }
 
@@ -66,7 +73,7 @@ namespace HwandazaWebService
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     //TODO: Load state from previously suspended application
-    //               IoTimerControl.Initialize();
+                    IoTimerControl.Initialize();
                 }
 
                 // Place the frame in the current Window
@@ -105,8 +112,64 @@ namespace HwandazaWebService
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
-            //IoTimerControl.SuspendOperations(true);
+            IoTimerControl.SuspendOperations(true);
             deferral.Complete();
+        }
+
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            base.OnBackgroundActivated(args);
+            IBackgroundTaskInstance taskInstance = args.TaskInstance;
+            AppServiceTriggerDetails appService = taskInstance.TriggerDetails as AppServiceTriggerDetails;
+            _appServiceDeferral = taskInstance.GetDeferral();
+            taskInstance.Canceled += OnAppServicesCanceled;
+            _appServiceConnection = appService.AppServiceConnection;
+            _appServiceConnection.RequestReceived += OnAppServiceRequestReceived;
+            _appServiceConnection.ServiceClosed += AppServiceConnection_ServiceClosed;
+        }
+
+        private async void OnAppServiceRequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
+        {
+            var messageDeferal = args.GetDeferral();
+            var message = args.Request.Message;
+            HwandazaCommand request;
+            try
+            {
+                var hwandazaCommand = message["HwandazaCommand"] as string;
+
+                request = JsonConvert.DeserializeObject<HwandazaCommand>(hwandazaCommand);
+
+                //we have the comman now process it
+                var response = GpioProcessor.ProcessHwandazaCommand(request);
+
+                var status = JsonConvert.SerializeObject(response);
+
+                var returnMessage = new ValueSet
+                                    {
+                                        {"Response", status},
+                                        {"Status", "OK"}
+                                    };
+
+                await args.Request.SendResponseAsync(returnMessage);
+                Debug.WriteLine("HwandazaAppService Command execution completed: " + status);
+            }
+            catch (Exception ex)
+            {
+                var error = ex.Message;
+                Debug.WriteLine("HwandazaAppService OnRequestReceived Eror:" + error);
+            }
+
+            messageDeferal.Complete();
+        }
+
+        private void OnAppServicesCanceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason)
+        {
+            _appServiceDeferral.Complete();
+        }
+
+        private void AppServiceConnection_ServiceClosed(AppServiceConnection sender, AppServiceClosedEventArgs args)
+        {
+            _appServiceDeferral.Complete();
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using HwandazaAppCommunication.RaspiModules;
+using HwandazaWebService.RaspiModules;
 
-namespace HwandazaAppCommunication.Utils
+namespace HwandazaWebService.Utils
 {
     internal class Scheduler
     {

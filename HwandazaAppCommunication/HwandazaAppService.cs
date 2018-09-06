@@ -15,7 +15,6 @@ using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using HwandazaAppCommunication.Utils;
 using Newtonsoft.Json;
-using HwandazaAppCommunication.RaspiModules;
 
 namespace HwandazaAppCommunication
 {
@@ -24,31 +23,15 @@ namespace HwandazaAppCommunication
         private BackgroundTaskDeferral _backgroundTaskDeferral;
         private AppServiceConnection _appServiceConnection;
 
-        private MainWaterPump _mainWaterPump;
-        private FishPondPump _fishPondPump;
-        private LawnIrrigator _lawnIrrigator;
-        private RandomLights _randomLights;
-        private SystemsHeartBeat _systemsHeartBeat;
-        private GpioProcessor _gpioProcessor;
+        private AppServiceConnection _requestAppServiceConnection;
+
 
         public void Run(IBackgroundTaskInstance taskInstance)
         {
             // Associate a cancellation handler with the background task. 
             taskInstance.Canceled += OnCanceled;
             _backgroundTaskDeferral = taskInstance.GetDeferral();
-            
-            IoTimerControl.Initialize();
-
-            //get hanlde to the various GPIO modules
-            var modules = IoTimerControl.getIoTimerControls();
-            _mainWaterPump = (MainWaterPump)modules.First(r => r.Module() is MainWaterPump);
-            _lawnIrrigator = (LawnIrrigator)modules.First(r => r.Module() is LawnIrrigator);
-            _fishPondPump = (FishPondPump)modules.First(r => r.Module() is FishPondPump);
-            _randomLights = (RandomLights)modules.First(r => r.Module() is RandomLights);
-            _systemsHeartBeat = (SystemsHeartBeat)modules.First(r => r.Module() is SystemsHeartBeat);
-            _gpioProcessor = new GpioProcessor(_mainWaterPump, _fishPondPump, _lawnIrrigator, _randomLights, _systemsHeartBeat);
-           // _systemsHeartBeat = (SystemsHeartBeat)modules.First(r => r.Module() is SystemsHeartBeat);
-
+   
             var appService = taskInstance.TriggerDetails as AppServiceTriggerDetails;
             if (appService != null &&
                 appService.Name == "HwandazaAppCommunicationService")
@@ -60,6 +43,23 @@ namespace HwandazaAppCommunication
 
         private async void OnRequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
         {
+            if (_requestAppServiceConnection == null)
+            {
+                // Initialize the AppServiceConnection
+                _requestAppServiceConnection = new AppServiceConnection
+                {
+                    PackageFamilyName = "HwandazaWebService_7c1xvdqapnqy0",
+                    AppServiceName = "HwandazaWebService",
+                };
+
+                // Send a initialize request 
+                var res = await _requestAppServiceConnection.OpenAsync();
+                if (res != AppServiceConnectionStatus.Success)
+                {
+                    throw new Exception("Failed to connect to the AppService");
+                }
+            }
+
             //Debug.WriteLine("Message Received:");
             var messageDefferal = args.GetDeferral();
             var message = args.Request.Message;
@@ -71,9 +71,9 @@ namespace HwandazaAppCommunication
                 command = JsonConvert.DeserializeObject<HwandazaCommand>(hwandazaCommand);
 
                 //we have the comman now process it
-                var response = _gpioProcessor.ProcessHwandazaCommand(command);
-
-                var status = JsonConvert.SerializeObject(response);
+                var response = RequestAppServiceAsync(command);
+                
+                var status = JsonConvert.SerializeObject(null);
 
                 var returnMessage = new ValueSet
                                     {
@@ -99,6 +99,25 @@ namespace HwandazaAppCommunication
             {
                 _backgroundTaskDeferral.Complete();
             }
+        }
+
+        private async Task<AppServiceResponse> RequestAppServiceAsync(HwandazaCommand command)
+        {
+            AppServiceResponse response = null;
+
+            try
+            {
+                var hwandazaMessage = new ValueSet { { "HwandazaCommand", JsonConvert.SerializeObject(command) } };
+#pragma warning disable CS4014
+                response = await _appServiceConnection.SendMessageAsync(hwandazaMessage);
+#pragma warning restore CS4014
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
+            return response;
         }
     }
 }

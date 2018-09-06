@@ -1,4 +1,4 @@
-﻿namespace HwandazaAppCommunication.Utils
+﻿namespace HwandazaWebService.Utils
 {    
     public sealed class WaterPump
     {
@@ -43,7 +43,6 @@
 
     public sealed class HwandazaAutomation
     {
-        public int statusId { get; set; }
         public string statusDate { get; set; }
         public Status status { get; set; }
     }
@@ -51,7 +50,7 @@
     public sealed class AutomationError
     {
         public string Error { get; set; }
-        public HwandazaCommand Command { get; set; }
+        public HwandazaCommand Request { get; set; }
     }
 
 }

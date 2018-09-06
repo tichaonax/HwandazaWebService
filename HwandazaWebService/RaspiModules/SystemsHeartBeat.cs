@@ -4,9 +4,9 @@ using Windows.Devices.Gpio;
 using Windows.System;
 using Windows.System.Threading;
 using Windows.UI.Xaml;
-using HwandazaAppCommunication.Utils;
+using HwandazaWebService.Utils;
 
-namespace HwandazaAppCommunication.RaspiModules
+namespace HwandazaWebService.RaspiModules
 {
     public sealed class SystemsHeartBeat: IModule
     {

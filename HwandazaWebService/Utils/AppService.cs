@@ -1,4 +1,4 @@
-﻿using HwandazaAppCommunication.Utils;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,51 +10,53 @@ using Windows.Foundation.Collections;
 
 namespace HwandazaWebService.Utils
 {
-    public static class AppService
+    public class AppService
     {
-        public static async Task<AppServiceConnection> GetAppServiceConnectionAsync()
-        {
-            AppServiceConnection appServiceConnection;
+        AppServiceConnection _appServiceConnection;
 
+        public async void SetAppServiceConnectionAsync()
+        {
             // Initialize the AppServiceConnection
-            appServiceConnection = new AppServiceConnection
+            _appServiceConnection = new AppServiceConnection
             {
                 PackageFamilyName = "HwandazaWebService_7c1xvdqapnqy0",
                 AppServiceName = "HwandazaAppCommunicationService"
             };
 
             // Send a initialize request 
-            var res = await appServiceConnection.OpenAsync();
+            var res = await _appServiceConnection.OpenAsync();
             if (res != AppServiceConnectionStatus.Success)
             {
                 throw new Exception("Failed to connect to the AppService");
             }
-
-            return appServiceConnection;
         }
-        
-        private static bool GetBoolFromResponse(AppServiceResponse serviceResponse)
+
+        private bool GetBoolFromResponse(AppServiceResponse serviceResponse)
         {
             if (serviceResponse != null)
             {
                 if (serviceResponse.Status == AppServiceResponseStatus.Success)
                 {
-                    return (bool) serviceResponse.Message["Result"];
+                    return (bool)serviceResponse.Message["Result"];
                 }
             }
 
             return false;
         }
 
-        private static async Task<AppServiceResponse> RequestAppServiceAsync(AppServiceConnection appService, HwandazaCommand command)
+        private async Task<AppServiceResponse> RequestAppServiceAsync(HwandazaCommand command)
         {
+            if (_appServiceConnection == null)
+            {
+                SetAppServiceConnectionAsync();
+            }
             AppServiceResponse response = null;
 
             try
             {
-                var hwandazaMessage = new ValueSet { { "HwandazaCommand", Newtonsoft.Json.JsonConvert.SerializeObject(command) } };
+                var hwandazaMessage = new ValueSet { { "HwandazaCommand", JsonConvert.SerializeObject(command) } };
 #pragma warning disable CS4014
-                response = await appService.SendMessageAsync(hwandazaMessage);
+                response = await _appServiceConnection.SendMessageAsync(hwandazaMessage);
 #pragma warning restore CS4014
             }
             catch (Exception ex)
@@ -65,51 +67,51 @@ namespace HwandazaWebService.Utils
             return response;
         }
 
-        public static bool SystemsHeartBeatIsRunning(AppServiceConnection appService)
+        public bool SystemsHeartBeatIsRunning()
         {
             var command = new HwandazaCommand()
             {
                 Command = "SystemsHeartBeatIsRunning",
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
             return GetBoolFromResponse(response);
         }
 
-        public static bool FishPondPumpModuleIsRunning(AppServiceConnection appService)
+        public bool FishPondPumpModuleIsRunning()
         {
             var command = new HwandazaCommand()
             {
                 Command = "FishPondPumpModuleIsRunning",
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
             return GetBoolFromResponse(response);
         }
 
-        public static bool LawnIrrigatorModuleIsRunning(AppServiceConnection appService)
+        public bool LawnIrrigatorModuleIsRunning()
         {
             var command = new HwandazaCommand()
             {
                 Command = "LawnIrrigatorModuleIsRunning",
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
             return GetBoolFromResponse(response);
         }
 
-        public static bool MainWaterPumpModuleIsRunning(AppServiceConnection appService)
+        public bool MainWaterPumpModuleIsRunning()
         {
             var command = new HwandazaCommand()
             {
                 Command = "MainWaterPumpModuleIsRunning",
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
             return GetBoolFromResponse(response);
         }
 
-        private static float getFloatFromResponse(AppServiceResponse serviceResponse)
+        private float getFloatFromResponse(AppServiceResponse serviceResponse)
         {
             if (serviceResponse != null)
             {
@@ -119,73 +121,73 @@ namespace HwandazaWebService.Utils
                 }
             }
 
-            return 0.0f; 
+            return 0.0f;
         }
 
-        public static float MainWaterPumpModuleAdcVoltage(AppServiceConnection appService)
+        public float MainWaterPumpModuleAdcVoltage()
         {
             var command = new HwandazaCommand()
             {
                 Command = "MainWaterPumpModuleAdcVoltage",
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
             return getFloatFromResponse(response);
         }
 
-        public static float IrrigatorModuleAdcVoltage(AppServiceConnection appService)
+        public float IrrigatorModuleAdcVoltage()
         {
             var command = new HwandazaCommand()
             {
                 Command = "IrrigatorModuleAdcVoltage",
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
             return getFloatFromResponse(response);
         }
 
-        public static float FishPondPumpModuleAdcVoltage(AppServiceConnection appService)
+        public float FishPondPumpModuleAdcVoltage()
         {
             var command = new HwandazaCommand()
             {
                 Command = "FishPondPumpModuleAdcVoltage",
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
             return getFloatFromResponse(response);
         }
 
-        public static void ButtonFishPondPump(AppServiceConnection appService)
+        public void ButtonFishPondPump()
         {
             var command = new HwandazaCommand()
             {
                 Command = "ButtonFishPondPump",
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
         }
 
-        public static void ButtonLawnIrrigator(AppServiceConnection appService)
+        public void ButtonLawnIrrigator()
         {
             var command = new HwandazaCommand()
             {
                 Command = "ButtonLawnIrrigator",
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
         }
 
-        public static void ButtonWaterPump(AppServiceConnection appService)
+        public void ButtonWaterPump()
         {
             var command = new HwandazaCommand()
             {
                 Command = "ButtonWaterPump",
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
         }
 
-        public static void ButtonLights(AppServiceConnection appService, IList<string> lights)
+        public void ButtonLights(IList<string> lights)
         {
             var command = new HwandazaCommand()
             {
@@ -193,73 +195,86 @@ namespace HwandazaWebService.Utils
                 Lights = lights,
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
         }
 
-        public static bool RandomLightsModuleLightsStatusIsOnM1(AppServiceConnection appService)
+        public bool RandomLightsModuleLightsStatusIsOnM1()
         {
             var command = new HwandazaCommand()
             {
                 Command = "RandomLightsModuleLightsStatusIsOnM1",
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
             return GetBoolFromResponse(response);
         }
 
-        public static bool RandomLightsModuleLightsStatusIsOnM2(AppServiceConnection appService)
+        public bool RandomLightsModuleLightsStatusIsOnM2()
         {
             var command = new HwandazaCommand()
             {
                 Command = "RandomLightsModuleLightsStatusIsOnM2",
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
             return GetBoolFromResponse(response);
         }
 
-        public static bool RandomLightsModuleLightsStatusIsOnL3(AppServiceConnection appService)
+        public bool RandomLightsModuleLightsStatusIsOnL3()
         {
             var command = new HwandazaCommand()
             {
                 Command = "RandomLightsModuleLightsStatusIsOnL3",
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
             return GetBoolFromResponse(response);
         }
 
-        public static bool RandomLightsModuleLightsStatusIsOnL4(AppServiceConnection appService)
+        public bool RandomLightsModuleLightsStatusIsOnL4()
         {
             var command = new HwandazaCommand()
             {
                 Command = "RandomLightsModuleLightsStatusIsOnL4",
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
             return GetBoolFromResponse(response);
         }
 
-        public static bool RandomLightsModuleLightsStatusIsOnL5(AppServiceConnection appService)
+        public bool RandomLightsModuleLightsStatusIsOnL5()
         {
             var command = new HwandazaCommand()
             {
                 Command = "RandomLightsModuleLightsStatusIsOnL5",
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
             return GetBoolFromResponse(response);
         }
 
-        public static bool RandomLightsModuleLightsStatusIsOnL6(AppServiceConnection appService)
+        public bool RandomLightsModuleLightsStatusIsOnL6()
         {
             var command = new HwandazaCommand()
             {
                 Command = "RandomLightsModuleLightsStatusIsOnL6",
             };
 
-            var response = RequestAppServiceAsync(appService, command).Result;
+            var response = RequestAppServiceAsync(command).Result;
             return GetBoolFromResponse(response);
+        }
+
+        public HwandazaAutomation GetStatus()
+        {
+            HwandazaAutomation status;
+            var command = new HwandazaCommand()
+            {
+                Command = "Status",
+            };
+
+            var serviceResponse = RequestAppServiceAsync(command).Result;
+            status = serviceResponse.Message["Result"] as HwandazaAutomation;
+            return status;
         }
     }
 }

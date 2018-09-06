@@ -19,15 +19,15 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
-using HwandazaAppCommunication.RaspiModules;
+using HwandazaWebService.Utils;
 using Newtonsoft.Json;
 using Path = System.IO.Path;
 using Windows.System;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Storage.Streams;
-using HwandazaAppCommunication.Utils;
-using HwandazaWebService.Utils;
+using HwandazaWebService.RaspiModules;
 using Windows.ApplicationModel.AppService;
+using System.Diagnostics;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -38,52 +38,13 @@ namespace HwandazaWebService
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private readonly MainWaterPump _mainWaterPump;
+        private readonly FishPondPump _fishPondPump;
+        private readonly LawnIrrigator _lawnIrrigator;
+        private readonly RandomLights _randomLights;
+        private readonly SystemsHeartBeat _systemsHeartBeat;
 
-        static class Const
-        {
-            public const int SixtyMinutesDelayMs = 3600000;
-            public const int ThirtyMinutesDelayMs = 1800000;
-            public const int TwentyMinutesDelayMs = 1200000;
-            public const int FifteenMinutesDelayMs = 900000;
-            public const int TenMinutesDelayMs = 600000;
-            public const int FiveMinutesDelayMs = 300000;
-            public const int FourMinutes = 240000;
-            public const int ThreeMinutes = 180000;
-            public const int TwoMinutes = 120000;
-            public const int SeventySecondsDelayMs = 70000;
-            public const int OneMinuteDelayMs = 60000;
-            public const int TenSecondsDelayMs = 10000;
-            public const int FiveSecondsDelayMs = 5000;
-            public const int ThreeSecondsDelayMs = 3000;
-            public const int OneSecondDelayMs = 1000;
-            public const int HalfSecondDelayMs = 500;
-            public const int QuarterSecondDelayMs = 250;
-            public const int FiftyMsDelayMs = 50;
-            public const string Running = "Running";
-            public const string Stopped = "Stopped";
-
-            public const string MainWaterPump = "mainwaterpump";
-            public const string FishPondPump = "fishpondpump";
-            public const string RandomLights = "randomlights";
-            public const string LawnIrrigator = "lawnirrigator";
-            public const string Operations = "operations";
-
-            public const string CommandOn = "ON";
-            public const string CommandOff = "OFF";
-            public const string CommandOperations = "OPERATIONS";
-            public const string CommandStatus = "STATUS";
-
-            public class Lights
-            {
-                public const string M1 = "m1";
-                public const string M2 = "m2";
-                public const string L3 = "l3";
-                public const string L4 = "l4";
-                public const string L5 = "l5";
-                public const string L6 = "l6";
-            }
-        }
-     
+        //private readonly GpioProcessor GpioProcessor;
         private readonly SolidColorBrush _redBrush = new SolidColorBrush(Windows.UI.Colors.Red);
         private readonly SolidColorBrush _ledOffBrush = new SolidColorBrush(Windows.UI.Colors.Transparent);
         private readonly SolidColorBrush _deepblueBrush = new SolidColorBrush(Windows.UI.Colors.DeepSkyBlue);
@@ -102,14 +63,9 @@ namespace HwandazaWebService
         private ThreadPoolTimer _poolTimerUiUpdate;
         private ThreadPoolTimer _poolTimerHeartBeat;
         private ThreadPoolTimer _imageTimerHeartBeat;
-
-
+       
         private bool _bDateChangedByUser = false;
         private bool _bTimeChangedByUser = false;
-
-        private AppServiceConnection _appServiceConnection;
-
-        private const string BackgroundImageFolder = @"Assets\Album";
 
         private static readonly List<string> BackgroundImageList = new List<string>();
         static Random _rnd = new Random();
@@ -117,26 +73,32 @@ namespace HwandazaWebService
         public MainPage()
         {
             this.InitializeComponent();
-
-            _appServiceConnection = AppService.GetAppServiceConnectionAsync().Result;
-
-            LoadBackGroundImages(BackgroundImageFolder);
-
+            LoadBackGroundImages(Const.BackgroundImageFolder);
             InitializeCalender();
-
             _currentSystemHeartBeatBrush = _ledOffBrush;
- 
+
+            var modules = IoTimerControl.getIoTimerControls();
+            _mainWaterPump = (MainWaterPump)modules.First(r => r.Module() is MainWaterPump);
+            _lawnIrrigator = (LawnIrrigator)modules.First(r => r.Module() is LawnIrrigator);
+            _fishPondPump = (FishPondPump)modules.First(r => r.Module() is FishPondPump);
+            _randomLights = (RandomLights)modules.First(r => r.Module() is RandomLights);
+            _systemsHeartBeat = (SystemsHeartBeat)modules.First(r => r.Module() is SystemsHeartBeat);
+            GpioProcessor.Initialize(_mainWaterPump, _fishPondPump, _lawnIrrigator, _randomLights, _systemsHeartBeat);
+            _systemsHeartBeat = (SystemsHeartBeat)modules.First(r => r.Module() is SystemsHeartBeat);
+
             //setup timer to update the UI
             _poolTimerUiUpdate = ThreadPoolTimer.CreatePeriodicTimer(HwandazaUiUpdate, TimeSpan.FromMilliseconds(Const.HalfSecondDelayMs));
 
             _poolTimerHeartBeat = ThreadPoolTimer.CreatePeriodicTimer(SystemHeartBeatControl, TimeSpan.FromMilliseconds(Const.OneSecondDelayMs));
 
             _imageTimerHeartBeat = ThreadPoolTimer.CreatePeriodicTimer(ImageHeartBeatControlAsync, period: TimeSpan.FromMilliseconds(Const.FiveSecondsDelayMs));
+
+            ApplicationData.Current.DataChanged += async (d, a) => await HandleDataChangedEvent(d, a);
         }
 
         private void SystemHeartBeatControl(ThreadPoolTimer timer)
         {
-            if (AppService.SystemsHeartBeatIsRunning(_appServiceConnection))
+            if (_systemsHeartBeat.IsRunning())
             {
                 _currentSystemHeartBeatBrush = _currentSystemHeartBeatBrush == _ledOffBrush ? _deepblueBrush : _ledOffBrush;
                 /* UI updates must be invoked on the UI thread */
@@ -175,130 +137,157 @@ namespace HwandazaWebService
                        {
                            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
                            BitmapImage image = new BitmapImage();
-                          
+
                            IRandomAccessStream ram = await file.OpenAsync(FileAccessMode.Read);
                            await image.SetSourceAsync(ram);
 
-                           HwandaGrid.Background = new ImageBrush() { ImageSource = image, Stretch = Stretch.UniformToFill, Opacity = 0.75};
+                           HwandaGrid.Background = new ImageBrush() { ImageSource = image, Stretch = Stretch.UniformToFill, Opacity = 0.75 };
                        }
                    });
         }
 
-        
+        private async Task HandleDataChangedEvent(ApplicationData data, object args)
+        {
+            try
+            {
+                var localSettings = ApplicationData.Current.LocalSettings;
+                if (!localSettings.Values.ContainsKey("HwandazaCommand"))
+                {
+                    return;
+                }
+
+                var hwandazaPacket = localSettings.Values["HwandazaCommand"] as string;
+                var command = JsonConvert.DeserializeObject<HwandazaCommand>(hwandazaPacket);
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    GpioProcessor.ProcessHwandazaCommand(command);
+                });
+            }
+            catch (Exception)
+            {
+                // Do nothing
+            }
+        }
+
         private void FishPondPump_OnClick(object sender, RoutedEventArgs e)
         {
-            AppService.ButtonFishPondPump(_appServiceConnection);
+            GpioProcessor.ButtonFishPondPump();
         }
 
         private void LawnIrrigator_OnClick(object sender, RoutedEventArgs e)
         {
-            AppService.ButtonLawnIrrigator(_appServiceConnection);
+            GpioProcessor.ButtonLawnIrrigator();
         }
 
         private void WaterPunp_OnClick(object sender, RoutedEventArgs e)
         {
-            AppService.ButtonWaterPump(_appServiceConnection);
+            GpioProcessor.ButtonWaterPump();
         }
-        
+
+        public void ButtonLights(List<string> lights)
+        {
+            _randomLights.ToggleLights(lights);
+        }
+
         private void HwandazaUiUpdate(ThreadPoolTimer timer)
         {
             SystemStatus();
         }
-        
+
         private void ButtonBase_OnClick_M1(object sender, RoutedEventArgs e)
         {
-            AppService.ButtonLights(_appServiceConnection, new List<string>() { Const.Lights.M1});
+            GpioProcessor.ButtonLights(new List<string>() { Const.Lights.M1 });
         }
 
         private void ButtonBase_OnClick_M2(object sender, RoutedEventArgs e)
         {
-            AppService.ButtonLights(_appServiceConnection, new List<string>() { Const.Lights.M2 });
+            GpioProcessor.ButtonLights(new List<string>() { Const.Lights.M2 });
         }
 
         private void ButtonBase_OnClick_L3(object sender, RoutedEventArgs e)
         {
-            AppService.ButtonLights(_appServiceConnection, new List<string>() { Const.Lights.L3 });
+            GpioProcessor.ButtonLights(new List<string>() { Const.Lights.L3 });
         }
 
         private void ButtonBase_OnClick_L4(object sender, RoutedEventArgs e)
         {
-            AppService.ButtonLights(_appServiceConnection, new List<string>() { Const.Lights.L4 });
+            GpioProcessor.ButtonLights(new List<string>() { Const.Lights.L4 });
         }
 
         private void ButtonBase_OnClick_L5(object sender, RoutedEventArgs e)
         {
-            AppService.ButtonLights(_appServiceConnection, new List<string>() { Const.Lights.L5 });
+            GpioProcessor.ButtonLights(new List<string>() { Const.Lights.L5 });
         }
 
         private void ButtonBase_OnClick_L6(object sender, RoutedEventArgs e)
         {
-            AppService.ButtonLights(_appServiceConnection, new List<string>() { Const.Lights.L6 });
+            GpioProcessor.ButtonLights(new List<string>() { Const.Lights.L6 });
         }
 
-        private void SystemStatus()  
+        private void SystemStatus()
         {
             //blink the status lights for each operation
             _currentPumpStatusBrush = _currentPumpStatusBrush == _ledOffBrush ? _redBrush : _ledOffBrush;
             _currentPondStatusBrush = _currentPondStatusBrush == _ledOffBrush ? _goldBrush : _ledOffBrush;
             _currentLawnStatusBrush = _currentLawnStatusBrush == _ledOffBrush ? _greenBrush : _ledOffBrush;
-           
-            if (AppService.FishPondPumpModuleIsRunning(_appServiceConnection))
+
+            if (_fishPondPump.ModuleStatus().IsRunning)
             {
                 /* UI updates must be invoked on the UI thread */
                 var task = Dispatcher.RunAsync(
                     CoreDispatcherPriority.Normal, () =>
-                                                   {
-                                                       PondLED.Fill = _currentPondStatusBrush;
-                                                       /* Display the value on screen                      */
-                                                   });
+                    {
+                        PondLED.Fill = _currentPondStatusBrush;
+                        /* Display the value on screen                      */
+                    });
             }
             else
             {
                 var task = Dispatcher.RunAsync(
                     CoreDispatcherPriority.Normal, () =>
-                                                   {
-                                                       PondLED.Fill = _ledOffBrush;
-                                                       /* Display the value on screen                      */
-                                                   });
+                    {
+                        PondLED.Fill = _ledOffBrush;
+                        /* Display the value on screen                      */
+                    });
             }
 
-            if (AppService.LawnIrrigatorModuleIsRunning(_appServiceConnection))
+            if (_lawnIrrigator.ModuleStatus().IsRunning)
             {
                 /* UI updates must be invoked on the UI thread */
                 var task = Dispatcher.RunAsync(
                     CoreDispatcherPriority.Normal, () =>
-                                                   {
-                                                       LawnLED.Fill = _currentLawnStatusBrush;
-                                                       /* Display the value on screen                      */
-                                                   });
+                    {
+                        LawnLED.Fill = _currentLawnStatusBrush;
+                        /* Display the value on screen                      */
+                    });
             }
             else
             {
                 var task = Dispatcher.RunAsync(
                     CoreDispatcherPriority.Normal, () =>
-                                                   {
-                                                       LawnLED.Fill = _ledOffBrush;
-                                                       /* Display the value on screen                      */
-                                                   });
+                    {
+                        LawnLED.Fill = _ledOffBrush;
+                        /* Display the value on screen                      */
+                    });
             }
-            if (AppService.MainWaterPumpModuleIsRunning(_appServiceConnection))
+            if (_mainWaterPump.ModuleStatus().IsRunning)
             {
                 /* UI updates must be invoked on the UI thread */
                 var task = Dispatcher.RunAsync(
                     CoreDispatcherPriority.Normal, () =>
-                                                   {
-                                                       PumpLED.Fill = _currentPumpStatusBrush;
-                                                       /* Display the value on screen                      */
-                                                   });
+                    {
+                        PumpLED.Fill = _currentPumpStatusBrush;
+                        /* Display the value on screen                      */
+                    });
             }
             else
             {
                 var task = Dispatcher.RunAsync(
                     CoreDispatcherPriority.Normal, () =>
-                                                   {
-                                                       PumpLED.Fill = _ledOffBrush;
-                                                       /* Display the value on screen                      */
-                                                   });
+                    {
+                        PumpLED.Fill = _ledOffBrush;
+                        /* Display the value on screen                      */
+                    });
             }
 
             SetLightStatus(Const.Lights.M1);
@@ -316,9 +305,9 @@ namespace HwandazaWebService
             var task = Dispatcher.RunAsync(
                     CoreDispatcherPriority.Normal, () =>
                     {
-                        WaterPumpADC.Text = string.Format("ADC: {0:0.00}V", AppService.MainWaterPumpModuleAdcVoltage(_appServiceConnection));
-                        PondPumpADC.Text = string.Format("ADC: {0:0.00}V", AppService.FishPondPumpModuleAdcVoltage(_appServiceConnection));
-                        LawnIrrigatorADC.Text = string.Format("ADC: {0:0.00}V", AppService.IrrigatorModuleAdcVoltage(_appServiceConnection));
+                        WaterPumpADC.Text = string.Format("ADC: {0:0.00}V", _mainWaterPump.ModuleStatus().AdcVoltage);
+                        PondPumpADC.Text = string.Format("ADC: {0:0.00}V", _fishPondPump.ModuleStatus().AdcVoltage);
+                        LawnIrrigatorADC.Text = string.Format("ADC: {0:0.00}V", _lawnIrrigator.ModuleStatus().AdcVoltage);
                         /* Display the value on screen                      */
                     });
         }
@@ -327,22 +316,22 @@ namespace HwandazaWebService
             switch (light)
             {
                 case Const.Lights.M1:
-                   SetLedColor(M1LED, AppService.RandomLightsModuleLightsStatusIsOnM1(_appServiceConnection));
+                    SetLedColor(M1LED, _randomLights.ModuleStatus().LightsStatus.IsOnM1);
                     break;
                 case Const.Lights.M2:
-                    SetLedColor(M2LED, AppService.RandomLightsModuleLightsStatusIsOnM2(_appServiceConnection));
+                    SetLedColor(M2LED, _randomLights.ModuleStatus().LightsStatus.IsOnM2);
                     break;
                 case Const.Lights.L3:
-                    SetLedColor(L3LED, AppService.RandomLightsModuleLightsStatusIsOnL3(_appServiceConnection));
+                    SetLedColor(L3LED, _randomLights.ModuleStatus().LightsStatus.IsOnL3);
                     break;
                 case Const.Lights.L4:
-                    SetLedColor(L4LED, AppService.RandomLightsModuleLightsStatusIsOnL4(_appServiceConnection));
+                    SetLedColor(L4LED, _randomLights.ModuleStatus().LightsStatus.IsOnL4);
                     break;
                 case Const.Lights.L5:
-                    SetLedColor(L5LED, AppService.RandomLightsModuleLightsStatusIsOnL5(_appServiceConnection));
+                    SetLedColor(L5LED, _randomLights.ModuleStatus().LightsStatus.IsOnL5);
                     break;
                 case Const.Lights.L6:
-                    SetLedColor(L6LED, AppService.RandomLightsModuleLightsStatusIsOnL6(_appServiceConnection));
+                    SetLedColor(L6LED, _randomLights.ModuleStatus().LightsStatus.IsOnL6);
                     break;
             }
         }
@@ -360,7 +349,8 @@ namespace HwandazaWebService
 
         private void TimePicker_TimeChanged(object sender, TimePickerValueChangedEventArgs e)
         {
-            if (_bTimeChangedByUser) {
+            if (_bTimeChangedByUser)
+            {
                 var currentDate = DateTime.Now.ToUniversalTime();
 
                 var newDateTime = new DateTime(currentDate.Year,
@@ -429,7 +419,7 @@ namespace HwandazaWebService
             string[] fileEntries = Directory.GetFiles(targetDirectory);
             foreach (string fileName in fileEntries)
                 AddBackGroundImage(fileName);
-            
+
             // Recurse into subdirectories of this directory.
             string[] subdirectoryEntries = Directory.GetDirectories(targetDirectory);
             foreach (string subdirectory in subdirectoryEntries)
@@ -447,5 +437,100 @@ namespace HwandazaWebService
             return BackgroundImageList[r];
         }
 
+        private HwandazaAutomation InitStatus()
+        {
+            return new HwandazaAutomation()
+            {
+                statusDate = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss"),
+                status = new Status()
+                {
+                    modules = new Modules()
+                    {
+                        FishPond = new FishPond()
+                        {
+                            adcFloatValue = 0.0f,
+                            power = 0,
+                        },
+                        WaterPump = new WaterPump()
+                        {
+                            adcFloatValue = 0.0f,
+                            power = 1,
+                        },
+                        Irrigator = new Irrigator()
+                        {
+                            adcFloatValue = 0.0f,
+                            power = 0,
+                        }
+                    },
+                    lights = new Lights()
+                    {
+                        L3 = 0,
+                        L4 = 0,
+                        L5 = 0,
+                        L6 = 1,
+                        M1 = 0,
+                        M2 = 0,
+                    }
+                }
+            };
+        }
+
+        //private void OnCanceled(IBackgroundTaskInstance sender, BackgroundTaskCancellationReason reason)
+        //{
+        //    //Clean up and get ready to exit
+        //    if (_backgroundTaskDeferral != null)
+        //    {
+        //        _backgroundTaskDeferral.Complete();
+        //    }
+        //}
+
+        //public void Run(IBackgroundTaskInstance taskInstance)
+        //{
+        //    // Associate a cancellation handler with the background task. 
+        //    taskInstance.Canceled += OnCanceled;
+        //    _backgroundTaskDeferral = taskInstance.GetDeferral();
+
+        //    var appService = taskInstance.TriggerDetails as AppServiceTriggerDetails;
+        //    if (appService != null &&
+        //        appService.Name == "HwandazaWebService")
+        //    {
+        //        _appServiceConnection = appService.AppServiceConnection;
+        //        _appServiceConnection.RequestReceived += OnRequestReceived;
+        //    }
+        //}
+
+        //private async void OnRequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
+        //{
+        //    Debug.WriteLine("Message Received:");
+        //    var messageDefferal = args.GetDeferral();
+        //    var message = args.Request.Message;
+        //    HwandazaCommand command;
+        //    try
+        //    {
+        //        var hwandazaCommand = message["HwandazaCommand"] as string;
+
+        //        command = JsonConvert.DeserializeObject<HwandazaCommand>(hwandazaCommand);
+
+        //        //we have the comman now process it
+        //        var response = _gpioProcessor.ProcessHwandazaCommand(command);
+                
+        //        var status = JsonConvert.SerializeObject(response);
+
+        //        var returnMessage = new ValueSet
+        //                            {
+        //                                {"Result", status},
+        //                                {"Status", "OK"}
+        //                            };
+
+        //        await args.Request.SendResponseAsync(returnMessage);
+        //        Debug.WriteLine("HwandazaAppService Command execution completed: " + status);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        var error = ex.Message;
+        //        Debug.WriteLine("HwandazaAppService OnRequestReceived Eror:" + error);
+        //    }
+        //    messageDefferal.Complete();
+        //}
     }
 }

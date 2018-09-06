@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Windows.Devices.Gpio;
 using Windows.System.Threading;
-using HwandazaAppCommunication.Utils;
+using HwandazaWebService.Utils;
 
-namespace HwandazaAppCommunication.RaspiModules
+namespace HwandazaWebService.RaspiModules
 {
     /*
     WaterPumpManualOverideSwitchPin is used to manually turn the pump on/off but still runs for 180 seconds

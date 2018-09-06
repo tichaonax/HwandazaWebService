@@ -17,5 +17,6 @@
     <RemoteDebugMachine>192.168.1.111</RemoteDebugMachine>
     <AuthenticationMode>Universal</AuthenticationMode>
     <RemoteDebugEnabled>true</RemoteDebugEnabled>
+    <CreateCleanLayout>true</CreateCleanLayout>
   </PropertyGroup>
 </Project>

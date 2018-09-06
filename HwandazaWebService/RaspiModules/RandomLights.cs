@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Devices.Gpio;
 using Windows.System.Threading;
-using HwandazaAppCommunication.Utils;
+using HwandazaWebService.Utils;
 
-namespace HwandazaAppCommunication.RaspiModules
+namespace HwandazaWebService.RaspiModules
 {
     public sealed class RandomLights : IModule
     {

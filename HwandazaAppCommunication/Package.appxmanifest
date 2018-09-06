@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:iot="http://schemas.microsoft.com/appx/manifest/iot/windows10" IgnorableNamespaces="uap mp iot">
-  <Identity Name="HwandazaWebService-uwp" Publisher="CN=tichaona" Version="1.0.0.0" />
+  <Identity Name="HwandazaWebService-uwp" Publisher="CN=tichaona" Version="2.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="32e9d59d-8258-4977-8e47-36bf1059b8c4" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>HwandazaWebService</DisplayName>
-    <PublisherDisplayName>tichaona</PublisherDisplayName>
+    <PublisherDisplayName>Tichaona Hwandza</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>

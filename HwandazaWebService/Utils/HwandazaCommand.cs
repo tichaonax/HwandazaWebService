@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace HwandazaAppCommunication.Utils
+namespace HwandazaWebService.Utils
 {
     public sealed class HwandazaCommand
     {

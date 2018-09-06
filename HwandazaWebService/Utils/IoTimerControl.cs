@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using HwandazaAppCommunication.RaspiModules;
+using HwandazaWebService.RaspiModules;
 
-namespace HwandazaAppCommunication.Utils
+namespace HwandazaWebService.Utils
 {
     public static class IoTimerControl
     {

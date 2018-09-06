@@ -1,55 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using HwandazaAppCommunication.RaspiModules;
+using HwandazaWebService.RaspiModules;
 
-namespace HwandazaAppCommunication.Utils
+namespace HwandazaWebService.Utils
 {
     public sealed class GpioProcessor
     {
-        static class Const
-        {
-            public const int SixtyMinutesDelayMs = 3600000;
-            public const int ThirtyMinutesDelayMs = 1800000;
-            public const int TwentyMinutesDelayMs = 1200000;
-            public const int FifteenMinutesDelayMs = 900000;
-            public const int TenMinutesDelayMs = 600000;
-            public const int FiveMinutesDelayMs = 300000;
-            public const int FourMinutes = 240000;
-            public const int ThreeMinutes = 180000;
-            public const int TwoMinutes = 120000;
-            public const int SeventySecondsDelayMs = 70000;
-            public const int OneMinuteDelayMs = 60000;
-            public const int TenSecondsDelayMs = 10000;
-            public const int FiveSecondsDelayMs = 5000;
-            public const int ThreeSecondsDelayMs = 3000;
-            public const int OneSecondDelayMs = 1000;
-            public const int HalfSecondDelayMs = 500;
-            public const int QuarterSecondDelayMs = 250;
-            public const int FiftyMsDelayMs = 50;
+        private static MainWaterPump _mainWaterPump;
+        private static FishPondPump _fishPondPump;
+        private static LawnIrrigator _lawnIrrigator;
+        private static RandomLights _randomLights;
+        private static SystemsHeartBeat _systemsHeartBeat;
 
-            public const string MainWaterPump = "mainwaterpump";
-            public const string FishPondPump = "fishpondpump";
-            public const string RandomLights = "randomlights";
-            public const string LawnIrrigator = "lawnirrigator";
-            public const string Operations = "operations";
-
-            public const string CommandOn = "on";
-            public const string CommandOff = "off";
-            public const string CommandOperations = "operations";
-            public const string CommandStatus = "status";
-        }
-
-        private readonly MainWaterPump _mainWaterPump;
-        private readonly FishPondPump _fishPondPump;
-        private readonly LawnIrrigator _lawnIrrigator;
-        private readonly RandomLights _randomLights;
-        private readonly SystemsHeartBeat _systemsHeartBeat;
-
-        public GpioProcessor(
-            MainWaterPump mainWaterPump, 
-            FishPondPump fishPondPump, 
-            LawnIrrigator lawnIrrigator, 
+        public static void Initialize(
+            MainWaterPump mainWaterPump,
+            FishPondPump fishPondPump,
+            LawnIrrigator lawnIrrigator,
             RandomLights randomLights,
             SystemsHeartBeat systemsHeartBeat)
         {
@@ -60,9 +26,29 @@ namespace HwandazaAppCommunication.Utils
             _systemsHeartBeat = systemsHeartBeat;
         }
 
-        private dynamic CommandOff(HwandazaCommand command)
+        public static void ButtonWaterPump()
         {
-            switch (command.Module.ToLower())
+            _mainWaterPump.ButtonPressed();
+        }
+
+        public static void ButtonFishPondPump()
+        {
+            _fishPondPump.ButtonPressed();
+        }
+
+        public static void ButtonLawnIrrigator()
+        {
+            _lawnIrrigator.ButtonPressed();
+        }
+
+        public static void ButtonLights(List<string> lights)
+        {
+            _randomLights.ToggleLights(lights);
+        }
+
+        private static dynamic ActOnCommandOff(HwandazaCommand request)
+        {
+            switch (request.Module.ToLower())
             {
                 case Const.MainWaterPump:
                     _mainWaterPump.Stop();
@@ -74,16 +60,16 @@ namespace HwandazaAppCommunication.Utils
                     _lawnIrrigator.Stop();
                     break;
                 case Const.RandomLights:
-                    _randomLights.TurnOffLights(command.Lights);
+                    _randomLights.TurnOffLights(request.Lights);
                     break;
             }
 
             return GetSystemStatus();
         }
 
-        private dynamic CommandOn(HwandazaCommand command)
+        private static dynamic ActOnCommandOn(HwandazaCommand request)
         {
-            switch (command.Module.ToLower())
+            switch (request.Module.ToLower())
             {
                 case Const.MainWaterPump:
                     _mainWaterPump.ManualOverideSwitch();
@@ -98,30 +84,30 @@ namespace HwandazaAppCommunication.Utils
                     _lawnIrrigator.Run();
                     break;
                 case Const.RandomLights:
-                    _randomLights.TurnOnLights(command.Lights);
+                    _randomLights.TurnOnLights(request.Lights);
                     break;
             }
 
             return GetSystemStatus();
         }
 
-        private dynamic CommandOperations(HwandazaCommand command)
+        private static dynamic ActOnCommandOperations(HwandazaCommand request)
         {
             throw new NotImplementedException();
         }
 
-        private dynamic ActOnCommand(HwandazaCommand command)
+        private static dynamic ActOnCommand(HwandazaCommand request)
         {
-            switch (command.Command.ToLower())
+            switch (request.Command.ToLower())
             {
                 case Const.CommandOn:
-                    return CommandOn(command);
+                    return ActOnCommandOn(request);
 
                 case Const.CommandOff:
-                    return CommandOff(command);
+                    return ActOnCommandOff(request);
 
                 case Const.CommandOperations:
-                    return CommandOperations(command);
+                    return ActOnCommandOperations(request);
 
                 case Const.CommandStatus:
                     return GetSystemStatus();
@@ -157,7 +143,7 @@ namespace HwandazaAppCommunication.Utils
                     return _randomLights.ModuleStatus().LightsStatus.IsOnL6;
 
                 case "togglelights":
-                    _randomLights.ToggleLights(command.Lights);
+                    _randomLights.ToggleLights(request.Lights);
                     return GetSystemStatus();
 
                 case "buttonwaterpump":
@@ -173,7 +159,7 @@ namespace HwandazaAppCommunication.Utils
                     return GetSystemStatus();
 
                 case "mainWaterpumpmoduleadcvoltage":
-                   return _mainWaterPump.ModuleStatus().AdcVoltage;
+                    return _mainWaterPump.ModuleStatus().AdcVoltage;
 
                 case "irrigatormoduleadcvoltage":
                     return _lawnIrrigator.ModuleStatus().AdcVoltage;
@@ -186,16 +172,16 @@ namespace HwandazaAppCommunication.Utils
             return new AutomationError()
             {
                 Error = "Command not recognized",
-                Command = command
+                Request = request
             };
         }
 
-        public dynamic ProcessHwandazaCommand(HwandazaCommand command)
+        public static dynamic ProcessHwandazaCommand(HwandazaCommand request)
         {
-            return ActOnCommand(command);
+            return ActOnCommand(request);
         }
 
-        private HwandazaAutomation GetSystemStatus()
+        private static HwandazaAutomation GetSystemStatus()
         {
             // interrogate the raspberry pi and get all the information
 
@@ -209,7 +195,6 @@ namespace HwandazaAppCommunication.Utils
 
             return new HwandazaAutomation()
             {
-                statusId = 0,
                 statusDate = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss"),
                 status = new Status()
                 {

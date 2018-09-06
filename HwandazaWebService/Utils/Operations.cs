@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HwandazaAppCommunication.Utils
+namespace HwandazaWebService.Utils
 {
     internal static class Operations
     {

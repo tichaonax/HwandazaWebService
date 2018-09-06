@@ -1,8 +1,8 @@
 ﻿using Windows.Devices.Gpio;
 using Windows.System.Threading;
-using HwandazaAppCommunication.Utils;
+using HwandazaWebService.Utils;
 
-namespace HwandazaAppCommunication.RaspiModules
+namespace HwandazaWebService.RaspiModules
 {
     public interface IModule
     {

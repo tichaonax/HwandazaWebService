@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:iot="http://schemas.microsoft.com/appx/manifest/iot/windows10" xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3" IgnorableNamespaces="uap mp iot uap3">
-  <Identity Name="HwandazaWebService" Publisher="CN=tichaona" Version="1.0.0.0" />
+  <Identity Name="HwandazaWebService" Publisher="CN=tichaona" Version="2.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="bda47f61-8479-4ee1-a466-66d27b3febbc" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>HwandazaWebService</DisplayName>
@@ -21,17 +21,10 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
       <Extensions>
-        <uap:Extension Category="windows.appService" EntryPoint="HwandazaAppCommunication.HwandazaAppService">
+        <uap:Extension Category="windows.appService">
           <uap:AppService Name="HwandazaAppCommunicationService" />
         </uap:Extension>
       </Extensions>
     </Application>
   </Applications>
-  <Capabilities>
-    <Capability Name="internetClient" />
-    <Capability Name="privateNetworkClientServer" />
-    <Capability Name="internetClientServer" />
-    <iot:Capability Name="systemManagement" />
-    <uap3:Capability Name="remoteSystem" />
-  </Capabilities>
 </Package>

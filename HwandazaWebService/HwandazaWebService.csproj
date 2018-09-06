@@ -102,7 +102,22 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RaspiModules\FishPondPump.cs" />
+    <Compile Include="RaspiModules\IModule.cs" />
+    <Compile Include="RaspiModules\LawnIrrigator.cs" />
+    <Compile Include="RaspiModules\MainWaterPump.cs" />
+    <Compile Include="RaspiModules\RandomLights.cs" />
+    <Compile Include="RaspiModules\SystemsHeartBeat.cs" />
     <Compile Include="Utils\AppService.cs" />
+    <Compile Include="Utils\Constants.cs" />
+    <Compile Include="Utils\GpioProcessor.cs" />
+    <Compile Include="Utils\HwandazaAutomation.cs" />
+    <Compile Include="Utils\HwandazaCommand.cs" />
+    <Compile Include="Utils\IoTimerControl.cs" />
+    <Compile Include="Utils\Mcp3008AdcCtrl.cs" />
+    <Compile Include="Utils\ModuleStatus.cs" />
+    <Compile Include="Utils\Operations.cs" />
+    <Compile Include="Utils\Scheduler.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -282,12 +297,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HwandazaAppCommunication\HwandazaAppCommunication.csproj">
-      <Project>{421557cd-3c32-4dbc-bb34-8220be44fbb0}</Project>
-      <Name>HwandazaAppCommunication</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights">
