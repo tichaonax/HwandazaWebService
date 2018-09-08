@@ -115,7 +115,7 @@ namespace HwandazaWebService
             IoTimerControl.SuspendOperations(true);
             deferral.Complete();
         }
-
+        
         protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
         {
             base.OnBackgroundActivated(args);
@@ -140,7 +140,7 @@ namespace HwandazaWebService
                 request = JsonConvert.DeserializeObject<HwandazaCommand>(hwandazaCommand);
 
                 //we have the comman now process it
-                var response = GpioProcessor.ProcessHwandazaCommand(request);
+                var response = GpioProcessor.ProcessHwandazaCommand(request).Result;
 
                 var status = JsonConvert.SerializeObject(response);
 
@@ -155,13 +155,13 @@ namespace HwandazaWebService
             }
             catch (Exception ex)
             {
-                var error = ex.Message;
-                Debug.WriteLine("HwandazaAppService OnRequestReceived Eror:" + error);
-                var errorMessage = new ValueSet
-                                    {
-                                        {"Response", error},
-                                        {"Status", "HwandazaAppService OnRequestReceived Eror"}
-                                    };
+                //var error = ex.Message;
+                //Debug.WriteLine("HwandazaAppService OnRequestReceived Eror:" + error);
+                //var errorMessage = new ValueSet
+                //                    {
+                //                        {"Response", error},
+                //                        {"Status", "HwandazaAppService OnRequestReceived Eror"}
+                //                    };
 
                 //await args.Request.SendResponseAsync(errorMessage);
             }

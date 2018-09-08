@@ -61,7 +61,7 @@ namespace HwandazaWebService.Utils
             GpioInitialized = true;
         }
 
-        public static void SuspendOperations(bool intitialize)
+        public static void SuspendOperations(bool intitialize = false)
         {
             foreach (var iotimer in IoTimerControls)
             {

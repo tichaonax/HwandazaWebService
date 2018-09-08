@@ -97,7 +97,7 @@ namespace HwandazaWebService.Utils
             throw new NotImplementedException();
         }
 
-        private static dynamic ActOnCommand(HwandazaCommand request)
+        private static async System.Threading.Tasks.Task<dynamic> ActOnCommandAsync(HwandazaCommand request)
         {
             switch (request.Command.ToLower())
             {
@@ -113,67 +113,67 @@ namespace HwandazaWebService.Utils
                 case Const.CommandStatus:
                     return GetSystemStatus();
 
-                case "systemsheartbeatisrunning":
+                case Const.SystemsHeartbeatIsRunning:
                     return _systemsHeartBeat.IsRunning();
 
-                case "fishpondpumpmoduleisrunning":
+                case Const.FishpondpumpModuleIsRunning:
                     return _fishPondPump.IsRunning();
 
-                case "lawnirrigatormoduleisrunning":
+                case Const.LawnirrigatorModuleIsRunning:
                     return _lawnIrrigator.IsRunning();
 
-                case "mainwaterpumpmoduleisrunning":
+                case Const.MainwaterPumpModuleIsRunning:
                     return _mainWaterPump.IsRunning();
 
-                case "randomlightsmoduleLightsstatusisonm1":
+                case Const.RandomLightsModuleLightsStatusIsOnM1:
                     return _randomLights.ModuleStatus().LightsStatus.IsOnM1;
 
-                case "randomLightsmodulelightsstatusisonm2":
+                case Const.RandomLightsModuleLightsStatusIsOnM2:
                     return _randomLights.ModuleStatus().LightsStatus.IsOnM2;
 
-                case "randomlightsmodulelightsstatusisonl3":
+                case Const.RandomLightsModuleLightsStatusIsOnL3:
                     return _randomLights.ModuleStatus().LightsStatus.IsOnL3;
 
-                case "randomlightsmodulelightsstatusisonl4":
+                case Const.RandomlightsModuleLightsStatusIsOnL4:
                     return _randomLights.ModuleStatus().LightsStatus.IsOnL4;
 
-                case "randomlightsmodulelightsstatusisonl5":
+                case Const.RandomLightsModuleLightsStatusIsOnL5:
                     return _randomLights.ModuleStatus().LightsStatus.IsOnL5;
 
-                case "randomlightsmodulelightsstatusisonl6":
+                case Const.RandomLightsModuleLightsStatusIsOnL6:
                     return _randomLights.ModuleStatus().LightsStatus.IsOnL6;
 
-                case "togglelights":
+                case Const.ToggleLights:
                     _randomLights.ToggleLights(request.Lights);
                     return GetSystemStatus();
 
-                case "buttonwaterpump":
+                case Const.ButtonWaterpump:
                     _mainWaterPump.ButtonPressed();
                     return GetSystemStatus();
 
-                case "buttonfishpondpump":
+                case Const.FishPondPump:
                     _fishPondPump.ButtonPressed();
                     return GetSystemStatus();
 
-                case "buttonlawnirrigator":
+                case Const.ButtonLawnIrrigator:
                     _lawnIrrigator.ButtonPressed();
                     return GetSystemStatus();
 
-                case "mainWaterpumpmoduleadcvoltage":
+                case Const.MainWaterpumpModuleAdcVoltage:
                     return _mainWaterPump.ModuleStatus().AdcVoltage;
 
-                case "irrigatormoduleadcvoltage":
+                case Const.LawnIrrigatorModuleAdcVoltage:
                     return _lawnIrrigator.ModuleStatus().AdcVoltage;
 
-                case "fishpondpumpmoduleadcvoltage":
+                case Const.FishpondPumpModuleAdcVoltage:
                     return _fishPondPump.ModuleStatus().AdcVoltage;
 
-                case "setsystemdate":
-                case "setsystemtime":
-                    UpdateSyatemDateTime(request);
+                case Const.SetSystemDate:
+                case Const.SetSystemTime:
+                    await UpdateSyatemDateTimeAsync(request);
                     return GetSystemDateTime();
 
-                case "getsupporterdcommands":
+                case Const.GetSupporterdCommandList:
                     return GetSupportedCommands();
             }
 
@@ -186,14 +186,15 @@ namespace HwandazaWebService.Utils
 
         public static dynamic ProcessHwandazaCommand(HwandazaCommand request)
         {
-            return ActOnCommand(request);
+            return ActOnCommandAsync(request);
         }
 
-        private static void UpdateSyatemDateTime(HwandazaCommand request)
+        private static async System.Threading.Tasks.Task UpdateSyatemDateTimeAsync(HwandazaCommand request)
         {
+            var serializedRequest = JsonConvert.SerializeObject(request);
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            localSettings.Values["HwandazaCommand"] = JsonConvert.SerializeObject(request);
-        Windows.Storage.ApplicationData.Current.SignalDataChanged();
+            localSettings.Values["HwandazaCommand"] = serializedRequest;
+            Windows.Storage.ApplicationData.Current.SignalDataChanged();
         }
 
         private static dynamic GetSystemDateTime()
@@ -215,7 +216,7 @@ namespace HwandazaWebService.Utils
 
             return new HwandazaAutomation()
             {
-                statusDate = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss"),
+                statusDate = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
                 status = new Status()
                 {
                     modules = new Modules()

@@ -27,4 +27,7 @@
       </Extensions>
     </Application>
   </Applications>
+  <Capabilities>
+    <iot:Capability Name="systemManagement" />
+  </Capabilities>
 </Package>

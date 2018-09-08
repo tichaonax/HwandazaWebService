@@ -111,11 +111,12 @@
     <Compile Include="RaspiModules\MainWaterPump.cs" />
     <Compile Include="RaspiModules\RandomLights.cs" />
     <Compile Include="RaspiModules\SystemsHeartBeat.cs" />
-    <Compile Include="Utils\Constants.cs" />
+    <Compile Include="Utils\Const.cs" />
     <Compile Include="Utils\GpioProcessor.cs" />
     <Compile Include="Utils\HwandazaAutomation.cs" />
     <Compile Include="Utils\HwandazaCommand.cs" />
     <Compile Include="Utils\IoTimerControl.cs" />
+    <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\Mcp3008AdcCtrl.cs" />
     <Compile Include="Utils\ModuleStatus.cs" />
     <Compile Include="Utils\Operations.cs" />

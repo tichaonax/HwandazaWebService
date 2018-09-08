@@ -159,19 +159,23 @@ namespace HwandazaWebService
 
                 var hwandazaPacket = localSettings.Values["HwandazaCommand"] as string;
                 var request = JsonConvert.DeserializeObject<HwandazaCommand>(hwandazaPacket);
-                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
                 {
-                    ProcessHwandazaCommand(request);
+                    await ProcessHwandazaCommandAsync(request);
                 });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // Do nothing
+                //await Logger.WriteDebugLog("HandleDataChangedEvent Error Message:{0}", ex.Message);
+                //await Logger.WriteDebugLog("HandleDataChangedEvent Exception:{0}", ex.StackTrace);
             }
         }
 
-        private void ProcessHwandazaCommand(HwandazaCommand request)
+        private async Task ProcessHwandazaCommandAsync(HwandazaCommand request)
         {
+            //await Logger.WriteDebugLog("ProcessHwandazaCommand ->{0}", request.Command);
+
             switch (request.Command.ToLower())
             {
                 case "setsystemdate":
@@ -179,7 +183,7 @@ namespace HwandazaWebService
                     //string iString = "2005-05-05";
                     DateTime date = DateTime.Parse(request.Date);
                     _bDateChangedByUser = true;
-                    SetSystemDate(date);
+                    await SetSystemDateAsync(date);
                     _bDateChangedByUser = false;
                     break;
 
@@ -191,7 +195,7 @@ namespace HwandazaWebService
                                                                   DateTimeStyles.None, out dt))
                     {
                         _bTimeChangedByUser = true;
-                        SetSystemTime(dt.TimeOfDay);
+                        await SetSystemTimeAsync(dt.TimeOfDay);
                         _bTimeChangedByUser = false;
                     }
 
@@ -383,8 +387,12 @@ namespace HwandazaWebService
         {
             if (_bTimeChangedByUser)
             {
-                SetSystemTime(e.NewTime);
-                _bTimeChangedByUser = false;
+                var task = Dispatcher.RunAsync(
+                        CoreDispatcherPriority.Normal, async () =>
+                        {
+                            await SetSystemTimeAsync(e.NewTime);
+                            _bTimeChangedByUser = false;
+                        });
                 //If the app is set to auto start the following restarts the app
                 //Windows.ApplicationModel.Core.CoreApplication.Exit();
             }
@@ -395,8 +403,13 @@ namespace HwandazaWebService
             if (_bDateChangedByUser)
             {
                 DateTimeOffset date = args.NewDate.Value;
-                SetSystemDate(date.DateTime);
-                _bDateChangedByUser = false;
+
+                var task = Dispatcher.RunAsync(
+                       CoreDispatcherPriority.Normal, async () =>
+                       {
+                           await SetSystemDateAsync(date.DateTime);
+                           _bDateChangedByUser = false;
+                       });
             }
         }
 
@@ -445,7 +458,7 @@ namespace HwandazaWebService
             return BackgroundImageList[r];
         }
 
-        private static void SetSystemDate(DateTime date)
+        private static async Task SetSystemDateAsync(DateTime date)
         {
             var currentDate = DateTime.Now;
             var newDateTime = new DateTime(date.Year,
@@ -458,7 +471,7 @@ namespace HwandazaWebService
             DateTimeSettings.SetSystemDateTime(newDateTime);
         }
 
-        private static void SetSystemTime(TimeSpan timeSpan)
+        private static async Task SetSystemTimeAsync(TimeSpan timeSpan)
         {
             var currentDate = DateTime.Now.ToUniversalTime();
 
