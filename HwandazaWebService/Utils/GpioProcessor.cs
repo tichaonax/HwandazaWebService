@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using HwandazaWebService.RaspiModules;
+using Newtonsoft.Json;
 
 namespace HwandazaWebService.Utils
 {
@@ -167,6 +168,13 @@ namespace HwandazaWebService.Utils
                 case "fishpondpumpmoduleadcvoltage":
                     return _fishPondPump.ModuleStatus().AdcVoltage;
 
+                case "setsystemdate":
+                case "setsystemtime":
+                    UpdateSyatemDateTime(request);
+                    return GetSystemDateTime();
+
+                case "getsupporterdcommands":
+                    return GetSupportedCommands();
             }
 
             return new AutomationError()
@@ -179,6 +187,18 @@ namespace HwandazaWebService.Utils
         public static dynamic ProcessHwandazaCommand(HwandazaCommand request)
         {
             return ActOnCommand(request);
+        }
+
+        private static void UpdateSyatemDateTime(HwandazaCommand request)
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            localSettings.Values["HwandazaCommand"] = JsonConvert.SerializeObject(request);
+        Windows.Storage.ApplicationData.Current.SignalDataChanged();
+        }
+
+        private static dynamic GetSystemDateTime()
+        {
+            return GetSystemStatus();
         }
 
         private static HwandazaAutomation GetSystemStatus()
@@ -227,6 +247,11 @@ namespace HwandazaWebService.Utils
                     }
                 }
             };
+        }
+
+        private static dynamic GetSupportedCommands()
+        {
+            throw new NotImplementedException();
         }
     }
 }

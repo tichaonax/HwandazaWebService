@@ -28,6 +28,7 @@ using Windows.Storage.Streams;
 using HwandazaWebService.RaspiModules;
 using Windows.ApplicationModel.AppService;
 using System.Diagnostics;
+using System.Globalization;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -63,7 +64,7 @@ namespace HwandazaWebService
         private ThreadPoolTimer _poolTimerUiUpdate;
         private ThreadPoolTimer _poolTimerHeartBeat;
         private ThreadPoolTimer _imageTimerHeartBeat;
-       
+
         private bool _bDateChangedByUser = false;
         private bool _bTimeChangedByUser = false;
 
@@ -157,10 +158,10 @@ namespace HwandazaWebService
                 }
 
                 var hwandazaPacket = localSettings.Values["HwandazaCommand"] as string;
-                var command = JsonConvert.DeserializeObject<HwandazaCommand>(hwandazaPacket);
+                var request = JsonConvert.DeserializeObject<HwandazaCommand>(hwandazaPacket);
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    GpioProcessor.ProcessHwandazaCommand(command);
+                    ProcessHwandazaCommand(request);
                 });
             }
             catch (Exception)
@@ -168,6 +169,37 @@ namespace HwandazaWebService
                 // Do nothing
             }
         }
+
+        private void ProcessHwandazaCommand(HwandazaCommand request)
+        {
+            switch (request.Command.ToLower())
+            {
+                case "setsystemdate":
+
+                    //string iString = "2005-05-05";
+                    DateTime date = DateTime.Parse(request.Date);
+                    _bDateChangedByUser = true;
+                    SetSystemDate(date);
+                    _bDateChangedByUser = false;
+                    break;
+
+                case "setsystemtime":
+
+                    DateTime dt;
+
+                    if (DateTime.TryParseExact(request.Time, "HH:mm:ss", CultureInfo.InvariantCulture,
+                                                                  DateTimeStyles.None, out dt))
+                    {
+                        _bTimeChangedByUser = true;
+                        SetSystemTime(dt.TimeOfDay);
+                        _bTimeChangedByUser = false;
+                    }
+
+                    break;
+            }
+        }
+
+
 
         private void FishPondPump_OnClick(object sender, RoutedEventArgs e)
         {
@@ -351,21 +383,7 @@ namespace HwandazaWebService
         {
             if (_bTimeChangedByUser)
             {
-                var currentDate = DateTime.Now.ToUniversalTime();
-
-                var newDateTime = new DateTime(currentDate.Year,
-                                               currentDate.Month,
-                                               currentDate.Day,
-                                               e.NewTime.Hours,
-                                               e.NewTime.Minutes,
-                                               e.NewTime.Seconds);
-
-                DateTimeSettings.SetSystemDateTime(newDateTime);
-
-
-                // reset the timers only when the time changes
-                IoTimerControl.SuspendOperations(true);
-                IoTimerControl.Initialize();
+                SetSystemTime(e.NewTime);
                 _bTimeChangedByUser = false;
                 //If the app is set to auto start the following restarts the app
                 //Windows.ApplicationModel.Core.CoreApplication.Exit();
@@ -376,17 +394,8 @@ namespace HwandazaWebService
         {
             if (_bDateChangedByUser)
             {
-
                 DateTimeOffset date = args.NewDate.Value;
-                var currentDate = DateTime.Now;
-                var newDateTime = new DateTime(date.UtcDateTime.Year,
-                                               date.UtcDateTime.Month,
-                                               date.UtcDateTime.Day,
-                                               currentDate.Hour,
-                                               currentDate.Minute,
-                                               currentDate.Second);
-
-                DateTimeSettings.SetSystemDateTime(newDateTime);
+                SetSystemDate(date.DateTime);
                 _bDateChangedByUser = false;
             }
         }
@@ -407,8 +416,7 @@ namespace HwandazaWebService
             _bTimeChangedByUser = true;
         }
 
-
-        private void LoadBackGroundImages(string path)
+        private static void LoadBackGroundImages(string path)
         {
             ProcessDirectory(path);
         }
@@ -437,42 +445,37 @@ namespace HwandazaWebService
             return BackgroundImageList[r];
         }
 
-        private HwandazaAutomation InitStatus()
+        private static void SetSystemDate(DateTime date)
         {
-            return new HwandazaAutomation()
-            {
-                statusDate = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'HH':'mm':'ss"),
-                status = new Status()
-                {
-                    modules = new Modules()
-                    {
-                        FishPond = new FishPond()
-                        {
-                            adcFloatValue = 0.0f,
-                            power = 0,
-                        },
-                        WaterPump = new WaterPump()
-                        {
-                            adcFloatValue = 0.0f,
-                            power = 1,
-                        },
-                        Irrigator = new Irrigator()
-                        {
-                            adcFloatValue = 0.0f,
-                            power = 0,
-                        }
-                    },
-                    lights = new Lights()
-                    {
-                        L3 = 0,
-                        L4 = 0,
-                        L5 = 0,
-                        L6 = 1,
-                        M1 = 0,
-                        M2 = 0,
-                    }
-                }
-            };
+            var currentDate = DateTime.Now;
+            var newDateTime = new DateTime(date.Year,
+                                           date.Month,
+                                           date.Day,
+                                           currentDate.Hour,
+                                           currentDate.Minute,
+                                           currentDate.Second);
+
+            DateTimeSettings.SetSystemDateTime(newDateTime);
+        }
+
+        private static void SetSystemTime(TimeSpan timeSpan)
+        {
+            var currentDate = DateTime.Now.ToUniversalTime();
+
+            var newDateTime = new DateTime(currentDate.Year,
+                                           currentDate.Month,
+                                           currentDate.Day,
+                                           timeSpan.Hours,
+                                           timeSpan.Minutes,
+                                           timeSpan.Seconds);
+
+            DateTimeSettings.SetSystemDateTime(newDateTime);
+
+            // reset the timers only when the time changes
+            IoTimerControl.SuspendOperations(true);
+            IoTimerControl.Initialize();
+            //If the app is set to auto start the following restarts the app
+            //Windows.ApplicationModel.Core.CoreApplication.Exit();
         }
     }
 }

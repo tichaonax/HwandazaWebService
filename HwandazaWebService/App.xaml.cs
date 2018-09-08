@@ -157,6 +157,13 @@ namespace HwandazaWebService
             {
                 var error = ex.Message;
                 Debug.WriteLine("HwandazaAppService OnRequestReceived Eror:" + error);
+                var errorMessage = new ValueSet
+                                    {
+                                        {"Response", error},
+                                        {"Status", "HwandazaAppService OnRequestReceived Eror"}
+                                    };
+
+                //await args.Request.SendResponseAsync(errorMessage);
             }
 
             messageDeferal.Complete();
