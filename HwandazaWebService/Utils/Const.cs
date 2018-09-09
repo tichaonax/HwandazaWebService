@@ -60,45 +60,45 @@
 
         public const string Operations = "operations";
 
-        public const string SystemsHeartbeatIsRunning = "SystemsHeartbeatIsRunning";
+        public const string SystemsHeartbeatIsRunning = "systemsheartbeatisrunning";
 
-        public const string FishpondpumpModuleIsRunning = "FishpondpumpModuleIsRunning";
+        public const string FishpondpumpModuleIsRunning = "fishpondpumpmoduleisrunning";
 
-        public const string LawnirrigatorModuleIsRunning = "LawnirrigatorModuleIsRunning";
+        public const string LawnirrigatorModuleIsRunning = "lawnirrigatormoduleisrunning";
 
-        public const string MainwaterPumpModuleIsRunning = "MainwaterPumpModuleIsRunning";
+        public const string MainwaterPumpModuleIsRunning = "mainwaterpumpmoduleisrunning";
 
-        public const string RandomLightsModuleLightsStatusIsOnM1 = "RandomLightsModuleLightsStatusIsOnM1";
+        public const string RandomLightsModuleLightsStatusIsOnM1 = "randomlightsmodulelightsstatusisonm1";
 
-        public const string RandomLightsModuleLightsStatusIsOnM2 = "RandomLightsModuleLightsStatusIsOnM2";
+        public const string RandomLightsModuleLightsStatusIsOnM2 = "randomlightsmodulelightsstatusisonm2";
 
-        public const string RandomLightsModuleLightsStatusIsOnL3 = "RandomLightsModuleLightsStatusIsOnL3";
+        public const string RandomLightsModuleLightsStatusIsOnL3 = "randomlightsmodulelightsstatusisonl3";
 
-        public const string RandomlightsModuleLightsStatusIsOnL4 = "RandomlightsModuleLightsStatusIsOnL4";
+        public const string RandomlightsModuleLightsStatusIsOnL4 = "randomlightsmodulelightsstatusisonl4";
 
-        public const string RandomLightsModuleLightsStatusIsOnL5 = "RandomLightsModuleLightsStatusIsOnL5";
+        public const string RandomLightsModuleLightsStatusIsOnL5 = "randomlightsmodulelightsstatusisonl5";
 
-        public const string RandomLightsModuleLightsStatusIsOnL6 = "RandomLightsModuleLightsStatusIsOnL6";
+        public const string RandomLightsModuleLightsStatusIsOnL6 = "randomlightsmodulelightsstatusisonl6";
 
-        public const string ToggleLights = "ToggleLights";
+        public const string ToggleLights = "togglelights";
 
-        public const string ButtonWaterpump = "ButtonWaterpump";
+        public const string ButtonWaterpump = "buttonwaterpump";
 
-        public const string ButtonFishpondPump = "ButtonFishpondPump";
+        public const string ButtonFishpondPump = "buttonfishpondpump";
 
-        public const string ButtonLawnIrrigator = "ButtonLawnIrrigator";
+        public const string ButtonLawnIrrigator = "buttonlawnirrigator";
 
-        public const string MainWaterpumpModuleAdcVoltage = "MainWaterpumpModuleAdcVoltage";
+        public const string MainWaterpumpModuleAdcVoltage = "mainwaterpumpmoduleadcvoltage";
 
-        public const string LawnIrrigatorModuleAdcVoltage = "LawnIrrigatorModuleAdcVoltage";
+        public const string LawnIrrigatorModuleAdcVoltage = "lawnirrigatormoduleadcvoltage";
 
-        public const string FishpondPumpModuleAdcVoltage = "FishpondPumpModuleAdcVoltage";
+        public const string FishpondPumpModuleAdcVoltage = "fishpondpumpmoduleadcvoltage";
 
-        public const string SetSystemDate = "SetSystemDate";
+        public const string SetSystemDate = "setsystemdate";
 
-        public const string SetSystemTime = "SetSystemTime";
+        public const string SetSystemTime = "setsystemtime";
 
-        public const string GetSupporterdCommandList = "GetSupporterdCommandList";
+        public const string GetSupporterdCommandList = "getsupporterdvommandlist";
 
 
         public class Lights
