@@ -24,6 +24,8 @@
 
         public const int OneMinuteDelayMs = 60000;
 
+        public const int HalfMinuteMs = 30000;
+
         public const int TenSecondsDelayMs = 10000;
 
         public const int FiveSecondsDelayMs = 5000;

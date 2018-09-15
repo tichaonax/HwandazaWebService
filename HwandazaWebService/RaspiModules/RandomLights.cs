@@ -45,22 +45,22 @@ namespace HwandazaWebService.RaspiModules
         {
 
             _lightsStatus = new LightsStatus()
-                            {
-                                IsOnL3 = false,
-                                IsOnL4 = false,
-                                IsOnL5 = false,
-                                IsOnL6 = false,
-                                IsOnM1 = false,
-                                IsOnM2 = false
-                            };
+            {
+                IsOnL3 = false,
+                IsOnL4 = false,
+                IsOnL5 = false,
+                IsOnL6 = false,
+                IsOnM1 = false,
+                IsOnM2 = false
+            };
 
             _status = new ModuleStatus()
-                      {
-                          AdcVoltage = 0.0f,
-                          IsRunning = false,
-                          LightsStatus = _lightsStatus,
-                          StatusText = Const.Stopped
-                      };
+            {
+                AdcVoltage = 0.0f,
+                IsRunning = false,
+                LightsStatus = _lightsStatus,
+                StatusText = Const.Stopped
+            };
 
             _gpioList = new List<GpioPin>();
             _gpio = GpioController.GetDefault();
@@ -68,12 +68,14 @@ namespace HwandazaWebService.RaspiModules
             _isManualOverideSwitch = false;
             _delayTimeList = new List<int>()
                              {
+                                 Const.TwoMinutes,
+                                 Const.HalfMinuteMs,
+                                 Const.FourMinutes,
                                  Const.OneMinuteDelayMs,
+                                 Const.ThreeMinutes,
                                  Const.FiveMinutesDelayMs,
-                                 Const.TenMinutesDelayMs,
-                                 Const.FifteenMinutesDelayMs,
-                                 Const.TwentyMinutesDelayMs
-                             };
+                                 Const.TenSecondsDelayMs,
+                            };
         }
 
         public void InitializeGPIO()
@@ -241,7 +243,7 @@ namespace HwandazaWebService.RaspiModules
 
         public async void Run()
         {
-            //turn on random lights the lights for random minutes from list 1 to 20 minutes
+            //turn on random lights the lights for random minutes from list 10 seconds to 5 minutes
             var r = new Random();
             var randGpio = _gpioList[r.Next(_gpioList.Count)];
             randGpio.Write(GpioPinValue.Low);
@@ -336,15 +338,25 @@ namespace HwandazaWebService.RaspiModules
         private void Schedule()
         {
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 0, 0, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 0, 15, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 0, 30, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 0, 45, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 1, 0, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 1, 15, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 1, 30, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 1, 45, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 2, 0, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 2, 15, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 2, 30, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 2, 45, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 3, 0, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 3, 15, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 3, 30, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 3, 45, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 4, 0, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 4, 15, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 4, 30, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 4, 45, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 18, 0, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 18, 30, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 19, 0, 0), this);
@@ -352,11 +364,17 @@ namespace HwandazaWebService.RaspiModules
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 20, 0, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 20, 30, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 21, 0, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 21, 15, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 21, 30, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 21, 45, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 22, 0, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 22, 15, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 22, 30, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 22, 45, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 23, 0, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 23, 15, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 23, 30, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 23, 45, 0), this);
         }
 
         public void TurnOnLights(IList<string> lights)
