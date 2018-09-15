@@ -11,39 +11,6 @@ namespace HwandazaWebService.RaspiModules
 {
     public sealed class RandomLights : IModule
     {
-        const int SixtyMinutesDelayMs = 3600000;
-        const int ThirtyMinutesDelayMs = 1800000;
-        const int TwentyMinutesDelayMs = 1200000;
-        const int FifteenMinutesDelayMs = 900000;
-        const int TenMinutesDelayMs = 600000;
-        const int FiveMinutesDelayMs = 300000;
-        const int FourMinutes = 240000;
-        const int ThreeMinutes = 180000;
-        const int TwoMinutes = 120000;
-        const int SeventySecondsDelayMs = 70000;
-        const int OneMinuteDelayMs = 60000;
-        const int TenSecondsDelayMs = 10000;
-        const int FiveSecondsDelayMs = 5000;
-        const int ThreeSecondsDelayMs = 3000;
-        const int OneSecondDelayMs = 1000;
-        const int HalfSecondDelayMs = 500;
-        const int QuarterSecondDelayMs = 250;
-        const int FiftyMsDelayMs = 50;
-        const string Running = "Running";
-        const string Stopped = "Stopped";
-
-        private struct Lights
-        {
-            public const string M1 = "m1";
-            public const string M2 = "m2";
-            public const string L3 = "l3";
-            public const string L4 = "l4";
-            public const string L5 = "l5";
-            public const string L6 = "l6";
-        }
-
-
-
         private const int RandomLightsM1PowerPin = 25; //turn lights inside the house
         private const int RandomLightsM2PowerPin = 12; //turn lights on outside the house
         private const int RandomLightsL3PowerPin = 16; //turn on lights in the main garage
@@ -92,7 +59,7 @@ namespace HwandazaWebService.RaspiModules
                           AdcVoltage = 0.0f,
                           IsRunning = false,
                           LightsStatus = _lightsStatus,
-                          StatusText = Stopped
+                          StatusText = Const.Stopped
                       };
 
             _gpioList = new List<GpioPin>();
@@ -101,11 +68,11 @@ namespace HwandazaWebService.RaspiModules
             _isManualOverideSwitch = false;
             _delayTimeList = new List<int>()
                              {
-                                 OneMinuteDelayMs,
-                                 FiveMinutesDelayMs,
-                                 TenMinutesDelayMs,
-                                 FifteenMinutesDelayMs,
-                                 TwentyMinutesDelayMs
+                                 Const.OneMinuteDelayMs,
+                                 Const.FiveMinutesDelayMs,
+                                 Const.TenMinutesDelayMs,
+                                 Const.FifteenMinutesDelayMs,
+                                 Const.TwentyMinutesDelayMs
                              };
         }
 
@@ -160,13 +127,13 @@ namespace HwandazaWebService.RaspiModules
                     ? GpioPinDriveMode.InputPullUp
                     : GpioPinDriveMode.Input);
 
-            _randomLightsManualOverideSwitch.DebounceTimeout = TimeSpan.FromMilliseconds(FiftyMsDelayMs);
+            _randomLightsManualOverideSwitch.DebounceTimeout = TimeSpan.FromMilliseconds(Const.FiftyMsDelayMs);
             //Register for the ValueChanged event so our RandomLights.ButtonPressed 
             // function is called when the button is pressed
             _randomLightsManualOverideSwitch.ValueChanged += ButtonPressed;
 
             _randomTimerModule = ThreadPoolTimer.CreatePeriodicTimer(ModuleTimerControl,
-                TimeSpan.FromMilliseconds(QuarterSecondDelayMs));
+                TimeSpan.FromMilliseconds(Const.QuarterSecondDelayMs));
             Schedule();
         }
 
@@ -225,8 +192,8 @@ namespace HwandazaWebService.RaspiModules
             }
             _gpioPinValueRandomLightsLed = GpioPinValue.High;
             _gpioPinRandomLightsLed.Write(GpioPinValue.High);
-            //switch off all the lights after twenty minutes
-            await Task.Delay(Convert.ToInt32(TwentyMinutesDelayMs));
+            //switch off all the lights after 10 minutes
+            await Task.Delay(Convert.ToInt32(Const.TenMinutesDelayMs));
             LightsOff();
         }
 
@@ -356,7 +323,7 @@ namespace HwandazaWebService.RaspiModules
         public ModuleStatus ModuleStatus()
         {
             _status.IsRunning = _isRunning;
-            _status.StatusText = _isRunning ? Running : Stopped;
+            _status.StatusText = _isRunning ? Const.Running : Const.Stopped;
             _status.LightsStatus = _lightsStatus;
             return _status;
         }
@@ -378,15 +345,16 @@ namespace HwandazaWebService.RaspiModules
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 3, 30, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 4, 0, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 4, 30, 0), this);
-            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 18, 0, 0), this);
-            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 18, 30, 0), this);
-            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 19, 0, 0), this);
-            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 19, 30, 0), this);
-            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 20, 0, 0), this);
-            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 20, 30, 0), this);
+            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 18, 0, 0), this);
+            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 18, 30, 0), this);
+            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 19, 0, 0), this);
+            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 19, 30, 0), this);
+            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 20, 0, 0), this);
+            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 20, 30, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 21, 0, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 21, 30, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 22, 0, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 22, 30, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 23, 0, 0), this);
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 23, 30, 0), this);
         }
@@ -399,27 +367,27 @@ namespace HwandazaWebService.RaspiModules
                 {
                     switch (light.ToLower())
                     {
-                        case Lights.M1:
+                        case Const.Lights.M1:
                             _gpioPinRandomLightsM1Power.Write(GpioPinValue.Low);
                             _lightsStatus.IsOnM1 = true;
                             break;
-                        case Lights.M2:
+                        case Const.Lights.M2:
                             _gpioPinRandomLightsM2Power.Write(GpioPinValue.Low);
                             _lightsStatus.IsOnM2 = true;
                             break;
-                        case Lights.L3:
+                        case Const.Lights.L3:
                             _gpioPinRandomLightsL3Power.Write(GpioPinValue.Low);
                             _lightsStatus.IsOnL3 = true;
                             break;
-                        case Lights.L4:
+                        case Const.Lights.L4:
                             _gpioPinRandomLightsL4Power.Write(GpioPinValue.Low);
                             _lightsStatus.IsOnL4 = true;
                             break;
-                        case Lights.L5:
+                        case Const.Lights.L5:
                             _gpioPinRandomLightsL5Power.Write(GpioPinValue.Low);
                             _lightsStatus.IsOnL5 = true;
                             break;
-                        case Lights.L6:
+                        case Const.Lights.L6:
                             _gpioPinRandomLightsL6Power.Write(GpioPinValue.Low);
                             _lightsStatus.IsOnL6 = true;
                             break;
@@ -458,27 +426,27 @@ namespace HwandazaWebService.RaspiModules
                 {
                     switch (light.ToLower())
                     {
-                        case Lights.M1:
+                        case Const.Lights.M1:
                             _gpioPinRandomLightsM1Power.Write(GpioPinValue.High);
                             _lightsStatus.IsOnM1 = false;
                             break;
-                        case Lights.M2:
+                        case Const.Lights.M2:
                             _gpioPinRandomLightsM2Power.Write(GpioPinValue.High);
                             _lightsStatus.IsOnM2 = false;
                             break;
-                        case Lights.L3:
+                        case Const.Lights.L3:
                             _gpioPinRandomLightsL3Power.Write(GpioPinValue.High);
                             _lightsStatus.IsOnL3 = false;
                             break;
-                        case Lights.L4:
+                        case Const.Lights.L4:
                             _gpioPinRandomLightsL4Power.Write(GpioPinValue.High);
                             _lightsStatus.IsOnL4 = false;
                             break;
-                        case Lights.L5:
+                        case Const.Lights.L5:
                             _gpioPinRandomLightsL5Power.Write(GpioPinValue.High);
                             _lightsStatus.IsOnL5 = false;
                             break;
-                        case Lights.L6:
+                        case Const.Lights.L6:
                             _gpioPinRandomLightsL6Power.Write(GpioPinValue.High);
                             _lightsStatus.IsOnL6 = false;
                             break;
@@ -507,23 +475,23 @@ namespace HwandazaWebService.RaspiModules
                 {
                     switch (light.ToLower())
                     {
-                        case Lights.M1:
-                            ToggleLight(_lightsStatus.IsOnM1, Lights.M1);
+                        case Const.Lights.M1:
+                            ToggleLight(_lightsStatus.IsOnM1, Const.Lights.M1);
                             break;
-                        case Lights.M2:
-                            ToggleLight(_lightsStatus.IsOnM2, Lights.M2);
+                        case Const.Lights.M2:
+                            ToggleLight(_lightsStatus.IsOnM2, Const.Lights.M2);
                             break;
-                        case Lights.L3:
-                            ToggleLight(_lightsStatus.IsOnL3, Lights.L3);
+                        case Const.Lights.L3:
+                            ToggleLight(_lightsStatus.IsOnL3, Const.Lights.L3);
                             break;
-                        case Lights.L4:
-                            ToggleLight(_lightsStatus.IsOnL4, Lights.L4);
+                        case Const.Lights.L4:
+                            ToggleLight(_lightsStatus.IsOnL4, Const.Lights.L4);
                             break;
-                        case Lights.L5:
-                            ToggleLight(_lightsStatus.IsOnL5, Lights.L5);
+                        case Const.Lights.L5:
+                            ToggleLight(_lightsStatus.IsOnL5, Const.Lights.L5);
                             break;
-                        case Lights.L6:
-                            ToggleLight(_lightsStatus.IsOnL6, Lights.L6);
+                        case Const.Lights.L6:
+                            ToggleLight(_lightsStatus.IsOnL6, Const.Lights.L6);
                             break;
                     }
                 }

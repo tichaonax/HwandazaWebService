@@ -14,41 +14,6 @@ namespace HwandazaWebService.RaspiModules
     */
     public sealed class MainWaterPump : IModule
     {
-        static class Const
-        {
-            public const int SixtyMinutesDelayMs = 3600000;
-            public const int ThirtyMinutesDelayMs = 1800000;
-            public const int TwentyMinutesDelayMs = 1200000;
-            public const int FifteenMinutesDelayMs = 900000;
-            public const int TenMinutesDelayMs = 600000;
-            public const int FiveMinutesDelayMs = 300000;
-            public const int FourMinutes = 240000;
-            public const int ThreeMinutes = 180000;
-            public const int TwoMinutes = 120000;
-            public const int SeventySecondsDelayMs = 70000;
-            public const int OneMinuteDelayMs = 60000;
-            public const int TenSecondsDelayMs = 10000;
-            public const int FiveSecondsDelayMs = 5000;
-            public const int ThreeSecondsDelayMs = 3000;
-            public const int OneSecondDelayMs = 1000;
-            public const int HalfSecondDelayMs = 500;
-            public const int QuarterSecondDelayMs = 250;
-            public const int FiftyMsDelayMs = 50;
-            public const string Running = "Running";
-            public const string Stopped = "Stopped";
-
-            public const string MainWaterPump = "mainwaterpump";
-            public const string FishPondPump = "fishpondpump";
-            public const string RandomLights = "randomlights";
-            public const string LawnIrrigator = "lawnirrigator";
-            public const string Operations = "operations";
-
-            public const string CommandOn = "ON";
-            public const string CommandOff = "OFF";
-            public const string CommandOperations = "OPERATIONS";
-            public const string CommandStatus = "STATUS";
-        }
-
         private readonly Mcp3008AdcCtrl _mcpAdcController;
         private const int WaterPumpPowerPin = 21;
         private const int WaterPumpLedPin = 18;
@@ -161,7 +126,7 @@ namespace HwandazaWebService.RaspiModules
                 }
                 _gpioPinValueWaterPumpLed = GpioPinValue.High;
                 
-                //run pump for 240s and then stop
+                //run pump for 240s 4 minutes and then stop
                 await Task.Delay(Convert.ToInt32(Const.FourMinutes));
             }
             Stop();
@@ -223,7 +188,7 @@ namespace HwandazaWebService.RaspiModules
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 7, 30, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 7, 45, 0), this);
 
-            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 8, 0, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 8, 0, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 8, 15, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 8, 30, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 8, 45, 0), this);
@@ -235,45 +200,45 @@ namespace HwandazaWebService.RaspiModules
 
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 10, 0, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 10, 15, 0), this);
-            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 10, 30, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 10, 30, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 10, 45, 0), this);
 
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 11, 0, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 11, 15, 0), this);
-            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 11, 30, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 11, 30, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 11, 45, 0), this);
 
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 12, 0, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 12, 15, 0), this);
-            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 12, 30, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 12, 30, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 12, 45, 0), this);
 
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 13, 0, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 13, 15, 0), this);
-            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 13, 30, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 13, 30, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 13, 45, 0), this);
 
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 14, 0, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 14, 15, 0), this);
-            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 14, 30, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 14, 30, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 14, 45, 0), this);
 
-            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 15, 0, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 15, 0, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 15, 15, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 15, 30, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 15, 45, 0), this);
 
-            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 16, 0, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 16, 0, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 16, 15, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 16, 30, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 16, 45, 0), this);
 
-            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 17, 0, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 17, 0, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 17, 15, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 17, 30, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 17, 45, 0), this);
 
-            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 18, 0, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 18, 0, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 18, 15, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 18, 30, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 18, 45, 0), this);
