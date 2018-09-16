@@ -1,10 +1,13 @@
-﻿namespace HwandazaWebService.Utils
+﻿using System;
+
+namespace HwandazaWebService.Utils
 {
     public sealed class ModuleStatus
     {
         public string StatusText { get; set; }
         public float AdcVoltage { get; set; }
         public bool IsRunning { get; set; }
+        public DateTime LastUpdate { get; set; }
         public LightsStatus LightsStatus { get; set; }
     }
 

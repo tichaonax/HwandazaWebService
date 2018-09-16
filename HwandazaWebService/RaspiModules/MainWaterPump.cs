@@ -27,6 +27,7 @@ namespace HwandazaWebService.RaspiModules
 
         private bool _isManualOverideSwitch;
         private bool _isRunning;
+        private DateTime _lastUpdate;
 
         private GpioPinValue _gpioPinValueWaterPumpLed = GpioPinValue.High;
 
@@ -40,6 +41,7 @@ namespace HwandazaWebService.RaspiModules
             _gpio = GpioController.GetDefault();
             _isRunning = false;
             _isManualOverideSwitch = false;
+            _lastUpdate = DateTime.Now;
         }
 
         public void InitializeGPIO()
@@ -123,6 +125,7 @@ namespace HwandazaWebService.RaspiModules
                 lock (SpinLock)
                 {
                     _isRunning = true;
+                    _lastUpdate = DateTime.Now;
                 }
                 _gpioPinValueWaterPumpLed = GpioPinValue.High;
                 
@@ -140,6 +143,7 @@ namespace HwandazaWebService.RaspiModules
             lock (SpinLock)
             {
                 _isRunning = false;
+                _lastUpdate = DateTime.Now;
             }
             _gpioPinValueWaterPumpLed = GpioPinValue.Low;
             _gpioPinWaterPumpLed.Write(GpioPinValue.Low);
@@ -290,8 +294,9 @@ namespace HwandazaWebService.RaspiModules
                    {
                        AdcVoltage = ReadAdcLevel(),
                        IsRunning = _isRunning,
-                       StatusText = _isRunning ? Const.Running : Const.Stopped
-                   };
+                       StatusText = _isRunning ? Const.Running : Const.Stopped,
+                       LastUpdate = _lastUpdate,
+        };
         }
 
         public float ReadAdcLevel()

@@ -22,6 +22,7 @@ namespace HwandazaWebService.RaspiModules
         private static readonly object SpinLock = new object();
 
         private bool _isRunning;
+        private DateTime _lastUpdate ;
         private GpioPinValue _gpioPinValueLawnIrrigatorLed = GpioPinValue.Low;
 
         private const float LawnMoistureLow = 3.0F;
@@ -33,6 +34,7 @@ namespace HwandazaWebService.RaspiModules
             _gpio = GpioController.GetDefault();
             _isRunning = false;
             _isManualOverideSwitch = false;
+            _lastUpdate = DateTime.Now;
         }
         
         public void ButtonPressed(GpioPin sender, GpioPinValueChangedEventArgs e)
@@ -70,6 +72,7 @@ namespace HwandazaWebService.RaspiModules
                 lock (SpinLock)
                 {
                     _isRunning = true;
+                    _lastUpdate = DateTime.Now;
                 }
                 _gpioPinValueLawnIrrigatorLed = GpioPinValue.High;
                 //run pump for30 minutes
@@ -86,6 +89,7 @@ namespace HwandazaWebService.RaspiModules
             lock (SpinLock)
             {
                 _isRunning = false;
+                _lastUpdate = DateTime.Now;
             }
             _gpioPinValueLawnIrrigatorLed = GpioPinValue.Low;
             _gpioPinLawnIrrigatorLed.Write(GpioPinValue.Low);
@@ -125,8 +129,9 @@ namespace HwandazaWebService.RaspiModules
             {
                 AdcVoltage = ReadAdcLevel(),
                 IsRunning = _isRunning,
-                StatusText = _isRunning ? Const.Running : Const.Stopped
-            };
+                StatusText = _isRunning ? Const.Running : Const.Stopped,
+                LastUpdate = _lastUpdate,
+        };
         }
 
         public void InitializeGPIO()

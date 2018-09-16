@@ -3,18 +3,21 @@
     public sealed class WaterPump
     {
         public int power { get; set; }
+        public string lastUpdate { get; set; }
         public double adcFloatValue { get; set; }
     }
 
     public sealed class Irrigator
     {
         public int power { get; set; }
+        public string lastUpdate { get; set; }
         public double adcFloatValue { get; set; }
     }
 
     public sealed class FishPond
     {
         public int power { get; set; }
+        public string lastUpdate { get; set; }
         public double adcFloatValue { get; set; }
     }
 

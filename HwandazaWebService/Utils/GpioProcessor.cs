@@ -170,7 +170,7 @@ namespace HwandazaWebService.Utils
 
                 case Const.SetSystemDate:
                 case Const.SetSystemTime:
-                    await UpdateSyatemDateTimeAsync(request);
+                    UpdateSyatemDateTimeAsync(request);
                     return GetSystemDateTime();
 
                 case Const.GetSupporterdCommandList:
@@ -189,7 +189,7 @@ namespace HwandazaWebService.Utils
             return ActOnCommandAsync(request);
         }
 
-        private static async System.Threading.Tasks.Task UpdateSyatemDateTimeAsync(HwandazaCommand request)
+        private static void UpdateSyatemDateTimeAsync(HwandazaCommand request)
         {
             var serializedRequest = JsonConvert.SerializeObject(request);
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
@@ -225,16 +225,19 @@ namespace HwandazaWebService.Utils
                         {
                             power = waterPump.IsRunning ? 1 : 0,
                             adcFloatValue = waterPump.AdcVoltage,
+                            lastUpdate = waterPump.LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
                         },
                         FishPond = new FishPond()
                         {
                             power = fishPond.IsRunning ? 1 : 0,
                             adcFloatValue = fishPond.AdcVoltage,
+                            lastUpdate = fishPond.LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
                         },
                         Irrigator = new Irrigator()
                         {
                             power = lawnIrrigator.IsRunning ? 1 : 0,
                             adcFloatValue = lawnIrrigator.AdcVoltage,
+                            lastUpdate = lawnIrrigator.LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
                         }
                     },
                     lights = new Lights()
