@@ -179,8 +179,8 @@ namespace HwandazaWebService.Utils
 
             return new AutomationError()
             {
-                Error = "Command not recognized",
-                Request = request
+                error = "Command not recognized",
+                request = request
             };
         }
 
@@ -213,41 +213,45 @@ namespace HwandazaWebService.Utils
             var lawnIrrigator = _lawnIrrigator.ModuleStatus();
 
             var lights = _randomLights.ModuleStatus().LightsStatus;
-
+            
             return new HwandazaAutomation()
             {
+                systemUpTime = _systemsHeartBeat.GetSystemUpTime(),
                 statusDate = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
                 status = new Status()
                 {
                     modules = new Modules()
                     {
-                        WaterPump = new WaterPump()
+                        waterPump = new WaterPump()
                         {
                             power = waterPump.IsRunning ? 1 : 0,
                             adcFloatValue = waterPump.AdcVoltage,
                             lastUpdate = waterPump.LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
                         },
-                        FishPond = new FishPond()
+
+                        fishPond = new FishPond()
                         {
                             power = fishPond.IsRunning ? 1 : 0,
                             adcFloatValue = fishPond.AdcVoltage,
                             lastUpdate = fishPond.LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
                         },
-                        Irrigator = new Irrigator()
+
+                        irrigator = new Irrigator()
                         {
                             power = lawnIrrigator.IsRunning ? 1 : 0,
                             adcFloatValue = lawnIrrigator.AdcVoltage,
                             lastUpdate = lawnIrrigator.LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
                         }
                     },
+
                     lights = new Lights()
                     {
-                        L3 = lights.IsOnL3 ? 1 : 0,
-                        L4 = lights.IsOnL4 ? 1 : 0,
-                        L5 = lights.IsOnL5 ? 1 : 0,
-                        L6 = lights.IsOnL6 ? 1 : 0,
-                        M1 = lights.IsOnM1 ? 1 : 0,
-                        M2 = lights.IsOnM2 ? 1 : 0
+                        l3 = lights.IsOnL3 ? 1 : 0,
+                        l4 = lights.IsOnL4 ? 1 : 0,
+                        l5 = lights.IsOnL5 ? 1 : 0,
+                        l6 = lights.IsOnL6 ? 1 : 0,
+                        m1 = lights.IsOnM1 ? 1 : 0,
+                        m2 = lights.IsOnM2 ? 1 : 0
                     }
                 }
             };

@@ -29,7 +29,14 @@ namespace HwandazaWebService.RaspiModules
         private GpioPinValue _gpioPinValueSystemsHeartBeatLed;
         private readonly IList<IModule> _modules;   //List of modules that need to be gracefully terminated on systemsgutdown
 
+        private readonly string _systemUpTime = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt");
+
         private static readonly object SpinLock = new object();
+
+        public string GetSystemUpTime()
+        {
+            return _systemUpTime;
+        }
 
         public SystemsHeartBeat(IList<IModule> modules)
         {
