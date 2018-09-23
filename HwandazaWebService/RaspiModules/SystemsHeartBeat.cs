@@ -23,7 +23,7 @@ namespace HwandazaWebService.RaspiModules
         private GpioPin _gpioPinSystemsHeartBeatLed;
         private GpioPin _systemsHeartBeatManualOverideSwitch;
 
-        private int _shutdownCount = 5;
+        private int _shutdownCount = 3;
         private ThreadPoolTimer _poolTimerShutdown;
         private bool _isRunning;
         private GpioPinValue _gpioPinValueSystemsHeartBeatLed;
@@ -153,7 +153,7 @@ namespace HwandazaWebService.RaspiModules
         {
             lock (SpinLock)
             {
-                _shutdownCount = 5;
+                _shutdownCount = 3;
             }
         }
 
