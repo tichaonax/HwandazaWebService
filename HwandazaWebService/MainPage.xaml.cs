@@ -64,6 +64,7 @@ namespace HwandazaWebService
         private ThreadPoolTimer _poolTimerUiUpdate;
         private ThreadPoolTimer _poolTimerHeartBeat;
         private ThreadPoolTimer _imageTimerHeartBeat;
+        private ThreadPoolTimer _wifiHeartBeat;
 
         private bool _bDateChangedByUser = false;
         private bool _bTimeChangedByUser = false;
@@ -95,6 +96,8 @@ namespace HwandazaWebService
             _imageTimerHeartBeat = ThreadPoolTimer.CreatePeriodicTimer(ImageHeartBeatControlAsync, period: TimeSpan.FromMilliseconds(Const.FiveSecondsDelayMs));
 
             ApplicationData.Current.DataChanged += async (d, a) => await HandleDataChangedEvent(d, a);
+
+            _wifiHeartBeat = ThreadPoolTimer.CreatePeriodicTimer(WifiHeartBeatControlAsync, period: TimeSpan.FromSeconds(Const.TenSecondsDelayMs));
         }
 
         private void SystemHeartBeatControl(ThreadPoolTimer timer)
@@ -144,6 +147,16 @@ namespace HwandazaWebService
 
                            HwandaGrid.Background = new ImageBrush() { ImageSource = image, Stretch = Stretch.UniformToFill, Opacity = 0.75 };
                        }
+                   });
+        }
+
+        private void WifiHeartBeatControlAsync(ThreadPoolTimer timer)
+        {
+
+            var task = Dispatcher.RunAsync(
+                   CoreDispatcherPriority.Normal, async () =>
+                   {
+                       await WifiUtils.CheckWifiStatusAsync();
                    });
         }
 

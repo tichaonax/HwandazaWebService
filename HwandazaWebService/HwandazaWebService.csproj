@@ -121,6 +121,7 @@
     <Compile Include="Utils\ModuleStatus.cs" />
     <Compile Include="Utils\Operations.cs" />
     <Compile Include="Utils\Scheduler.cs" />
+    <Compile Include="Utils\WifiUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
