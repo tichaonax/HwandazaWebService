@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using HwandazaWebService.RaspiModules;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace HwandazaWebService.Utils
 {
@@ -13,9 +14,9 @@ namespace HwandazaWebService.Utils
         private static RandomLights _randomLights;
         private static SystemsHeartBeat _systemsHeartBeat;
 
-        private static dynamic _imageList;
-        private static dynamic _songList;
-        private static dynamic _videoList;
+        private static Task<List<MediaFile>> _imageList;
+        private static Task<List<MediaFile>> _songList;
+        private static Task<List<MediaFile>> _videoList;
 
         private static Random _rnd = new Random();
         private static MediaLibrary _mediaLibrary = new MediaLibrary();
@@ -32,10 +33,10 @@ namespace HwandazaWebService.Utils
             _lawnIrrigator = lawnIrrigator;
             _randomLights = randomLights;
             _systemsHeartBeat = systemsHeartBeat;
-            LoadMediaLibrary();
+            LoadMediaLibraryAsync();
         }
        
-        private static void LoadMediaLibrary()
+        private static void LoadMediaLibraryAsync()
         {
             _songList = _mediaLibrary.GetMediaSongs();
             _imageList = _mediaLibrary.GetMediaImges();
@@ -135,7 +136,7 @@ namespace HwandazaWebService.Utils
                     return Shuffle(_videoList);
 
                 case Const.CommandPictures:
-                    return Shuffle(_imageList);
+                    return _imageList;
 
                 case Const.SystemsHeartbeatIsRunning:
                     return _systemsHeartBeat.IsRunning();
@@ -208,9 +209,9 @@ namespace HwandazaWebService.Utils
             };
         }
 
-        private static List<MediaFile> Shuffle(dynamic dynamicArray)
+        private static List<MediaFile> Shuffle(Task<List<MediaFile>> task)
         {
-            List<MediaFile> list = dynamicArray;
+            List<MediaFile> list = task.Result;
             var cloneList = list.GetRange(0, list.Count);
             var randomList = new List<MediaFile>();
             int rndIndex = 0;
@@ -222,7 +223,7 @@ namespace HwandazaWebService.Utils
                 cloneList.RemoveAt(rndIndex);
             }
 
-            return cloneList;
+            return randomList;
         }
 
         public static dynamic ProcessHwandazaCommand(HwandazaCommand request)

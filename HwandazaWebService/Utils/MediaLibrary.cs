@@ -8,17 +8,17 @@ namespace HwandazaWebService.Utils
 {
     public sealed class MediaLibrary
     {
-        public dynamic GetMediaSongs()
+        public Task<List<MediaFile>> GetMediaSongs()
         {
             return GetSongs();
         }
 
-        public dynamic GetMediaImges()
+        public Task<List<MediaFile>> GetMediaImges()
         {
             return GetImages();
         }
 
-        public dynamic GetMediaVideos()
+        public Task<List<MediaFile>> GetMediaVideos()
         {
             return GetVideos();
         }
