@@ -13,6 +13,13 @@ namespace HwandazaWebService.Utils
         private static RandomLights _randomLights;
         private static SystemsHeartBeat _systemsHeartBeat;
 
+        private static dynamic _imageList;
+        private static dynamic _songList;
+        private static dynamic _videoList;
+
+        private static Random _rnd = new Random();
+        private static MediaLibrary _mediaLibrary = new MediaLibrary();
+
         public static void Initialize(
             MainWaterPump mainWaterPump,
             FishPondPump fishPondPump,
@@ -25,6 +32,14 @@ namespace HwandazaWebService.Utils
             _lawnIrrigator = lawnIrrigator;
             _randomLights = randomLights;
             _systemsHeartBeat = systemsHeartBeat;
+            LoadMediaLibrary();
+        }
+       
+        private static void LoadMediaLibrary()
+        {
+            _songList = _mediaLibrary.GetMediaSongs();
+            _imageList = _mediaLibrary.GetMediaImges();
+            _videoList = _mediaLibrary.GetMediaVideos();
         }
 
         public static void ButtonWaterPump()
@@ -113,6 +128,15 @@ namespace HwandazaWebService.Utils
                 case Const.CommandStatus:
                     return GetSystemStatus();
 
+                case Const.CommandSongs:
+                    return _songList;
+
+                case Const.CommandVideos:
+                    return _videoList;
+
+                case Const.CommandPictures:
+                    return _imageList;
+
                 case Const.SystemsHeartbeatIsRunning:
                     return _systemsHeartBeat.IsRunning();
 
@@ -182,6 +206,22 @@ namespace HwandazaWebService.Utils
                 error = "Command not recognized",
                 request = request
             };
+        }
+
+        private static List<MediaFile> Shuffle(List<MediaFile> list)
+        {
+            var cloneList = list.GetRange(0, list.Count);
+            var randomList = new List<MediaFile>();
+            int rndIndex = 0;
+
+            while (cloneList.Count > 0)
+            {
+                rndIndex = _rnd.Next(0, cloneList.Count);
+                randomList.Add(cloneList[rndIndex]);
+                cloneList.RemoveAt(rndIndex);
+            }
+
+            return cloneList;
         }
 
         public static dynamic ProcessHwandazaCommand(HwandazaCommand request)

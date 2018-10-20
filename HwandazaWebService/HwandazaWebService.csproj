@@ -118,6 +118,7 @@
     <Compile Include="Utils\IoTimerControl.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\Mcp3008AdcCtrl.cs" />
+    <Compile Include="Utils\MediaLibrary.cs" />
     <Compile Include="Utils\ModuleStatus.cs" />
     <Compile Include="Utils\Operations.cs" />
     <Compile Include="Utils\Scheduler.cs" />

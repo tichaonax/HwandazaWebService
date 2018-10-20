@@ -75,6 +75,7 @@ namespace HwandazaWebService
         public MainPage()
         {
             this.InitializeComponent();
+
             LoadBackGroundImages(Const.BackgroundImageFolder);
             InitializeCalender();
             _currentSystemHeartBeatBrush = _ledOffBrush;
@@ -85,7 +86,9 @@ namespace HwandazaWebService
             _fishPondPump = (FishPondPump)modules.First(r => r.Module() is FishPondPump);
             _randomLights = (RandomLights)modules.First(r => r.Module() is RandomLights);
             _systemsHeartBeat = (SystemsHeartBeat)modules.First(r => r.Module() is SystemsHeartBeat);
-            GpioProcessor.Initialize(_mainWaterPump, _fishPondPump, _lawnIrrigator, _randomLights, _systemsHeartBeat);
+
+            GpioProcessor.Initialize(_mainWaterPump, _fishPondPump,_lawnIrrigator,_randomLights,_systemsHeartBeat);
+
             _systemsHeartBeat = (SystemsHeartBeat)modules.First(r => r.Module() is SystemsHeartBeat);
 
             //setup timer to update the UI

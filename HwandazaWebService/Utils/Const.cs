@@ -52,6 +52,12 @@
 
         public const string CommandStatus = "status";
 
+        public const string CommandSongs = "songs";
+
+        public const string CommandVideos = "videos";
+
+        public const string CommandPictures = "pictures";
+
         public const string MainWaterPump = "mainwaterpump";
 
         public const string FishPondPump = "fishpondpump";
