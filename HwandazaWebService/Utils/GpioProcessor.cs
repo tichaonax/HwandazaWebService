@@ -136,7 +136,7 @@ namespace HwandazaWebService.Utils
                     return Shuffle(_videoList);
 
                 case Const.CommandPictures:
-                    return _imageList;
+                    return Shuffle(_imageList);
 
                 case Const.SystemsHeartbeatIsRunning:
                     return _systemsHeartBeat.IsRunning();
