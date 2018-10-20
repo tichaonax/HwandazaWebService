@@ -129,13 +129,13 @@ namespace HwandazaWebService.Utils
                     return GetSystemStatus();
 
                 case Const.CommandSongs:
-                    return _songList;
+                    return Shuffle(_songList);
 
                 case Const.CommandVideos:
-                    return _videoList;
+                    return Shuffle(_videoList);
 
                 case Const.CommandPictures:
-                    return _imageList;
+                    return Shuffle(_imageList);
 
                 case Const.SystemsHeartbeatIsRunning:
                     return _systemsHeartBeat.IsRunning();
@@ -208,8 +208,9 @@ namespace HwandazaWebService.Utils
             };
         }
 
-        private static List<MediaFile> Shuffle(List<MediaFile> list)
+        private static List<MediaFile> Shuffle(dynamic dynamicArray)
         {
+            List<MediaFile> list = dynamicArray;
             var cloneList = list.GetRange(0, list.Count);
             var randomList = new List<MediaFile>();
             int rndIndex = 0;
