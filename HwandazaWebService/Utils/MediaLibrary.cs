@@ -30,7 +30,7 @@ namespace HwandazaWebService.Utils
             StorageFolder picturesFolder = await KnownFolders.GetFolderForUserAsync(null /* current user */, KnownFolderId.MusicLibrary);
             StorageFolderQueryResult queryResult = picturesFolder.CreateFolderQueryWithOptions(queryOptions);
             IReadOnlyList<StorageFolder> folderList = await queryResult.GetFoldersAsync();
-            return await GetFileListAsync(folderList);
+            return await GetFileListAsync(folderList, "\\DefaultAccount\\Music\\");
         }
 
         private async Task<List<MediaFile>> GetImages()
@@ -40,7 +40,7 @@ namespace HwandazaWebService.Utils
             StorageFolder picturesFolder = await KnownFolders.GetFolderForUserAsync(null /* current user */, KnownFolderId.PicturesLibrary);
             StorageFolderQueryResult queryResult = picturesFolder.CreateFolderQueryWithOptions(queryOptions);
             IReadOnlyList<StorageFolder> folderList = await queryResult.GetFoldersAsync();
-            return await GetFileListAsync(folderList);
+            return await GetFileListAsync(folderList, "\\DefaultAccount\\Pictures\\");
         }
 
         private async Task<List<MediaFile>> GetVideos()
@@ -50,10 +50,10 @@ namespace HwandazaWebService.Utils
             StorageFolder picturesFolder = await KnownFolders.GetFolderForUserAsync(null /* current user */, KnownFolderId.VideosLibrary);
             StorageFolderQueryResult queryResult = picturesFolder.CreateFolderQueryWithOptions(queryOptions);
             IReadOnlyList<StorageFolder> folderList = await queryResult.GetFoldersAsync();
-            return await GetFileListAsync(folderList);
+            return await GetFileListAsync(folderList, "\\DefaultAccount\\Videos\\");
         }
 
-        async Task<List<MediaFile>> GetFileListAsync(IReadOnlyList<StorageFolder> folderList)
+        async Task<List<MediaFile>> GetFileListAsync(IReadOnlyList<StorageFolder> folderList, string mediaFilter)
         {
             List<MediaFile> list = new List<MediaFile>();
             foreach (StorageFolder folder in folderList)
@@ -61,18 +61,18 @@ namespace HwandazaWebService.Utils
                 IReadOnlyList<StorageFile> fileList = await folder.GetFilesAsync();
                 foreach (StorageFile file in fileList)
                 {
-                    list.Add(GetMediaFile(file));
+                    list.Add(GetMediaFile(file, mediaFilter));
                 }
             }
             return list;
         }
 
-        private MediaFile GetMediaFile(StorageFile file)
+        private MediaFile GetMediaFile(StorageFile file, string mediaFilter)
         {
             return new MediaFile()
             {
                 Name = file.Name,
-                Path = Uri.EscapeUriString(file.Path.Replace("/", "").Replace("\\", "/")),
+                Path = Uri.EscapeUriString(file.Path.Split(new string[] { mediaFilter }, StringSplitOptions.None)[1].Replace("/", "").Replace("\\", "/")),
                 ContentType = file.ContentType,
                 IsAvailable = file.IsAvailable,
                 DisplayName = file.DisplayName,
