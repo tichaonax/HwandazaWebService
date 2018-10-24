@@ -130,13 +130,19 @@ namespace HwandazaWebService.Utils
                     return GetSystemStatus();
 
                 case Const.CommandSongs:
-                    return Shuffle(_songList);
+                    var songs = Shuffle(_songList);
+                    if (songs.Count > 100) { return songs.GetRange(0, 100); }
+                    return songs;
 
                 case Const.CommandVideos:
-                    return Shuffle(_videoList);
+                    var videos = Shuffle(_videoList);
+                    if (videos.Count > 100) { return videos.GetRange(0, 100); }
+                    return videos;
 
                 case Const.CommandPictures:
-                    return Shuffle(_imageList);
+                    var images = Shuffle(_imageList);
+                    if (images.Count > 100) { return images.GetRange(0, 100); }
+                    return images;
 
                 case Const.SystemsHeartbeatIsRunning:
                     return _systemsHeartBeat.IsRunning();
