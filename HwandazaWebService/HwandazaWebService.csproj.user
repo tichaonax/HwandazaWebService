@@ -20,4 +20,7 @@
     <RemoteDebugEnabled>true</RemoteDebugEnabled>
     <CreateCleanLayout>true</CreateCleanLayout>
   </PropertyGroup>
+  <PropertyGroup>
+    <ProjectView>ShowAllFiles</ProjectView>
+  </PropertyGroup>
 </Project>
