@@ -25,7 +25,7 @@ namespace HwandazaWebService.Utils
            
         private async Task<List<MediaFile>> GetSongs()
         {
-            List<string> fileTypeFilter = new List<string>() { ".mp3", ".wma" };
+            List<string> fileTypeFilter = new List<string>() { ".m4a", ".mp3", ".wma" };
             var queryOptions = new QueryOptions(CommonFileQuery.OrderByName, fileTypeFilter);
             StorageFolder picturesFolder = await KnownFolders.GetFolderForUserAsync(null /* current user */, KnownFolderId.MusicLibrary);
             StorageFolderQueryResult queryResult = picturesFolder.CreateFolderQueryWithOptions(queryOptions);
