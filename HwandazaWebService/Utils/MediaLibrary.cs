@@ -35,7 +35,7 @@ namespace HwandazaWebService.Utils
 
         private async Task<List<MediaFile>> GetImages()
         {
-            List<string> fileTypeFilter = new List<string>() { ".jpg", ".png", ".gif" };
+            List<string> fileTypeFilter = new List<string>() { ".jpeg", ".jpg", ".png", ".gif" };
             var queryOptions = new QueryOptions(CommonFileQuery.OrderByName, fileTypeFilter);
             StorageFolder picturesFolder = await KnownFolders.GetFolderForUserAsync(null /* current user */, KnownFolderId.PicturesLibrary);
             StorageFolderQueryResult queryResult = picturesFolder.CreateFolderQueryWithOptions(queryOptions);
@@ -53,7 +53,7 @@ namespace HwandazaWebService.Utils
             return await GetFileListAsync(folderList, "\\DefaultAccount\\Videos\\", fileTypeFilter);
         }
 
-        async Task<List<MediaFile>> GetFileListAsync(IReadOnlyList<StorageFolder> folderList, string folderFilter, List<string> mediaFilter)
+        async Task<List<MediaFile>> GetFileListAsync(IReadOnlyList<StorageFolder> folderList, string folderFilter, List<string> fileTypeFilter)
         {
             List<MediaFile> list = new List<MediaFile>();
             foreach (StorageFolder folder in folderList)
@@ -61,7 +61,7 @@ namespace HwandazaWebService.Utils
                 IReadOnlyList<StorageFile> fileList = await folder.GetFilesAsync();
                 foreach (StorageFile file in fileList)
                 {
-                    if (mediaFilter.Contains(file.FileType))
+                    if (fileTypeFilter.Contains(file.FileType))
                     {
                         list.Add(GetMediaFile(file, folderFilter));
                     }
