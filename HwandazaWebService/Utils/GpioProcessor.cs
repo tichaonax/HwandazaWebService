@@ -145,7 +145,7 @@ namespace HwandazaWebService.Utils
                     return images;
 
                 case Const.SystemsHeartbeatIsRunning:
-                    return _systemsHeartBeat.IsRunning();
+                    return new SystemsHeartbeat() { IsRunning = _systemsHeartBeat.IsRunning() };
 
                 case Const.FishpondpumpModuleIsRunning:
                     return _fishPondPump.IsRunning();
