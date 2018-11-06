@@ -54,6 +54,10 @@
 
         public const string CommandSongs = "songs";
 
+        public const string CommandNamedSongs = "namedsongs";
+
+        public const string CommandFolderSongs = "foldersongs";
+
         public const string CommandVideos = "videos";
 
         public const string CommandPictures = "pictures";

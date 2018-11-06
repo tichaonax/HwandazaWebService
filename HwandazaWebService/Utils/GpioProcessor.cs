@@ -129,19 +129,25 @@ namespace HwandazaWebService.Utils
                 case Const.CommandStatus:
                     return GetSystemStatus();
 
+                case Const.CommandNamedSongs:
+                    return GetNamedSongs(request);
+
+                case Const.CommandFolderSongs:
+                    return GetFolderSongs(request);
+
                 case Const.CommandSongs:
                     var songs = Shuffle(_songList);
-                    if (songs.Count > 100) { return songs.GetRange(0, 100); }
+                    if (songs.Count > 300) { return songs.GetRange(0, 300); }
                     return songs;
 
                 case Const.CommandVideos:
                     var videos = Shuffle(_videoList);
-                    if (videos.Count > 100) { return videos.GetRange(0, 100); }
+                    if (videos.Count > 200) { return videos.GetRange(0, 200); }
                     return videos;
 
                 case Const.CommandPictures:
                     var images = Shuffle(_imageList);
-                    if (images.Count > 100) { return images.GetRange(0, 100); }
+                    if (images.Count > 500) { return images.GetRange(0, 500); }
                     return images;
 
                 case Const.SystemsHeartbeatIsRunning:
@@ -250,6 +256,40 @@ namespace HwandazaWebService.Utils
             return GetSystemStatus();
         }
 
+        private static dynamic GetFolderSongs(HwandazaCommand request)
+        {
+            var songs = Shuffle(_songList);
+
+            var list = new List<MediaFile>();
+
+            foreach (MediaFile song in songs)
+            {
+                if (song.Name.ToLower().Contains(request.Module.ToLower()))
+                {
+                    list.Add(song);
+                }
+            }
+
+            return list;
+        }
+
+        private static dynamic GetNamedSongs(HwandazaCommand request)
+        {
+            var songs = Shuffle(_songList);
+
+            var list = new List<MediaFile>();
+
+            foreach (MediaFile song in songs)
+            {
+                if (song.Url.ToLower().StartsWith(request.Module.ToLower()))
+                {
+                    list.Add(song);
+                }
+            }
+
+            return list;
+        }
+
         private static HwandazaAutomation GetSystemStatus()
         {
             // interrogate the raspberry pi and get all the information
@@ -309,5 +349,7 @@ namespace HwandazaWebService.Utils
         {
             throw new NotImplementedException();
         }
+
+
     }
 }
