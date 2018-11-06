@@ -113,7 +113,7 @@ namespace HwandazaWebService.Utils
             throw new NotImplementedException();
         }
 
-        private static async System.Threading.Tasks.Task<dynamic> ActOnCommandAsync(HwandazaCommand request)
+        private static async Task<dynamic> ActOnCommandAsync(HwandazaCommand request)
         {
             switch (request.Command.ToLower())
             {
@@ -256,23 +256,6 @@ namespace HwandazaWebService.Utils
             return GetSystemStatus();
         }
 
-        private static dynamic GetFolderSongs(HwandazaCommand request)
-        {
-            var songs = Shuffle(_songList);
-
-            var list = new List<MediaFile>();
-
-            foreach (MediaFile song in songs)
-            {
-                if (song.Name.ToLower().Contains(request.Module.ToLower()))
-                {
-                    list.Add(song);
-                }
-            }
-
-            return list;
-        }
-
         private static dynamic GetNamedSongs(HwandazaCommand request)
         {
             var songs = Shuffle(_songList);
@@ -281,7 +264,24 @@ namespace HwandazaWebService.Utils
 
             foreach (MediaFile song in songs)
             {
-                if (song.Url.ToLower().StartsWith(request.Module.ToLower()))
+                if (song.Name.ToLower().Contains(Uri.EscapeUriString(request.Module.ToLower())))
+                {
+                    list.Add(song);
+                }
+            }
+
+            return list;
+        }
+
+        private static dynamic GetFolderSongs(HwandazaCommand request)
+        {
+            var songs = Shuffle(_songList);
+
+            var list = new List<MediaFile>();
+
+            foreach (MediaFile song in songs)
+            {
+                if (song.Url.ToLower().StartsWith(Uri.EscapeUriString(request.Module.ToLower())))
                 {
                     list.Add(song);
                 }
@@ -301,9 +301,12 @@ namespace HwandazaWebService.Utils
             var lawnIrrigator = _lawnIrrigator.ModuleStatus();
 
             var lights = _randomLights.ModuleStatus().LightsStatus;
+
+            var isRunning = _systemsHeartBeat.IsRunning();
             
             return new HwandazaAutomation()
             {
+                isRunning = isRunning,
                 systemUpTime = _systemsHeartBeat.GetSystemUpTime(),
                 statusDate = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
                 status = new Status()
@@ -349,7 +352,5 @@ namespace HwandazaWebService.Utils
         {
             throw new NotImplementedException();
         }
-
-
     }
 }

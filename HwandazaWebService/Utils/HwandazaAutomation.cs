@@ -49,6 +49,7 @@
         public string systemUpTime { get; set; }
         public string statusDate { get; set; }
         public Status status { get; set; }
+        public bool isRunning { get; set; }
     }
 
     public sealed class AutomationError
