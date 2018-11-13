@@ -92,5 +92,6 @@ namespace HwandazaWebService.Utils
         public string Url { get; set; }
         //public bool IsAvailable { get; set; }
         //public string FileType { get; set; }
+        public string Cover { get; set; }
     }
 }

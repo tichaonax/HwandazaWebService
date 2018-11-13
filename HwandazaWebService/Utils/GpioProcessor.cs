@@ -136,8 +136,8 @@ namespace HwandazaWebService.Utils
                     return GetFolderSongs(request);
 
                 case Const.CommandSongs:
-                    var songs = Shuffle(_songList);
-                    if (songs.Count > 300) { return songs.GetRange(0, 300); }
+                    var songs = ShuffleSongsWithImages(_songList);
+                    if (songs.Count > 300) { return songs.GetRange(0, 500); }
                     return songs;
 
                 case Const.CommandVideos:
@@ -238,6 +238,30 @@ namespace HwandazaWebService.Utils
             return randomList;
         }
 
+        private static List<MediaFile> ShuffleSongsWithImages(Task<List<MediaFile>> task)
+        {
+            List<MediaFile> list = task.Result;
+            var cloneList = list.GetRange(0, list.Count);
+            var randomList = new List<MediaFile>();
+            int rndIndex = 0;
+
+            while (cloneList.Count > 0)
+            {
+                rndIndex = _rnd.Next(0, cloneList.Count);
+                cloneList[rndIndex].Cover = GetRandomImageFromPictures();
+                randomList.Add(cloneList[rndIndex]);
+                cloneList.RemoveAt(rndIndex);
+            }
+
+            return randomList;
+        }
+
+        private static string GetRandomImageFromPictures()
+        {
+            var rndIndex = _rnd.Next(0, _imageList.Result.Count);
+            return _imageList.Result[rndIndex].Url;
+        }
+
         public static dynamic ProcessHwandazaCommand(HwandazaCommand request)
         {
             return ActOnCommandAsync(request);
@@ -266,6 +290,7 @@ namespace HwandazaWebService.Utils
             {
                 if (song.Name.ToLower().Contains(Uri.EscapeUriString(request.Module.ToLower())))
                 {
+                    song.Cover = GetRandomImageFromPictures();
                     list.Add(song);
                 }
             }
@@ -283,6 +308,7 @@ namespace HwandazaWebService.Utils
             {
                 if (song.Url.ToLower().StartsWith(Uri.EscapeUriString(request.Module.ToLower())))
                 {
+                    song.Cover = GetRandomImageFromPictures();
                     list.Add(song);
                 }
             }
