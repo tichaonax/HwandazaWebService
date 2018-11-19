@@ -256,10 +256,17 @@ namespace HwandazaWebService.Utils
             return randomList;
         }
 
-        private static string GetRandomImageFromPictures()
+        public static string GetRandomImageFromPictures()
         {
-            var rndIndex = _rnd.Next(0, _imageList.Result.Count);
-            return _imageList.Result[rndIndex].Url;
+            if (_imageList.IsCompleted)
+            {
+                var rndIndex = _rnd.Next(0, _imageList.Result.Count);
+                return _imageList.Result[rndIndex].Url;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public static dynamic ProcessHwandazaCommand(HwandazaCommand request)

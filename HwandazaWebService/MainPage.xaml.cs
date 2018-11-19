@@ -2,32 +2,21 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Background;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Media.SpeechRecognition;
 using Windows.Storage;
 using Windows.System.Threading;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 using HwandazaWebService.Utils;
 using Newtonsoft.Json;
-using Path = System.IO.Path;
 using Windows.System;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Storage.Streams;
 using HwandazaWebService.RaspiModules;
-using Windows.ApplicationModel.AppService;
-using System.Diagnostics;
 using System.Globalization;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
@@ -75,8 +64,6 @@ namespace HwandazaWebService
         public MainPage()
         {
             this.InitializeComponent();
-
-            LoadBackGroundImages(Const.BackgroundImageFolder);
             InitializeCalender();
             _currentSystemHeartBeatBrush = _ledOffBrush;
 
@@ -139,16 +126,23 @@ namespace HwandazaWebService
             var task = Dispatcher.RunAsync(
                    CoreDispatcherPriority.Normal, async () =>
                    {
-                       string uri = string.Format("ms-appx:///{0}", GetNextBackGroundImage());
+                       string uri = GetNextBackGroundImage();
                        if (uri != null)
                        {
-                           StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
-                           BitmapImage image = new BitmapImage();
+                           try
+                           {
+                               StorageFile file = await StorageFile.GetFileFromPathAsync(uri);
+                               BitmapImage image = new BitmapImage();
 
-                           IRandomAccessStream ram = await file.OpenAsync(FileAccessMode.Read);
-                           await image.SetSourceAsync(ram);
+                               IRandomAccessStream ram = await file.OpenAsync(FileAccessMode.Read);
+                               await image.SetSourceAsync(ram);
 
-                           HwandaGrid.Background = new ImageBrush() { ImageSource = image, Stretch = Stretch.UniformToFill, Opacity = 0.75 };
+                               HwandaGrid.Background = new ImageBrush() { ImageSource = image, Stretch = Stretch.UniformToFill, Opacity = 0.75 };
+                           }
+                           catch (Exception ex)
+                           {
+                               // await Logger.WriteDebugLog($"Background Image Exception  => {ex.Message}");
+                           }
                        }
                    });
         }
@@ -360,7 +354,6 @@ namespace HwandazaWebService
                         WaterPumpADC.Text = string.Format("ADC: {0:0.00}V", _mainWaterPump.ModuleStatus().AdcVoltage);
                         PondPumpADC.Text = string.Format("ADC: {0:0.00}V", _fishPondPump.ModuleStatus().AdcVoltage);
                         LawnIrrigatorADC.Text = string.Format("ADC: {0:0.00}V", _lawnIrrigator.ModuleStatus().AdcVoltage);
-                        /* Display the value on screen                      */
                     });
         }
         private void SetLightStatus(string light)
@@ -390,12 +383,10 @@ namespace HwandazaWebService
 
         private void SetLedColor(Ellipse led, bool status)
         {
-            /* UI updates must be invoked on the UI thread */
             var task = Dispatcher.RunAsync(
                     CoreDispatcherPriority.Normal, () =>
                     {
                         led.Fill = status ? _ghostWhiteBrush : _ledOffBrush;
-                        /* Display the value on screen                      */
                     });
         }
 
@@ -444,34 +435,16 @@ namespace HwandazaWebService
         {
             _bTimeChangedByUser = true;
         }
-
-        private static void LoadBackGroundImages(string path)
-        {
-            ProcessDirectory(path);
-        }
-
-        private static void ProcessDirectory(string targetDirectory)
-        {
-            // Process the list of files found in the directory.
-            string[] fileEntries = Directory.GetFiles(targetDirectory);
-            foreach (string fileName in fileEntries)
-                AddBackGroundImage(fileName);
-
-            // Recurse into subdirectories of this directory.
-            string[] subdirectoryEntries = Directory.GetDirectories(targetDirectory);
-            foreach (string subdirectory in subdirectoryEntries)
-                ProcessDirectory(subdirectory);
-        }
-
-        private static void AddBackGroundImage(string path)
-        {
-            BackgroundImageList.Add(path);
-        }
-
+        
         private static string GetNextBackGroundImage()
         {
-            int r = _rnd.Next(BackgroundImageList.Count);
-            return BackgroundImageList[r];
+            var backdroundImage = GpioProcessor.GetRandomImageFromPictures();
+            if (backdroundImage != null)
+            {
+                return (Const.DefaultAccountPictureFolder + "\\" + Uri.UnescapeDataString(backdroundImage.Replace("/", "\\")));
+            }
+
+            return null;
         }
 
         private static async Task SetSystemDateAsync(DateTime date)

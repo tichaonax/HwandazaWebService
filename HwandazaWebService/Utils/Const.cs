@@ -123,6 +123,12 @@
             public const string L6 = "l6";
         }
 
-        public const string BackgroundImageFolder = @"Assets\Album";
+        public const string BackgroundImageFolder = @"Assets\Album\..\..\..\..\..\";
+        //public const string BackgroundImageFolder = @"Pictures";
+        public const string DefaultAccountMusicFolder = "C:\\Data\\Users\\DefaultAccount\\Music";
+        public const string DefaultAccountPictureFolder = "C:\\Data\\Users\\DefaultAccount\\Pictures";
+        public const string DefaultAccountVideoFolder = "C:\\Data\\Users\\DefaultAccount\\Videos";
+
+        //public const string BackgroundImageFolder = DefaultAccountPictureFolder;
     }
 }
