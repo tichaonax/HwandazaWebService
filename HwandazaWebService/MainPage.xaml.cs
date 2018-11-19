@@ -87,7 +87,7 @@ namespace HwandazaWebService
 
             ApplicationData.Current.DataChanged += async (d, a) => await HandleDataChangedEvent(d, a);
 
-            _wifiHeartBeat = ThreadPoolTimer.CreatePeriodicTimer(WifiHeartBeatControlAsync, period: TimeSpan.FromSeconds(Const.TenSecondsDelayMs));
+            //_wifiHeartBeat = ThreadPoolTimer.CreatePeriodicTimer(WifiHeartBeatControlAsync, period: TimeSpan.FromSeconds(Const.TenSecondsDelayMs));
         }
 
         private void SystemHeartBeatControl(ThreadPoolTimer timer)
@@ -129,20 +129,13 @@ namespace HwandazaWebService
                        string uri = GetNextBackGroundImage();
                        if (uri != null)
                        {
-                           try
-                           {
-                               StorageFile file = await StorageFile.GetFileFromPathAsync(uri);
-                               BitmapImage image = new BitmapImage();
+                           StorageFile file = await StorageFile.GetFileFromPathAsync(uri);
+                           BitmapImage image = new BitmapImage();
 
-                               IRandomAccessStream ram = await file.OpenAsync(FileAccessMode.Read);
-                               await image.SetSourceAsync(ram);
+                           IRandomAccessStream ram = await file.OpenAsync(FileAccessMode.Read);
+                           await image.SetSourceAsync(ram);
 
-                               HwandaGrid.Background = new ImageBrush() { ImageSource = image, Stretch = Stretch.UniformToFill, Opacity = 0.75 };
-                           }
-                           catch (Exception ex)
-                           {
-                               // await Logger.WriteDebugLog($"Background Image Exception  => {ex.Message}");
-                           }
+                           HwandaGrid.Background = new ImageBrush() { ImageSource = image, Stretch = Stretch.UniformToFill, Opacity = 0.75 };
                        }
                    });
         }
