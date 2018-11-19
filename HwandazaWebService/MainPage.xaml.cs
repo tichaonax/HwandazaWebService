@@ -87,7 +87,7 @@ namespace HwandazaWebService
 
             ApplicationData.Current.DataChanged += async (d, a) => await HandleDataChangedEvent(d, a);
 
-            //_wifiHeartBeat = ThreadPoolTimer.CreatePeriodicTimer(WifiHeartBeatControlAsync, period: TimeSpan.FromSeconds(Const.TenSecondsDelayMs));
+            _wifiHeartBeat = ThreadPoolTimer.CreatePeriodicTimer(WifiHeartBeatControlAsync, period: TimeSpan.FromSeconds(Const.TenSecondsDelayMs));
         }
 
         private void SystemHeartBeatControl(ThreadPoolTimer timer)
@@ -129,13 +129,21 @@ namespace HwandazaWebService
                        string uri = GetNextBackGroundImage();
                        if (uri != null)
                        {
-                           StorageFile file = await StorageFile.GetFileFromPathAsync(uri);
-                           BitmapImage image = new BitmapImage();
+                           try
+                           {
+                               StorageFile file = await StorageFile.GetFileFromPathAsync(uri);
+                               BitmapImage image = new BitmapImage();
 
-                           IRandomAccessStream ram = await file.OpenAsync(FileAccessMode.Read);
-                           await image.SetSourceAsync(ram);
+                               IRandomAccessStream ram = await file.OpenAsync(FileAccessMode.Read);
+                               await image.SetSourceAsync(ram);
 
-                           HwandaGrid.Background = new ImageBrush() { ImageSource = image, Stretch = Stretch.UniformToFill, Opacity = 0.75 };
+                               HwandaGrid.Background = new ImageBrush() { ImageSource = image, Stretch = Stretch.UniformToFill, Opacity = 0.65 };
+                           }
+                           catch(Exception ex)
+                           {
+                               //do nothing
+                               //await Logger.WriteDebugLog("ImageHeartBeatControlAsync Error Message:{0}", ex.Message);
+                           }
                        }
                    });
         }
