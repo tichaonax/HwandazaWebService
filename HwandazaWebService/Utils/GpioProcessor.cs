@@ -135,6 +135,8 @@ namespace HwandazaWebService.Utils
                 case Const.CommandFolderSongs:
                     return GetFolderSongs(request);
 
+                case Const.CommandRootFolders:
+                    return GetRootFolders(request);
                 case Const.CommandSongs:
                     var songs = ShuffleSongsWithImages(_songList);
                     if (songs.Count > 300) { return songs.GetRange(0, 500); }
@@ -295,7 +297,8 @@ namespace HwandazaWebService.Utils
 
             foreach (MediaFile song in songs)
             {
-                if (song.Name.ToLower().Contains(Uri.EscapeUriString(request.Module.ToLower())))
+
+                if (Uri.UnescapeDataString(song.Name.ToLower()).Contains(request.Module.ToLower()))
                 {
                     song.Cover = GetRandomImageFromPictures();
                     list.Add(song);
@@ -313,10 +316,26 @@ namespace HwandazaWebService.Utils
 
             foreach (MediaFile song in songs)
             {
-                if (song.Url.ToLower().StartsWith(Uri.EscapeUriString(request.Module.ToLower())))
+                if (Uri.UnescapeDataString(song.Url.ToLower()).StartsWith(request.Module.ToLower()))
                 {
                     song.Cover = GetRandomImageFromPictures();
                     list.Add(song);
+                }
+            }
+
+            return list;
+        }
+
+        private static dynamic GetRootFolders(HwandazaCommand request)
+        {
+            var list = new List<string>();
+
+            foreach (MediaFile song in _songList.Result)
+            {
+                var newFolder = song.Url.Split(new string[] { "/" }, StringSplitOptions.None)[0];
+                if (!list.Contains(newFolder))
+                {
+                    list.Add(newFolder);
                 }
             }
 

@@ -58,6 +58,8 @@
 
         public const string CommandFolderSongs = "foldersongs";
 
+        public const string CommandRootFolders = "rootfolders";
+
         public const string CommandVideos = "videos";
 
         public const string CommandPictures = "pictures";
