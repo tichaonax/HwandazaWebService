@@ -139,7 +139,7 @@ namespace HwandazaWebService.Utils
                     return GetRootFolders(request);
                 case Const.CommandSongs:
                     var songs = ShuffleSongsWithImages(_songList);
-                    if (songs.Count > 300) { return songs.GetRange(0, 500); }
+                    if (songs.Count > 300) { return songs.GetRange(0, 300); }
                     return songs;
 
                 case Const.CommandVideos:
@@ -332,7 +332,7 @@ namespace HwandazaWebService.Utils
 
             foreach (MediaFile song in _songList.Result)
             {
-                var newFolder = song.Url.Split(new string[] { "/" }, StringSplitOptions.None)[0];
+                var newFolder = Uri.UnescapeDataString(song.Url.Split(new string[] { "/" }, StringSplitOptions.None)[0]);
                 if (!list.Contains(newFolder))
                 {
                     list.Add(newFolder);
