@@ -139,17 +139,24 @@ namespace HwandazaWebService.Utils
                     return GetRootFolders(request);
                 case Const.CommandSongs:
                     var songs = ShuffleSongsWithImages(_songList);
-                    if (songs.Count > 300) { return songs.GetRange(0, 300); }
+                    if (songs.Count > 10) {
+                        int rInt = _rnd.Next(0, (songs.Count - 11));
+                        return songs.GetRange(rInt, 10);
+                    }
                     return songs;
 
                 case Const.CommandVideos:
                     var videos = Shuffle(_videoList);
-                    if (videos.Count > 200) { return videos.GetRange(0, 200); }
+                    if (videos.Count > 200) {
+                        int rInt = _rnd.Next(0, (videos.Count - 201));
+                        return videos.GetRange(0, rInt); }
                     return videos;
 
                 case Const.CommandPictures:
                     var images = Shuffle(_imageList);
-                    if (images.Count > 500) { return images.GetRange(0, 500); }
+                    if (images.Count > 200) {
+                        int rInt = _rnd.Next(0, (images.Count - 201));
+                        return images.GetRange(0, rInt); }
                     return images;
 
                 case Const.SystemsHeartbeatIsRunning:
