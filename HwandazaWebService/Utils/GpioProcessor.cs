@@ -140,7 +140,7 @@ namespace HwandazaWebService.Utils
                 case Const.CommandSongs:
                     var songs = ShuffleSongsWithImages(_songList);
                     if (songs.Count > 10) {
-                        int rInt = _rnd.Next(0, (songs.Count - 11));
+                        int rInt = _rnd.Next(0, (songs.Count - 10));
                         return songs.GetRange(rInt, 10);
                     }
                     return songs;
@@ -148,15 +148,17 @@ namespace HwandazaWebService.Utils
                 case Const.CommandVideos:
                     var videos = Shuffle(_videoList);
                     if (videos.Count > 200) {
-                        int rInt = _rnd.Next(0, (videos.Count - 201));
-                        return videos.GetRange(0, rInt); }
+                        int rInt = _rnd.Next(0, (videos.Count - 200));
+                        return videos.GetRange(rInt, 200);
+                    }
                     return videos;
 
                 case Const.CommandPictures:
                     var images = Shuffle(_imageList);
                     if (images.Count > 200) {
-                        int rInt = _rnd.Next(0, (images.Count - 201));
-                        return images.GetRange(0, rInt); }
+                        int rInt = _rnd.Next(0, (images.Count - 200));
+                        return images.GetRange(rInt, 200);
+                    }
                     return images;
 
                 case Const.SystemsHeartbeatIsRunning:
