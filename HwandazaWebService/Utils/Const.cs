@@ -64,6 +64,8 @@
 
         public const string CommandPictures = "pictures";
 
+        public const string CommandCoverPicture = "cover";
+
         public const string MainWaterPump = "mainwaterpump";
 
         public const string FishPondPump = "fishpondpump";

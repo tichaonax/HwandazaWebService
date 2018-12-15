@@ -137,29 +137,34 @@ namespace HwandazaWebService.Utils
 
                 case Const.CommandRootFolders:
                     return GetRootFolders(request);
+
                 case Const.CommandSongs:
                     var songs = ShuffleSongsWithImages(_songList);
                     if (songs.Count > 10) {
-                        int rInt = _rnd.Next(0, (songs.Count - 10));
-                        return songs.GetRange(rInt, 10);
+                        int rIntSong = _rnd.Next(0, (songs.Count - 10));
+                        return songs.GetRange(rIntSong, 10);
                     }
                     return songs;
 
                 case Const.CommandVideos:
                     var videos = Shuffle(_videoList);
                     if (videos.Count > 200) {
-                        int rInt = _rnd.Next(0, (videos.Count - 200));
-                        return videos.GetRange(rInt, 200);
+                        int rIntVideo = _rnd.Next(0, (videos.Count - 200));
+                        return videos.GetRange(rIntVideo, 200);
                     }
                     return videos;
 
                 case Const.CommandPictures:
                     var images = Shuffle(_imageList);
                     if (images.Count > 200) {
-                        int rInt = _rnd.Next(0, (images.Count - 200));
-                        return images.GetRange(rInt, 200);
+                        int rIntPictures = _rnd.Next(0, (images.Count - 200));
+                        return images.GetRange(rIntPictures, 200);
                     }
                     return images;
+
+                case Const.CommandCoverPicture:
+                    var coverpics = Shuffle(_imageList);
+                    return coverpics[_rnd.Next(0, (coverpics.Count - 1))];
 
                 case Const.SystemsHeartbeatIsRunning:
                     return new SystemsHeartbeat() { IsRunning = _systemsHeartBeat.IsRunning() };
