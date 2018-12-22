@@ -94,4 +94,12 @@ namespace HwandazaWebService.Utils
         //public string FileType { get; set; }
         public string Cover { get; set; }
     }
+
+    public sealed class HwandaResponse
+    {
+        public string statusDate { get; set; }
+        public List<MediaFile> result { get; set; }
+        public int recordCount { get; set; }
+        public int totalAvailable { get; set; }
+    }
 }

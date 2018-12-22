@@ -142,25 +142,28 @@ namespace HwandazaWebService.Utils
                     var songs = ShuffleSongsWithImages(_songList);
                     if (songs.Count > 10) {
                         int rIntSong = _rnd.Next(0, (songs.Count - 10));
-                        return songs.GetRange(rIntSong, 10);
+                        return PackageResult(songs.GetRange(rIntSong, 10), songs.Count);
                     }
-                    return songs;
 
+                    return PackageResult(songs, songs.Count); 
+                    
                 case Const.CommandVideos:
                     var videos = Shuffle(_videoList);
                     if (videos.Count > 200) {
                         int rIntVideo = _rnd.Next(0, (videos.Count - 200));
-                        return videos.GetRange(rIntVideo, 200);
+                        return PackageResult(videos.GetRange(rIntVideo, 200), videos.Count);
                     }
-                    return videos;
+
+                    return PackageResult(videos, videos.Count);
 
                 case Const.CommandPictures:
                     var images = Shuffle(_imageList);
                     if (images.Count > 200) {
                         int rIntPictures = _rnd.Next(0, (images.Count - 200));
-                        return images.GetRange(rIntPictures, 200);
+                        return PackageResult(images.GetRange(rIntPictures, 200), images.Count);
                     }
-                    return images;
+
+                    return PackageResult(images, images.Count);
 
                 case Const.CommandCoverPicture:
                     var coverpics = Shuffle(_imageList);
@@ -234,6 +237,17 @@ namespace HwandazaWebService.Utils
             {
                 error = "Command not recognized",
                 request = request
+            };
+        }
+
+        private static dynamic PackageResult(List<MediaFile> list, int totalCount)
+        {
+            return new HwandaResponse()
+            {
+                statusDate = DateTime.Now.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
+                recordCount = list.Count,
+                totalAvailable = totalCount,
+                result = list,
             };
         }
 
@@ -319,7 +333,7 @@ namespace HwandazaWebService.Utils
                 }
             }
 
-            return list;
+            return PackageResult(list, list.Count);
         }
 
         private static dynamic GetFolderSongs(HwandazaCommand request)
@@ -336,8 +350,8 @@ namespace HwandazaWebService.Utils
                     list.Add(song);
                 }
             }
-
-            return list;
+            
+            return PackageResult(list, list.Count);
         }
 
         private static dynamic GetRootFolders(HwandazaCommand request)
