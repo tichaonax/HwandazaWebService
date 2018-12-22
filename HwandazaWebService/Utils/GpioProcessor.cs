@@ -333,7 +333,7 @@ namespace HwandazaWebService.Utils
                 }
             }
 
-            return PackageResult(list, list.Count);
+            return list;
         }
 
         private static dynamic GetFolderSongs(HwandazaCommand request)
