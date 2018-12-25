@@ -122,8 +122,8 @@ namespace HwandazaWebService.RaspiModules
                     _lastUpdate = DateTime.Now;
                 }
                 _gpioPinValueFishPondPumpLed = GpioPinValue.High;
-                //run pump for30 minutes
-                await Task.Delay(Convert.ToInt32(Const.SixtyMinutesDelayMs));
+                //run pump for 30 minutes
+                await Task.Delay(Convert.ToInt32(Const.ThirtyMinutesDelayMs));
             }
             Stop();
         }
@@ -144,8 +144,8 @@ namespace HwandazaWebService.RaspiModules
 
         public void Schedule()
         {
-            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 10, 10, 0), this);
-            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 14, 10, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 10, 0, 0), this);
+            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 14, 0, 0), this);
         }
 
         public bool IsRunning()
