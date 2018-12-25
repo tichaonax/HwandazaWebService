@@ -239,7 +239,7 @@ namespace HwandazaWebService.RaspiModules
 
             Scheduler.InitTimeBasedTimer(new TimeSpan(0, 17, 0, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 17, 15, 0), this);
-            Scheduler.InitTimeBasedTimer(new TimeSpan(0, 17, 30, 0), this);
+            //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 17, 30, 0), this);
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 17, 45, 0), this);
 
             //Scheduler.InitTimeBasedTimer(new TimeSpan(0, 18, 0, 0), this);

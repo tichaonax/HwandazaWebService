@@ -93,7 +93,7 @@
         <CalendarDatePicker DateFormat="{}{day.integer} {month.full} {year.full}" Tapped="CalendarDatePickerControl_Tapped" Name="CalendarDatePickerControl" DateChanged="CalendarDatePicker_DateChanged" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="14,23,0,0" VerticalAlignment="Top" Grid.RowSpan="2" FontSize="12"/>
         <TimePicker Tapped="HwandaTimePicker_Tapped" Name="HwandaTimePicker" Background="DarkCyan" Grid.Row="0" HorizontalAlignment="Left" Margin="114,11,0,0" VerticalAlignment="Top" TimeChanged="TimePicker_TimeChanged" Grid.Column="2" Height="45" Width="200" Grid.RowSpan="2" RequestedTheme="Dark" FontSize="24"/>
 
-        <TextBlock FontSize="45" HorizontalAlignment="Center" VerticalAlignment="Top" Text="Hwandaza Automation"  Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="0,4,0,0" Grid.Row="1">
+        <TextBlock FontSize="45" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Hwandaza Automation"  Grid.Column="1" Grid.ColumnSpan="2" Margin="519,0,0,0" Grid.Row="1">
             <TextBlock.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
@@ -101,7 +101,7 @@
                 </LinearGradientBrush>
             </TextBlock.Foreground>
         </TextBlock>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15,15,0,15" Grid.ColumnSpan="3" Width="762">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15,15,0,15" Grid.ColumnSpan="3" Width="817" VerticalAlignment="Stretch">
             <Button x:Name="WaterPumpButton"  Style="{StaticResource ButtonStyle}" Click="WaterPunp_OnClick" Foreground="#FFFAM0505" >
                 <Button.BorderBrush>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -135,7 +135,7 @@
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
             <TextBlock x:Name="WaterPumpADC" Style="{StaticResource TextBlockStyleA}"  Text="ADC: 0.00V" Foreground="#FFF5AC05"></TextBlock>
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
-            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Daily 8AM-6PM on the hour for 4 minutes."></TextBlock>
+            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Daily 7:00AM-5:00PM every 30 mins for 4 minutes." HorizontalAlignment="Left" VerticalAlignment="Center" Width="498"/>
         </StackPanel>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15,15,0,15" Grid.ColumnSpan="3" Width="719">
             <Button x:Name="PondPumpButton"  Style="{StaticResource ButtonStyle}" Click="FishPondPump_OnClick">
@@ -176,7 +176,7 @@
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
             <TextBlock x:Name="PondPumpADC" Style="{StaticResource TextBlockStyleA}"  Text="ADC: 0.00V" Foreground="#FFFEB205"></TextBlock>
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
-            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Daily 10:10 AM and 02:10 PM for 1 hour."></TextBlock>
+            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Daily 10:00 AM and 02:00 PM for 30 minutes." SelectionChanged="TextBlock_SelectionChanged" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="430"></TextBlock>
         </StackPanel>
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15,15,0,15" Grid.ColumnSpan="3" Width="709">
             <Button x:Name="LawnIrrigatorButton" Style="{StaticResource ButtonStyle}" Content="Lawn" Click="LawnIrrigator_OnClick" Foreground="#FF84F606">
@@ -381,7 +381,7 @@
                 </Ellipse.Fill>
             </Ellipse>
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
-            <TextBlock FontSize="35" VerticalAlignment="Center" Text="Copyright Tichaona Hwandaza 2016">
+            <TextBlock FontSize="35" VerticalAlignment="Center" Text="Copyright Tichaona Hwandaza 2018">
                 <TextBlock.Foreground>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="Black" Offset="0"/>
