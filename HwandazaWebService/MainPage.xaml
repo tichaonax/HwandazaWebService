@@ -176,7 +176,7 @@
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
             <TextBlock x:Name="PondPumpADC" Style="{StaticResource TextBlockStyleA}"  Text="ADC: 0.00V" Foreground="#FFFEB205"></TextBlock>
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
-            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Daily 10:00 AM and 02:00 PM for 30 minutes." SelectionChanged="TextBlock_SelectionChanged" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="430"></TextBlock>
+            <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Daily 10:00 AM and 02:00 PM for 30 minutes." HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="430"></TextBlock>
         </StackPanel>
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15,15,0,15" Grid.ColumnSpan="3" Width="709">
             <Button x:Name="LawnIrrigatorButton" Style="{StaticResource ButtonStyle}" Content="Lawn" Click="LawnIrrigator_OnClick" Foreground="#FF84F606">
