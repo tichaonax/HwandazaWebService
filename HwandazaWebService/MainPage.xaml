@@ -93,7 +93,7 @@
         <CalendarDatePicker DateFormat="{}{day.integer} {month.full} {year.full}" Tapped="CalendarDatePickerControl_Tapped" Name="CalendarDatePickerControl" DateChanged="CalendarDatePicker_DateChanged" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="14,23,0,0" VerticalAlignment="Top" Grid.RowSpan="2" FontSize="12"/>
         <TimePicker Tapped="HwandaTimePicker_Tapped" Name="HwandaTimePicker" Background="DarkCyan" Grid.Row="0" HorizontalAlignment="Left" Margin="114,11,0,0" VerticalAlignment="Top" TimeChanged="TimePicker_TimeChanged" Grid.Column="2" Height="45" Width="200" Grid.RowSpan="2" RequestedTheme="Dark" FontSize="24"/>
 
-        <TextBlock FontSize="45" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Hwandaza Automation"  Grid.Column="1" Grid.ColumnSpan="2" Margin="199,37,0,0" Grid.RowSpan="3">
+        <TextBlock FontSize="45" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Hwandaza Automation"  Grid.Column="1" Grid.ColumnSpan="2" Margin="199,3,0,0" Grid.RowSpan="2" Grid.Row="1">
             <TextBlock.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
