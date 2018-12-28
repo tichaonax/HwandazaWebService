@@ -93,7 +93,7 @@
         <CalendarDatePicker DateFormat="{}{day.integer} {month.full} {year.full}" Tapped="CalendarDatePickerControl_Tapped" Name="CalendarDatePickerControl" DateChanged="CalendarDatePicker_DateChanged" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="14,23,0,0" VerticalAlignment="Top" Grid.RowSpan="2" FontSize="12"/>
         <TimePicker Tapped="HwandaTimePicker_Tapped" Name="HwandaTimePicker" Background="DarkCyan" Grid.Row="0" HorizontalAlignment="Left" Margin="114,11,0,0" VerticalAlignment="Top" TimeChanged="TimePicker_TimeChanged" Grid.Column="2" Height="45" Width="200" Grid.RowSpan="2" RequestedTheme="Dark" FontSize="24"/>
 
-        <TextBlock FontSize="45" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Hwandaza Automation"  Grid.Column="1" Grid.ColumnSpan="2" Margin="199,3,0,0" Grid.RowSpan="2" Grid.Row="1">
+        <TextBlock FontSize="45" HorizontalAlignment="Left" VerticalAlignment="Top" Text="Hwandaza Automation"  Grid.Column="1" Grid.ColumnSpan="2" Margin="199,7,0,0" Grid.RowSpan="2" Grid.Row="1">
             <TextBlock.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="0"/>
@@ -115,7 +115,7 @@
                         <GradientStop Color="#FFCBCAF1" Offset="1"/>
                     </LinearGradientBrush>
                 </Button.Background>
-                <Button.Content>Pump</Button.Content>
+                <Button.Content>PUMP</Button.Content>
             </Button>
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
             <Ellipse x:Name="PumpLED" Style="{StaticResource LEDStyle}">
@@ -156,7 +156,7 @@
                         <GradientStop Color="Black" Offset="0"/>
                         <GradientStop Color="#FF58E7FE" Offset="1"/>
                     </LinearGradientBrush>
-                </Button.Background> Pond
+                </Button.Background> POND
             </Button>
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
             <Ellipse x:Name="PondLED"  Style="{StaticResource LEDStyle}">
@@ -179,7 +179,7 @@
             <TextBlock Style="{StaticResource TextBlockStyle}"  Text="Daily 10:00 AM and 02:00 PM for 30 minutes." HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Width="430"></TextBlock>
         </StackPanel>
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left" Margin="15,15,0,15" Grid.ColumnSpan="3" Width="709">
-            <Button x:Name="LawnIrrigatorButton" Style="{StaticResource ButtonStyle}" Content="Lawn" Click="LawnIrrigator_OnClick" Foreground="#FF84F606">
+            <Button x:Name="LawnIrrigatorButton" Style="{StaticResource ButtonStyle}" Content="LAWN" Click="LawnIrrigator_OnClick" Foreground="#FF84F606">
                 <Button.BorderBrush>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="Black" Offset="0"/>
@@ -381,7 +381,7 @@
                 </Ellipse.Fill>
             </Ellipse>
             <Rectangle Style="{StaticResource RectangleStyle}"></Rectangle>
-            <TextBlock FontSize="35" VerticalAlignment="Center" Text="Copyright Tichaona Hwandaza 2018">
+            <TextBlock FontSize="35" VerticalAlignment="Top" Text="Copyright Tichaona Hwandaza 2016">
                 <TextBlock.Foreground>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="Black" Offset="0"/>
@@ -390,5 +390,7 @@
                 </TextBlock.Foreground>
             </TextBlock>
         </StackPanel>
+        <TextBlock Style="{StaticResource TextBlockStyleA}" FontSize="30" HorizontalAlignment="Left" Margin="107,33,0,0" Grid.Row="6" Text="Uptime:" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1"/>
+        <TextBlock x:Name="SystemUptime" Style="{StaticResource TextBlockStyle}" FontSize="35" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="220,34,0,0" Grid.Row="6" Text="2018-12-27 02:47:24 PM" TextWrapping="Wrap" VerticalAlignment="Top" Width="497" Grid.RowSpan="2"/>
     </Grid>
 </Page>

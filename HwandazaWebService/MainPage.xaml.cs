@@ -88,6 +88,8 @@ namespace HwandazaWebService
             ApplicationData.Current.DataChanged += async (d, a) => await HandleDataChangedEvent(d, a);
 
             _wifiHeartBeat = ThreadPoolTimer.CreatePeriodicTimer(WifiHeartBeatControlAsync, period: TimeSpan.FromSeconds(Const.TenSecondsDelayMs));
+
+            SetSystemUptime();
         }
 
         private void SystemHeartBeatControl(ThreadPoolTimer timer)
@@ -344,6 +346,15 @@ namespace HwandazaWebService
             SetLightStatus(Const.Lights.L5);
             SetLightStatus(Const.Lights.L6);
             UpdateButtonADCValues();
+        }
+        private void SetSystemUptime()
+        {
+            /* UI updates must be invoked on the UI thread */
+            var task = Dispatcher.RunAsync(
+                    CoreDispatcherPriority.Normal, () =>
+                    {
+                        SystemUptime.Text = _systemsHeartBeat.GetSystemUpTime();
+                    });
         }
 
         private void UpdateButtonADCValues()
