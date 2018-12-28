@@ -390,7 +390,7 @@
                 </TextBlock.Foreground>
             </TextBlock>
         </StackPanel>
-        <TextBlock Style="{StaticResource TextBlockStyleA}" FontSize="30" HorizontalAlignment="Left" Margin="107,33,0,0" Grid.Row="6" Text="Uptime:" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1"/>
+        <TextBlock Style="{StaticResource TextBlockStyleA}" FontSize="30" HorizontalAlignment="Left" Margin="107,37,0,0" Grid.Row="6" Text="Uptime:" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1"/>
         <TextBlock x:Name="SystemUptime" Style="{StaticResource TextBlockStyle}" FontSize="35" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="220,34,0,0" Grid.Row="6" Text="2018-12-27 02:47:24 PM" TextWrapping="Wrap" VerticalAlignment="Top" Width="497" Grid.RowSpan="2"/>
     </Grid>
 </Page>
