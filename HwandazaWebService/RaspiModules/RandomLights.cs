@@ -71,8 +71,10 @@ namespace HwandazaWebService.RaspiModules
                                  Const.TwoMinutes,
                                  Const.HalfMinuteMs,
                                  Const.FourMinutes,
+                                 Const.FortySecondsDelayMs,
                                  Const.OneMinuteDelayMs,
                                  Const.ThreeMinutes,
+                                 Const.TwentyecondsDelayMs,
                                  Const.FiveMinutesDelayMs,
                                  Const.TenSecondsDelayMs,
                             };
@@ -243,8 +245,14 @@ namespace HwandazaWebService.RaspiModules
 
         public async void Run()
         {
-            //turn on random lights the lights for random minutes from list 10 seconds to 5 minutes
             var r = new Random();
+
+            //delay start of turn of random lights by 10 seconds to 5 minutes
+            var randDelayStartTime = _delayTimeList[r.Next(_delayTimeList.Count)];
+            await Task.Delay(Convert.ToInt32(randDelayStartTime));
+
+            //turn on random lights the lights for random minutes from list 10 seconds to 5 minutes
+
             var randGpio = _gpioList[r.Next(_gpioList.Count)];
             randGpio.Write(GpioPinValue.Low);
             _isRunning = true;
