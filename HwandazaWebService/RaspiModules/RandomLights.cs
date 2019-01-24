@@ -43,15 +43,25 @@ namespace HwandazaWebService.RaspiModules
 
         public RandomLights()
         {
-
             _lightsStatus = new LightsStatus()
             {
                 IsOnL3 = false,
+                L3LastUpdate = DateTime.Now,
+
                 IsOnL4 = false,
+                L4LastUpdate = DateTime.Now,
+
                 IsOnL5 = false,
+                L5LastUpdate = DateTime.Now,
+
                 IsOnL6 = false,
+                L6LastUpdate = DateTime.Now,
+
                 IsOnM1 = false,
-                IsOnM2 = false
+                M1LastUpdate = DateTime.Now,
+
+                IsOnM2 = false,
+                M2LastUpdate = DateTime.Now,
             };
 
             _status = new ModuleStatus()
@@ -222,6 +232,13 @@ namespace HwandazaWebService.RaspiModules
 
         private void SetLightStatus(bool status)
         {
+            _lightsStatus.M1LastUpdate = DateTime.Now;
+            _lightsStatus.M2LastUpdate = DateTime.Now;
+            _lightsStatus.L3LastUpdate = DateTime.Now;
+            _lightsStatus.L4LastUpdate = DateTime.Now;
+            _lightsStatus.L5LastUpdate = DateTime.Now;
+            _lightsStatus.L6LastUpdate = DateTime.Now;
+
             switch (status)
             {
                 case true:
@@ -265,42 +282,58 @@ namespace HwandazaWebService.RaspiModules
             //set the status of the light that has been turned off
             SetLightStatus(randGpio, false);
         }
-
+        
         private void SetLightStatus(GpioPin pin,bool status)
         {
             switch (pin.PinNumber)
             {
                 case RandomLightsM1PowerPin:
                     _lightsStatus.IsOnM1 = status;
+                    _lightsStatus.M1LastUpdate = DateTime.Now;
                     break;
                 case RandomLightsM2PowerPin:
                     _lightsStatus.IsOnM2 = status;
+                    _lightsStatus.M2LastUpdate = DateTime.Now;
                     break;
                 case RandomLightsL3PowerPin:
                     _lightsStatus.IsOnL3 = status;
+                    _lightsStatus.L3LastUpdate = DateTime.Now;
                     break;
                 case RandomLightsL4PowerPin:
                     _lightsStatus.IsOnL4 = status;
+                    _lightsStatus.L4LastUpdate = DateTime.Now;
                     break;
                 case RandomLightsL5PowerPin:
                     _lightsStatus.IsOnL5 = status;
+                    _lightsStatus.L5LastUpdate = DateTime.Now;
                     break;
                 case RandomLightsL6PowerPin:
                     _lightsStatus.IsOnL6 = status;
+                    _lightsStatus.L6LastUpdate = DateTime.Now;
                     break;
             }
         }
-
 
         public void Stop()
         {
             //just turn off all the lights
             _gpioPinRandomLightsM1Power.Write(GpioPinValue.High);
+            _lightsStatus.M1LastUpdate = DateTime.Now;
+
             _gpioPinRandomLightsM2Power.Write(GpioPinValue.High);
+            _lightsStatus.M2LastUpdate = DateTime.Now;
+
             _gpioPinRandomLightsL3Power.Write(GpioPinValue.High);
+            _lightsStatus.L3LastUpdate = DateTime.Now;
+
             _gpioPinRandomLightsL4Power.Write(GpioPinValue.High);
+            _lightsStatus.L4LastUpdate = DateTime.Now;
+
             _gpioPinRandomLightsL5Power.Write(GpioPinValue.High);
+            _lightsStatus.L5LastUpdate = DateTime.Now;
+
             _gpioPinRandomLightsL6Power.Write(GpioPinValue.High);
+            _lightsStatus.L6LastUpdate = DateTime.Now;
 
             lock (SpinLock)
             {
@@ -335,6 +368,7 @@ namespace HwandazaWebService.RaspiModules
             _status.IsRunning = _isRunning;
             _status.StatusText = _isRunning ? Const.Running : Const.Stopped;
             _status.LightsStatus = _lightsStatus;
+
             return _status;
         }
 
@@ -396,26 +430,32 @@ namespace HwandazaWebService.RaspiModules
                         case Const.Lights.M1:
                             _gpioPinRandomLightsM1Power.Write(GpioPinValue.Low);
                             _lightsStatus.IsOnM1 = true;
+                            _lightsStatus.M1LastUpdate = DateTime.Now;
                             break;
                         case Const.Lights.M2:
                             _gpioPinRandomLightsM2Power.Write(GpioPinValue.Low);
                             _lightsStatus.IsOnM2 = true;
+                            _lightsStatus.M2LastUpdate = DateTime.Now;
                             break;
                         case Const.Lights.L3:
                             _gpioPinRandomLightsL3Power.Write(GpioPinValue.Low);
                             _lightsStatus.IsOnL3 = true;
+                            _lightsStatus.L3LastUpdate = DateTime.Now;
                             break;
                         case Const.Lights.L4:
                             _gpioPinRandomLightsL4Power.Write(GpioPinValue.Low);
                             _lightsStatus.IsOnL4 = true;
+                            _lightsStatus.L4LastUpdate = DateTime.Now;
                             break;
                         case Const.Lights.L5:
                             _gpioPinRandomLightsL5Power.Write(GpioPinValue.Low);
                             _lightsStatus.IsOnL5 = true;
+                            _lightsStatus.L5LastUpdate = DateTime.Now;
                             break;
                         case Const.Lights.L6:
                             _gpioPinRandomLightsL6Power.Write(GpioPinValue.Low);
                             _lightsStatus.IsOnL6 = true;
+                            _lightsStatus.L6LastUpdate = DateTime.Now;
                             break;
                     }
                 }
@@ -436,7 +476,6 @@ namespace HwandazaWebService.RaspiModules
             }
         }
 
-
         private bool AnyLightsOn()
         {
             var isOn = _lightsStatus.IsOnL3 || _lightsStatus.IsOnL4 || _lightsStatus.IsOnL5 
@@ -455,26 +494,32 @@ namespace HwandazaWebService.RaspiModules
                         case Const.Lights.M1:
                             _gpioPinRandomLightsM1Power.Write(GpioPinValue.High);
                             _lightsStatus.IsOnM1 = false;
+                            _lightsStatus.M1LastUpdate = DateTime.Now;
                             break;
                         case Const.Lights.M2:
                             _gpioPinRandomLightsM2Power.Write(GpioPinValue.High);
                             _lightsStatus.IsOnM2 = false;
+                            _lightsStatus.M2LastUpdate = DateTime.Now;
                             break;
                         case Const.Lights.L3:
                             _gpioPinRandomLightsL3Power.Write(GpioPinValue.High);
                             _lightsStatus.IsOnL3 = false;
+                            _lightsStatus.L3LastUpdate = DateTime.Now;
                             break;
                         case Const.Lights.L4:
                             _gpioPinRandomLightsL4Power.Write(GpioPinValue.High);
                             _lightsStatus.IsOnL4 = false;
+                            _lightsStatus.L4LastUpdate = DateTime.Now;
                             break;
                         case Const.Lights.L5:
                             _gpioPinRandomLightsL5Power.Write(GpioPinValue.High);
                             _lightsStatus.IsOnL5 = false;
+                            _lightsStatus.L5LastUpdate = DateTime.Now;
                             break;
                         case Const.Lights.L6:
                             _gpioPinRandomLightsL6Power.Write(GpioPinValue.High);
                             _lightsStatus.IsOnL6 = false;
+                            _lightsStatus.L6LastUpdate = DateTime.Now;
                             break;
                     }
                 }

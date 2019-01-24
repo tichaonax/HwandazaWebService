@@ -418,11 +418,22 @@ namespace HwandazaWebService.Utils
                     lights = new Lights()
                     {
                         l3 = lights.IsOnL3 ? 1 : 0,
+                        l3LastUpdate = lights.L3LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
+
                         l4 = lights.IsOnL4 ? 1 : 0,
+                        l4LastUpdate = lights.L4LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
+
                         l5 = lights.IsOnL5 ? 1 : 0,
+                        l5LastUpdate = lights.L5LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
+
                         l6 = lights.IsOnL6 ? 1 : 0,
+                        l6LastUpdate = lights.L6LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
+
                         m1 = lights.IsOnM1 ? 1 : 0,
-                        m2 = lights.IsOnM2 ? 1 : 0
+                        m1LastUpdate = lights.M1LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
+
+                        m2 = lights.IsOnM2 ? 1 : 0,
+                        m2LastUpdate = lights.M2LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
                     }
                 }
             };

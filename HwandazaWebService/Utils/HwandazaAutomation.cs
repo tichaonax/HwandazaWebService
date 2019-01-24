@@ -31,11 +31,22 @@
     public sealed class Lights
     {
         public int m1 { get; set; }
+        public string m1LastUpdate { get; set; }
+
         public int m2 { get; set; }
+        public string m2LastUpdate { get; set; }
+
         public int l3 { get; set; }
+        public string l3LastUpdate { get; set; }
+
         public int l4 { get; set; }
+        public string l4LastUpdate { get; set; }
+
         public int l5 { get; set; }
+        public string l5LastUpdate { get; set; }
+
         public int l6 { get; set; }
+        public string l6LastUpdate { get; set; }
     }
 
     public sealed class Status
