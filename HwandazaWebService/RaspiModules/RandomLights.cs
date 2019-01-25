@@ -278,7 +278,8 @@ namespace HwandazaWebService.RaspiModules
             SetLightStatus(randGpio, true);
             var randDelayTime = _delayTimeList[r.Next(_delayTimeList.Count)];
             await Task.Delay(Convert.ToInt32(randDelayTime));
-            Stop();
+            //Stop();
+            randGpio.Write(GpioPinValue.High);
             //set the status of the light that has been turned off
             SetLightStatus(randGpio, false);
         }
