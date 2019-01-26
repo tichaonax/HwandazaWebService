@@ -78,7 +78,7 @@ namespace HwandazaWebService.Utils
                 Url = Uri.EscapeUriString(file.Path.Split(new string[] { mediaFilter }, StringSplitOptions.None)[1].Replace("/", "").Replace("\\", "/")),
                 //ContentType = file.ContentType,
                 // IsAvailable = file.IsAvailable,
-                Name = file.DisplayName,
+                // Name = file.DisplayName,
                 //FileType = file.FileType,
             };
         }
@@ -86,7 +86,7 @@ namespace HwandazaWebService.Utils
 
     public sealed class MediaFile
     {
-        public string Name { get; set; }
+        //public string Name { get; set; }
         //public string ContentType { get; set; }
         //public string Name { get; set; }
         public string Url { get; set; }

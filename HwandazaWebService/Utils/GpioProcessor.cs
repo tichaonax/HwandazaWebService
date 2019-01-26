@@ -326,7 +326,7 @@ namespace HwandazaWebService.Utils
             foreach (MediaFile song in songs)
             {
 
-                if (Uri.UnescapeDataString(song.Name.ToLower()).Contains(request.Module.ToLower()))
+                if (Uri.UnescapeDataString(song.Url.ToLower()).Contains(request.Module.ToLower()))
                 {
                     song.Cover = GetRandomImageFromPictures();
                     list.Add(song);
