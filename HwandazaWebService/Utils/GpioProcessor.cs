@@ -265,6 +265,8 @@ namespace HwandazaWebService.Utils
                 cloneList.RemoveAt(rndIndex);
             }
 
+            list = null;
+            cloneList = null;
             return randomList;
         }
 
@@ -283,6 +285,8 @@ namespace HwandazaWebService.Utils
                 cloneList.RemoveAt(rndIndex);
             }
 
+            list = null;
+            cloneList = null;
             return randomList;
         }
 
@@ -333,6 +337,7 @@ namespace HwandazaWebService.Utils
                 }
             }
 
+            songs = null;
             return list;
         }
 
