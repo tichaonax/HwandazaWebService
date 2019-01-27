@@ -35,7 +35,7 @@ namespace HwandazaWebService.Utils
             _systemsHeartBeat = systemsHeartBeat;
             LoadMediaLibraryAsync();
         }
-       
+
         private static void LoadMediaLibraryAsync()
         {
             _songList = _mediaLibrary.GetMediaSongs();
@@ -140,16 +140,18 @@ namespace HwandazaWebService.Utils
 
                 case Const.CommandSongs:
                     var songs = ShuffleSongsWithImages(_songList);
-                    if (songs.Count > 10) {
+                    if (songs.Count > 10)
+                    {
                         int rIntSong = _rnd.Next(0, (songs.Count - 10));
                         return PackageResult(songs.GetRange(rIntSong, 10), songs.Count);
                     }
 
-                    return PackageResult(songs, songs.Count); 
-                    
+                    return PackageResult(songs, songs.Count);
+
                 case Const.CommandVideos:
                     var videos = Shuffle(_videoList);
-                    if (videos.Count > 200) {
+                    if (videos.Count > 200)
+                    {
                         int rIntVideo = _rnd.Next(0, (videos.Count - 200));
                         return PackageResult(videos.GetRange(rIntVideo, 200), videos.Count);
                     }
@@ -158,7 +160,8 @@ namespace HwandazaWebService.Utils
 
                 case Const.CommandPictures:
                     var images = Shuffle(_imageList);
-                    if (images.Count > 200) {
+                    if (images.Count > 200)
+                    {
                         int rIntPictures = _rnd.Next(0, (images.Count - 200));
                         return PackageResult(images.GetRange(rIntPictures, 200), images.Count);
                     }
@@ -182,22 +185,22 @@ namespace HwandazaWebService.Utils
                     return _mainWaterPump.IsRunning();
 
                 case Const.RandomLightsModuleLightsStatusIsOnM1:
-                    return _randomLights.ModuleStatus().LightsStatus.IsOnM1;
+                    return _randomLights.ModuleStatus().LightsStatus.M1.IsOn;
 
                 case Const.RandomLightsModuleLightsStatusIsOnM2:
-                    return _randomLights.ModuleStatus().LightsStatus.IsOnM2;
+                    return _randomLights.ModuleStatus().LightsStatus.M2.IsOn;
 
                 case Const.RandomLightsModuleLightsStatusIsOnL3:
-                    return _randomLights.ModuleStatus().LightsStatus.IsOnL3;
+                    return _randomLights.ModuleStatus().LightsStatus.L3.IsOn;
 
                 case Const.RandomlightsModuleLightsStatusIsOnL4:
-                    return _randomLights.ModuleStatus().LightsStatus.IsOnL4;
+                    return _randomLights.ModuleStatus().LightsStatus.L4.IsOn;
 
                 case Const.RandomLightsModuleLightsStatusIsOnL5:
-                    return _randomLights.ModuleStatus().LightsStatus.IsOnL5;
+                    return _randomLights.ModuleStatus().LightsStatus.L5.IsOn;
 
                 case Const.RandomLightsModuleLightsStatusIsOnL6:
-                    return _randomLights.ModuleStatus().LightsStatus.IsOnL6;
+                    return _randomLights.ModuleStatus().LightsStatus.L6.IsOn;
 
                 case Const.ToggleLights:
                     _randomLights.ToggleLights(request.Lights);
@@ -355,7 +358,7 @@ namespace HwandazaWebService.Utils
                     list.Add(song);
                 }
             }
-            
+
             return PackageResult(list, list.Count);
         }
 
@@ -388,7 +391,7 @@ namespace HwandazaWebService.Utils
             var lights = _randomLights.ModuleStatus().LightsStatus;
 
             var isRunning = _systemsHeartBeat.IsRunning();
-            
+
             return new HwandazaAutomation()
             {
                 isRunning = isRunning,
@@ -422,23 +425,37 @@ namespace HwandazaWebService.Utils
 
                     lights = new Lights()
                     {
-                        l3 = lights.IsOnL3 ? 1 : 0,
-                        l3LastUpdate = lights.L3LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
+                        l3 = new l3()
+                        {
+                            lastUpdate = lights.L3.LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
+                            power = lights.L3.IsOn ? 1 : 0,
+                        },
 
-                        l4 = lights.IsOnL4 ? 1 : 0,
-                        l4LastUpdate = lights.L4LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
-
-                        l5 = lights.IsOnL5 ? 1 : 0,
-                        l5LastUpdate = lights.L5LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
-
-                        l6 = lights.IsOnL6 ? 1 : 0,
-                        l6LastUpdate = lights.L6LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
-
-                        m1 = lights.IsOnM1 ? 1 : 0,
-                        m1LastUpdate = lights.M1LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
-
-                        m2 = lights.IsOnM2 ? 1 : 0,
-                        m2LastUpdate = lights.M2LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
+                        l4 = new l4()
+                        {
+                            power = lights.L4.IsOn ? 1 : 0,
+                            lastUpdate = lights.L4.LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
+                        },
+                        l5 = new l5()
+                        {
+                            power = lights.L5.IsOn ? 1 : 0,
+                            lastUpdate = lights.L5.LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
+                        },
+                        l6 = new l6()
+                        {
+                            power = lights.L6.IsOn ? 1 : 0,
+                            lastUpdate = lights.L6.LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
+                        },
+                        m1 = new m1()
+                        {
+                            power = lights.M1.IsOn ? 1 : 0,
+                            lastUpdate = lights.M1.LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
+                        },
+                        m2 = new m2()
+                        {
+                            power = lights.M2.IsOn ? 1 : 0,
+                            lastUpdate = lights.M2.LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
+                        },
                     }
                 }
             };

@@ -1,5 +1,5 @@
 ﻿namespace HwandazaWebService.Utils
-{    
+{
     public sealed class WaterPump
     {
         public int power { get; set; }
@@ -28,25 +28,49 @@
         public FishPond fishPond { get; set; }
     }
 
+    public sealed class m1
+    {
+        public int power { get; set; }
+        public string lastUpdate { get; set; }
+    }
+
+    public sealed class m2
+    {
+        public int power { get; set; }
+        public string lastUpdate { get; set; }
+    }
+
+    public sealed class l3
+    {
+        public int power { get; set; }
+        public string lastUpdate { get; set; }
+    }
+
+    public sealed class l4
+    {
+        public int power { get; set; }
+        public string lastUpdate { get; set; }
+    }
+
+    public sealed class l5
+    {
+        public int power { get; set; }
+        public string lastUpdate { get; set; }
+    }
+
+    public sealed class l6
+    {
+        public int power { get; set; }
+        public string lastUpdate { get; set; }
+    }
     public sealed class Lights
     {
-        public int m1 { get; set; }
-        public string m1LastUpdate { get; set; }
-
-        public int m2 { get; set; }
-        public string m2LastUpdate { get; set; }
-
-        public int l3 { get; set; }
-        public string l3LastUpdate { get; set; }
-
-        public int l4 { get; set; }
-        public string l4LastUpdate { get; set; }
-
-        public int l5 { get; set; }
-        public string l5LastUpdate { get; set; }
-
-        public int l6 { get; set; }
-        public string l6LastUpdate { get; set; }
+        public m1 m1 { get; set; }
+        public m2 m2 { get; set; }
+        public l3 l3 { get; set; }
+        public l4 l4 { get; set; }
+        public l5 l5 { get; set; }
+        public l6 l6 { get; set; }
     }
 
     public sealed class Status

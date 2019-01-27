@@ -373,22 +373,22 @@ namespace HwandazaWebService
             switch (light)
             {
                 case Const.Lights.M1:
-                    SetLedColor(M1LED, _randomLights.ModuleStatus().LightsStatus.IsOnM1);
+                    SetLedColor(M1LED, _randomLights.ModuleStatus().LightsStatus.M1.IsOn);
                     break;
                 case Const.Lights.M2:
-                    SetLedColor(M2LED, _randomLights.ModuleStatus().LightsStatus.IsOnM2);
+                    SetLedColor(M2LED, _randomLights.ModuleStatus().LightsStatus.M2.IsOn);
                     break;
                 case Const.Lights.L3:
-                    SetLedColor(L3LED, _randomLights.ModuleStatus().LightsStatus.IsOnL3);
+                    SetLedColor(L3LED, _randomLights.ModuleStatus().LightsStatus.L3.IsOn);
                     break;
                 case Const.Lights.L4:
-                    SetLedColor(L4LED, _randomLights.ModuleStatus().LightsStatus.IsOnL4);
+                    SetLedColor(L4LED, _randomLights.ModuleStatus().LightsStatus.L4.IsOn);
                     break;
                 case Const.Lights.L5:
-                    SetLedColor(L5LED, _randomLights.ModuleStatus().LightsStatus.IsOnL5);
+                    SetLedColor(L5LED, _randomLights.ModuleStatus().LightsStatus.L5.IsOn);
                     break;
                 case Const.Lights.L6:
-                    SetLedColor(L6LED, _randomLights.ModuleStatus().LightsStatus.IsOnL6);
+                    SetLedColor(L6LED, _randomLights.ModuleStatus().LightsStatus.L6.IsOn);
                     break;
             }
         }

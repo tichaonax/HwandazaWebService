@@ -11,24 +11,49 @@ namespace HwandazaWebService.Utils
         public LightsStatus LightsStatus { get; set; }
     }
 
-    public sealed class LightsStatus
+    public sealed class M1
     {
-        public bool IsOnM1 { get; set; }
-        public DateTime M1LastUpdate { get; set; }
+        public bool IsOn { get; set; }
+        public DateTime LastUpdate { get; set; }
+    }
 
-        public bool IsOnM2 { get; set; }
-        public DateTime M2LastUpdate { get; set; }
+    public sealed class M2
+    {
+        public bool IsOn { get; set; }
+        public DateTime LastUpdate { get; set; }
+    }
 
-        public bool IsOnL3 { get; set; }
-        public DateTime L3LastUpdate { get; set; }
+    public sealed class L3
+    {
+        public bool IsOn { get; set; }
+        public DateTime LastUpdate { get; set; }
+    }
 
-        public bool IsOnL4 { get; set; }
-        public DateTime L4LastUpdate { get; set; }
+    public sealed class L4
+    {
+        public bool IsOn { get; set; }
+        public DateTime LastUpdate { get; set; }
+    }
 
-        public bool IsOnL5 { get; set; }
-        public DateTime L5LastUpdate { get; set; }
+    public sealed class L5
+    {
+        public bool IsOn { get; set; }
+        public DateTime LastUpdate { get; set; }
+    }
 
-        public bool IsOnL6 { get; set; }
-        public DateTime L6LastUpdate { get; set; }
+    public sealed class L6
+    {
+        public bool IsOn { get; set; }
+        public DateTime LastUpdate { get; set; }
+    }
+
+    public sealed class LightsStatus
+    {   
+        public M1 M1 { get; set; }
+        public M2 M2 { get; set; }
+        public L3 L3 { get; set; }
+        public L4 L4 { get; set; }
+        public L5 L5 { get; set; }
+        public L6 L6 { get; set; }
     }
 }
