@@ -359,6 +359,7 @@ namespace HwandazaWebService.Utils
                 }
             }
 
+            songs = null;
             return PackageResult(list, list.Count);
         }
 
@@ -436,21 +437,25 @@ namespace HwandazaWebService.Utils
                             power = lights.L4.IsOn ? 1 : 0,
                             lastUpdate = lights.L4.LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
                         },
+
                         l5 = new l5()
                         {
                             power = lights.L5.IsOn ? 1 : 0,
                             lastUpdate = lights.L5.LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
                         },
+
                         l6 = new l6()
                         {
                             power = lights.L6.IsOn ? 1 : 0,
                             lastUpdate = lights.L6.LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
                         },
+
                         m1 = new m1()
                         {
                             power = lights.M1.IsOn ? 1 : 0,
                             lastUpdate = lights.M1.LastUpdate.ToString("yyyy'-'MM'-'dd' 'hh':'mm':'ss tt"),
                         },
+
                         m2 = new m2()
                         {
                             power = lights.M2.IsOn ? 1 : 0,

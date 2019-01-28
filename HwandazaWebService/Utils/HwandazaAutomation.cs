@@ -63,6 +63,7 @@
         public int power { get; set; }
         public string lastUpdate { get; set; }
     }
+
     public sealed class Lights
     {
         public m1 m1 { get; set; }
