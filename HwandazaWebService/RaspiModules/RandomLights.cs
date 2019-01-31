@@ -542,7 +542,7 @@ namespace HwandazaWebService.RaspiModules
                 {
                     _isRunning = AnyLightsOn();
                 }
-                _gpioPinValueRandomLightsLed = GpioPinValue.High;
+                _gpioPinValueRandomLightsLed = GpioPinValue.Low;
                 _gpioPinRandomLightsLed.Write(GpioPinValue.Low);
             }
             else
