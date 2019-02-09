@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HwandazaWebService", "HwandazaWebService\HwandazaWebService.csproj", "{40C60A3F-3FFA-4433-B39A-A17F447AA399}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HwandazaHttpServer", "..\HwandazaHttpServer\HwandazaHttpServer\HwandazaHttpServer.csproj", "{DB0A0663-A3A9-415B-953A-C3CDAE95785B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -35,24 +33,6 @@ Global
 		{40C60A3F-3FFA-4433-B39A-A17F447AA399}.Release|x86.ActiveCfg = Release|x86
 		{40C60A3F-3FFA-4433-B39A-A17F447AA399}.Release|x86.Build.0 = Release|x86
 		{40C60A3F-3FFA-4433-B39A-A17F447AA399}.Release|x86.Deploy.0 = Release|x86
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Debug|ARM.ActiveCfg = Debug|ARM
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Debug|ARM.Build.0 = Debug|ARM
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Debug|ARM.Deploy.0 = Debug|ARM
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Debug|x64.ActiveCfg = Debug|x64
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Debug|x64.Build.0 = Debug|x64
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Debug|x64.Deploy.0 = Debug|x64
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Debug|x86.ActiveCfg = Debug|x86
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Debug|x86.Build.0 = Debug|x86
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Debug|x86.Deploy.0 = Debug|x86
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Release|ARM.ActiveCfg = Release|ARM
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Release|ARM.Build.0 = Release|ARM
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Release|ARM.Deploy.0 = Release|ARM
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Release|x64.ActiveCfg = Release|x64
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Release|x64.Build.0 = Release|x64
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Release|x64.Deploy.0 = Release|x64
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Release|x86.ActiveCfg = Release|x86
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Release|x86.Build.0 = Release|x86
-		{DB0A0663-A3A9-415B-953A-C3CDAE95785B}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
