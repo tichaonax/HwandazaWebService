@@ -21,6 +21,8 @@ namespace HwandazaWebService.Utils
         private static Random _rnd = new Random();
         private static MediaLibrary _mediaLibrary = new MediaLibrary();
 
+        private const int LimitRecordsTo = 500;
+
         public static void Initialize(
             MainWaterPump mainWaterPump,
             FishPondPump fishPondPump,
@@ -140,30 +142,30 @@ namespace HwandazaWebService.Utils
 
                 case Const.CommandSongs:
                     var songs = ShuffleSongsWithImages(_songList);
-                    if (songs.Count > 10)
+                    if (songs.Count > LimitRecordsTo)
                     {
-                        int rIntSong = _rnd.Next(0, (songs.Count - 10));
-                        return PackageResult(songs.GetRange(rIntSong, 10), songs.Count);
+                        int rIntSong = _rnd.Next(0, (songs.Count - LimitRecordsTo));
+                        return PackageResult(songs.GetRange(rIntSong, LimitRecordsTo), songs.Count);
                     }
 
                     return PackageResult(songs, songs.Count);
 
                 case Const.CommandVideos:
                     var videos = Shuffle(_videoList);
-                    if (videos.Count > 200)
+                    if (videos.Count > LimitRecordsTo)
                     {
-                        int rIntVideo = _rnd.Next(0, (videos.Count - 200));
-                        return PackageResult(videos.GetRange(rIntVideo, 200), videos.Count);
+                        int rIntVideo = _rnd.Next(0, (videos.Count - LimitRecordsTo));
+                        return PackageResult(videos.GetRange(rIntVideo, LimitRecordsTo), videos.Count);
                     }
 
                     return PackageResult(videos, videos.Count);
 
                 case Const.CommandPictures:
                     var images = Shuffle(_imageList);
-                    if (images.Count > 200)
+                    if (images.Count > LimitRecordsTo)
                     {
-                        int rIntPictures = _rnd.Next(0, (images.Count - 200));
-                        return PackageResult(images.GetRange(rIntPictures, 200), images.Count);
+                        int rIntPictures = _rnd.Next(0, (images.Count - LimitRecordsTo));
+                        return PackageResult(images.GetRange(rIntPictures, LimitRecordsTo), images.Count);
                     }
 
                     return PackageResult(images, images.Count);
